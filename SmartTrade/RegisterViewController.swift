@@ -32,11 +32,7 @@ class RegisterViewController: UIViewController {
                 self.performSegue(withIdentifier:"goToNext", sender: self)
             }
         }
-        
-        
-        
-        
-        
+    
     }
     
     /*

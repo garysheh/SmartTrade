@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDxSqMwn71_CUqQzPZ8UaKDzoC4aRFB1kk</string>
+	<string>AIzaSyAZXB3kUGZMtz3lgRkWDvki9pbBeDnL79E</string>
 	<key>GCM_SENDER_ID</key>
-	<string>873935595710</string>
+	<string>949563478553</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.capstone.SmartTrade</string>
 	<key>PROJECT_ID</key>
-	<string>smarttrade-2b499</string>
+	<string>smarttrade-80624</string>
 	<key>STORAGE_BUCKET</key>
-	<string>smarttrade-2b499.appspot.com</string>
+	<string>smarttrade-80624.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:873935595710:ios:6b1866565a60e6c601d6ef</string>
+	<string>1:949563478553:ios:bc16e3b8af183e5f4fd088</string>
 </dict>
 </plist>
