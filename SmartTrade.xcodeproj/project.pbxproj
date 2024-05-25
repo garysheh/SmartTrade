@@ -10,6 +10,7 @@
 		60AF41ED2C01881B0034282D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF41EC2C01881B0034282D /* SceneDelegate.swift */; };
 		60AF41EF2C0188570034282D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF41EE2C0188570034282D /* AppDelegate.swift */; };
 		60AF41F22C018A050034282D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60AF41F02C018A050034282D /* LaunchScreen.storyboard */; };
+		60AF41F42C01C17E0034282D /* WatchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF41F32C01C17E0034282D /* WatchListViewController.swift */; };
 		60C193892BE07BF7003134FE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C193882BE07BF7003134FE /* ViewController.swift */; };
 		60C1938C2BE07BF7003134FE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60C1938A2BE07BF7003134FE /* Main.storyboard */; };
 		60C1938E2BE07BFA003134FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60C1938D2BE07BFA003134FE /* Assets.xcassets */; };
@@ -49,6 +50,7 @@
 		60AF41EC2C01881B0034282D /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		60AF41EE2C0188570034282D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		60AF41F12C018A050034282D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		60AF41F32C01C17E0034282D /* WatchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListViewController.swift; sourceTree = "<group>"; };
 		60C193812BE07BF7003134FE /* SmartTrade.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartTrade.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60C193882BE07BF7003134FE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		60C1938B2BE07BF7003134FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				60C1938A2BE07BF7003134FE /* Main.storyboard */,
 				60C193982BE0CED1003134FE /* LoginViewController.swift */,
 				60C1939A2BE0D080003134FE /* RegisterViewController.swift */,
+				60AF41F32C01C17E0034282D /* WatchListViewController.swift */,
 				60C1938D2BE07BFA003134FE /* Assets.xcassets */,
 				60C193922BE07BFA003134FE /* Info.plist */,
 				7BFFB78F2BE0EAD000F6EE2A /* GoogleService-Info.plist */,
@@ -238,6 +241,7 @@
 				60C1939B2BE0D080003134FE /* RegisterViewController.swift in Sources */,
 				60C193892BE07BF7003134FE /* ViewController.swift in Sources */,
 				60AF41EF2C0188570034282D /* AppDelegate.swift in Sources */,
+				60AF41F42C01C17E0034282D /* WatchListViewController.swift in Sources */,
 				60AF41ED2C01881B0034282D /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
