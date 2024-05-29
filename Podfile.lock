@@ -1,0 +1,20 @@
+PODS:
+  - Loaf (0.7.0)
+  - MBProgressHUD (1.2.0)
+
+DEPENDENCIES:
+  - Loaf
+  - MBProgressHUD
+
+SPEC REPOS:
+  trunk:
+    - Loaf
+    - MBProgressHUD
+
+SPEC CHECKSUMS:
+  Loaf: d69937cd00649f3fa260beb8b7aef0a1feb861ef
+  MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
+
+PODFILE CHECKSUM: 1e45586de961e2f3eb3c05b5a6412c425fc6b8b4
+
+COCOAPODS: 1.15.2
