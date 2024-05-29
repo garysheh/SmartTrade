@@ -12,11 +12,11 @@
 		6080A46B2C04796300DC3D02 /* StockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6080A46A2C04796300DC3D02 /* StockService.swift */; };
 		6080A46D2C049D1500DC3D02 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6080A46C2C049D1500DC3D02 /* SearchResults.swift */; };
 		6080A4722C05035300DC3D02 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6080A4712C05035300DC3D02 /* Podfile */; };
+		6080A47E2C07A08D00DC3D02 /* StockDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6080A47D2C07A08D00DC3D02 /* StockDetailViewController.swift */; };
 		60AF41ED2C01881B0034282D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF41EC2C01881B0034282D /* SceneDelegate.swift */; };
 		60AF41EF2C0188570034282D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF41EE2C0188570034282D /* AppDelegate.swift */; };
 		60AF41F22C018A050034282D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60AF41F02C018A050034282D /* LaunchScreen.storyboard */; };
 		60AF41F42C01C17E0034282D /* WatchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF41F32C01C17E0034282D /* WatchListViewController.swift */; };
-		60C193892BE07BF7003134FE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C193882BE07BF7003134FE /* ViewController.swift */; };
 		60C1938C2BE07BF7003134FE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60C1938A2BE07BF7003134FE /* Main.storyboard */; };
 		60C1938E2BE07BFA003134FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60C1938D2BE07BFA003134FE /* Assets.xcassets */; };
 		60C193992BE0CED1003134FE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C193982BE0CED1003134FE /* LoginViewController.swift */; };
@@ -56,12 +56,12 @@
 		6080A46A2C04796300DC3D02 /* StockService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockService.swift; sourceTree = "<group>"; };
 		6080A46C2C049D1500DC3D02 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		6080A4712C05035300DC3D02 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		6080A47D2C07A08D00DC3D02 /* StockDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetailViewController.swift; sourceTree = "<group>"; };
 		60AF41EC2C01881B0034282D /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		60AF41EE2C0188570034282D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		60AF41F12C018A050034282D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		60AF41F32C01C17E0034282D /* WatchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListViewController.swift; sourceTree = "<group>"; };
 		60C193812BE07BF7003134FE /* SmartTrade.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartTrade.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		60C193882BE07BF7003134FE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		60C1938B2BE07BF7003134FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		60C1938D2BE07BFA003134FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60C193922BE07BFA003134FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -164,9 +164,9 @@
 				60AF41F02C018A050034282D /* LaunchScreen.storyboard */,
 				60AF41EE2C0188570034282D /* AppDelegate.swift */,
 				60AF41EC2C01881B0034282D /* SceneDelegate.swift */,
-				60C193882BE07BF7003134FE /* ViewController.swift */,
 				60C1938A2BE07BF7003134FE /* Main.storyboard */,
 				60AF41F32C01C17E0034282D /* WatchListViewController.swift */,
+				6080A47D2C07A08D00DC3D02 /* StockDetailViewController.swift */,
 				60C193982BE0CED1003134FE /* LoginViewController.swift */,
 				60C1939A2BE0D080003134FE /* RegisterViewController.swift */,
 				60C1938D2BE07BFA003134FE /* Assets.xcassets */,
@@ -337,9 +337,9 @@
 				6080A4662C03AFE700DC3D02 /* StockTableViewCell.swift in Sources */,
 				6080A46B2C04796300DC3D02 /* StockService.swift in Sources */,
 				6080A46D2C049D1500DC3D02 /* SearchResults.swift in Sources */,
+				6080A47E2C07A08D00DC3D02 /* StockDetailViewController.swift in Sources */,
 				60C193992BE0CED1003134FE /* LoginViewController.swift in Sources */,
 				60C1939B2BE0D080003134FE /* RegisterViewController.swift in Sources */,
-				60C193892BE07BF7003134FE /* ViewController.swift in Sources */,
 				60AF41EF2C0188570034282D /* AppDelegate.swift in Sources */,
 				60AF41F42C01C17E0034282D /* WatchListViewController.swift in Sources */,
 				60AF41ED2C01881B0034282D /* SceneDelegate.swift in Sources */,

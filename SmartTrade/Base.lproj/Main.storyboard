@@ -274,10 +274,10 @@
             </objects>
             <point key="canvasLocation" x="1770" y="258"/>
         </scene>
-        <!--View Controller-->
+        <!--Stock Detail View Controller-->
         <scene sceneID="cq0-Nv-4Em">
             <objects>
-                <viewController id="iWJ-Go-7oa" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StockDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="iWJ-Go-7oa" customClass="StockDetailViewController" customModule="SmartTrade" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XEj-WI-wtF">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -369,7 +369,6 @@
                                 <buttonConfiguration key="configuration" style="plain" image="plus.app" catalog="system" title=" Add Symbol"/>
                                 <connections>
                                     <action selector="TradeClicked:" destination="mS5-r3-JEq" eventType="touchUpInside" id="MyD-Rs-YCD"/>
-                                    <segue destination="iWJ-Go-7oa" kind="show" identifier="trade" id="Zyb-VU-rXY"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irk-D9-tUU">
