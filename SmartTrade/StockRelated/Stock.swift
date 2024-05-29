@@ -35,3 +35,4 @@ struct GlobalQuote: Codable {
             case changePercent = "10. change percent"
     }
 }
+
