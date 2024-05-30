@@ -14,7 +14,7 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
 
     private let apiService = APIService()
     private var subscribers = Set<AnyCancellable>()
-    private var searchResult: SearchResult?
+    private var searchResults: [SearchResult] = []
     @Published private var searchQuery = String()
     
     override func viewDidLoad() {
@@ -26,33 +26,35 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     private func performSearch() {
-        $searchQuery
-          .debounce(for: .milliseconds(700), scheduler: RunLoop.main)
-          .sink { [unowned self] (searchQuery) in
-            self.apiService.fetchSymbolsPublisher(symbol: "IBM")
-            .receive(on: RunLoop.main)
-            .sink { (completion) in
-              switch completion {
-                case .failure(let error):
-                  print(error.localizedDescription)
-                case .finished: break
-              }
-            } receiveValue: { (data) in
-              if let jsonString = String(data: data, encoding: .utf8) {
-                print("JSON Response: \(jsonString)")
-                let searchResults = try? JSONDecoder().decode(SearchResults.self, from: data)
-                self.searchResult = searchResults?.globalQuote
-                DispatchQueue.main.async {
-                  self.tableView.reloadData()
+        let symbols = ["IBM", "AAPL", "GOOGL", "AMZN", "NDAQ", "MSFT"]
+            let publishers = symbols.map { apiService.fetchSymbolsPublisher(symbol: $0) }
+            
+            Publishers.MergeMany(publishers)
+                .map { data -> SearchResult? in
+                    if let searchResults = try? JSONDecoder().decode(SearchResults.self, from: data) {
+                        return searchResults.globalQuote
+                    }
+                    return nil
                 }
-              }
-            }.store(in: &self.subscribers)
-          }.store(in: &subscribers)
+                .collect()
+                .receive(on: RunLoop.main)
+                .sink { completion in
+                    switch completion {
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    case .finished:
+                        break
+                    }
+                } receiveValue: { searchResults in
+                    self.searchResults = searchResults.compactMap { $0 }
+                    self.tableView.reloadData()
+                }
+                .store(in: &subscribers)
       }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> 
         Int {
-        return 1
+        return searchResults.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -61,6 +63,8 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let vc = storyboard?.instantiateViewController(identifier: "StockDetailViewController") as? StockDetailViewController {
+            let selectedStock = searchResults[indexPath.row]
+                        vc.stockData = selectedStock
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -68,17 +72,14 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) ->
         UITableViewCell {
             let cell = tableView.dequeueReusableCell(withIdentifier: "stockId", for: indexPath) as! StockTableViewCell
-            if let searchResult = self.searchResult {
-                cell.configure(with: searchResult)
-                cell.assetTypeLabel.text = searchResult.low
-                cell.assetHighLabel.text = searchResult.high
-            }
+            let searchResult = searchResults[indexPath.row]
+            cell.configure(with: searchResult)
             return cell
         }
     
         @IBAction func TradeClicked(_ sender: UIButton) {
         
-        self.performSegue(withIdentifier:"trade", sender: self)
+        
          
     }
     

@@ -8,7 +8,7 @@
 import Foundation
 
 struct SearchResults: Decodable {
-    let globalQuote: SearchResult?
+    let globalQuote: SearchResult
 
     enum CodingKeys: String, CodingKey {
         case globalQuote = "Global Quote"
@@ -20,6 +20,7 @@ struct SearchResult: Decodable {
     let high: String
     let low: String
     let price: String
+    let day: String
 
 
     enum CodingKeys: String, CodingKey {
@@ -27,5 +28,6 @@ struct SearchResult: Decodable {
         case high = "03. high"
         case low = "04. low"
         case price = "05. price"
+        case day = "07. latest trading day"
     }
 }

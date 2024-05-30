@@ -8,12 +8,22 @@
 import UIKit
 
 class StockDetailViewController: UIViewController {
-
+    @IBOutlet weak var Stockprice: UILabel!
+    @IBOutlet weak var stockName: UILabel!
+    @IBOutlet weak var preTime: UILabel!
+    
+    var stockData: SearchResult?
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
+            super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-    }
+            // Do any additional setup after loading the view.
+            if let stockData = stockData {
+                Stockprice.text = stockData.high
+                stockName.text = stockData.symbol
+                preTime.text = "Latest.Trade" + stockData.day
+            }
+        }
     
 
     /*
