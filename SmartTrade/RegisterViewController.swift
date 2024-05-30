@@ -7,10 +7,15 @@
 
 import UIKit
 import Firebase
+import FirebaseCore
+import FirebaseFirestore
+import Foundation
 
 class RegisterViewController: UIViewController {
     
     
+    @IBOutlet weak var LastNameTextField: UITextField!
+    @IBOutlet weak var FirstNameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
@@ -23,13 +28,26 @@ class RegisterViewController: UIViewController {
     @IBAction func signupClicked(_ sender: UIButton) {
         guard let email = emailTextField.text else {return}
         guard let password = passwordTextField.text else {return}
+        guard let firstname = FirstNameTextField.text else {return}
+        guard let lastname = LastNameTextField.text else {return}
         
         Auth.auth().createUser(withEmail:email, password: password) { firebaseResult, error in
             if let e = error{
                 print("error")
             }
             else{
-                self.performSegue(withIdentifier:"goToNext", sender: self)
+                let db = Firestore.firestore()
+                let uuid = UUID().uuidString
+                db.collection("UserInfo").document(email).setData([
+                    "FirstName": firstname,
+                    "LastName": lastname,
+                    "UUID": uuid,
+                    "email":email,
+                    "password":password
+                  ])
+                
+                
+//                self.performSegue(withIdentifier:"goToNext", sender: self)
             }
         }
     
