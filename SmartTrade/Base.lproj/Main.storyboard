@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2zi-wl-6TY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2zi-wl-6TY">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -252,20 +252,62 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qYq-8C-VIa">
+                                <rect key="frame" x="32" y="390" width="329" height="42"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.097197880020000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="329" id="76b-ur-w2h"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="52" id="FKT-rh-Peg"/>
+                                    <constraint firstAttribute="height" constant="42" id="HUn-ow-fHp"/>
+                                </constraints>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Symbol" family="Symbol" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderLabel.textColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="0.59903833250000005" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Last Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UVK-08-29i">
+                                <rect key="frame" x="32" y="470" width="329" height="42"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.097197880020000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="84p-g4-ORb"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="329" id="bA8-tu-bDD"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="52" id="cUQ-Zo-Ek0"/>
+                                </constraints>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Symbol" family="Symbol" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderLabel.textColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="0.59903833250000005" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="knX-fB-hSD"/>
                         <color key="backgroundColor" red="0.08235294118" green="0.078431372550000003" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="4F5-Rh-zPT" firstAttribute="leading" secondItem="VdO-6U-fMh" secondAttribute="leading" id="4FS-5Y-bnD"/>
                             <constraint firstItem="4F5-Rh-zPT" firstAttribute="leading" secondItem="8nR-ZE-Xk4" secondAttribute="leading" id="81l-kd-LPX"/>
+                            <constraint firstItem="UVK-08-29i" firstAttribute="leading" secondItem="8nR-ZE-Xk4" secondAttribute="leading" id="Ddz-xb-3iP"/>
+                            <constraint firstItem="8nR-ZE-Xk4" firstAttribute="top" secondItem="UVK-08-29i" secondAttribute="bottom" constant="64" id="ICP-Bn-ux5"/>
                             <constraint firstItem="4F5-Rh-zPT" firstAttribute="top" secondItem="VdO-6U-fMh" secondAttribute="bottom" constant="32" id="RzV-Xd-rro"/>
+                            <constraint firstItem="UVK-08-29i" firstAttribute="leading" secondItem="qYq-8C-VIa" secondAttribute="leading" id="Um8-yu-M22"/>
+                            <constraint firstItem="UVK-08-29i" firstAttribute="trailing" secondItem="8nR-ZE-Xk4" secondAttribute="trailing" id="YFD-7z-YjT"/>
                             <constraint firstItem="4F5-Rh-zPT" firstAttribute="trailing" secondItem="VdO-6U-fMh" secondAttribute="trailing" id="bJj-1i-FZV"/>
+                            <constraint firstItem="UVK-08-29i" firstAttribute="trailing" secondItem="qYq-8C-VIa" secondAttribute="trailing" id="kDD-aW-3Ce"/>
                             <constraint firstItem="4F5-Rh-zPT" firstAttribute="top" secondItem="ZaG-sv-NOW" secondAttribute="top" constant="308" id="nga-Wy-6FY"/>
+                            <constraint firstItem="UVK-08-29i" firstAttribute="top" secondItem="qYq-8C-VIa" secondAttribute="bottom" constant="38" id="w6w-f9-WTi"/>
                             <constraint firstItem="4F5-Rh-zPT" firstAttribute="trailing" secondItem="8nR-ZE-Xk4" secondAttribute="trailing" id="z0l-fQ-NbC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="kSs-Vi-NXd"/>
                     <connections>
+                        <outlet property="FirstNameTextField" destination="qYq-8C-VIa" id="eGZ-RA-vZc"/>
+                        <outlet property="LastNameTextField" destination="UVK-08-29i" id="gQc-q0-M71"/>
                         <outlet property="emailTextField" destination="VdO-6U-fMh" id="div-h0-PEw"/>
                         <outlet property="passwordTextField" destination="4F5-Rh-zPT" id="Svu-CA-YXP"/>
                     </connections>
