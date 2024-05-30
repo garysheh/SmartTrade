@@ -11,7 +11,7 @@ import Combine
 class WatchListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    
+
     private let apiService = APIService()
     private var subscribers = Set<AnyCancellable>()
     private var searchResult: SearchResult?
@@ -27,37 +27,56 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
     
     private func performSearch() {
         $searchQuery
-            .debounce(for: .milliseconds(700), scheduler: RunLoop.main)
-            .sink { [unowned self] (searchQuery) in
-                self.apiService.fetchSymbolsPublisher(symbol: "S&P500").sink { (completion) in
-                switch completion {
+          .debounce(for: .milliseconds(700), scheduler: RunLoop.main)
+          .sink { [unowned self] (searchQuery) in
+            self.apiService.fetchSymbolsPublisher(symbol: "IBM")
+            .receive(on: RunLoop.main)
+            .sink { (completion) in
+              switch completion {
                 case .failure(let error):
-                    print(error.localizedDescription)
+                  print(error.localizedDescription)
                 case .finished: break
-                }
+              }
             } receiveValue: { (data) in
-                if let jsonString = String(data: data, encoding: .utf8) {
-                    print("JSON Response: \(jsonString)")
-                    }
-                }.store(in: &self.subscribers)
-            }.store(in: &subscribers)
-    }
+              if let jsonString = String(data: data, encoding: .utf8) {
+                print("JSON Response: \(jsonString)")
+                let searchResults = try? JSONDecoder().decode(SearchResults.self, from: data)
+                self.searchResult = searchResults?.globalQuote
+                DispatchQueue.main.async {
+                  self.tableView.reloadData()
+                }
+              }
+            }.store(in: &self.subscribers)
+          }.store(in: &subscribers)
+      }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> 
         Int {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) ->
-            UITableViewCell {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "stockId", for: indexPath) as! StockTableViewCell
-                if let searchResult = self.searchResult {
-                    cell.configure(with: searchResult)
-                }
-                return cell
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 85;//Choose your custom row height
     }
     
-    @IBAction func TradeClicked(_ sender: UIButton) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let vc = storyboard?.instantiateViewController(identifier: "StockDetailViewController") as? StockDetailViewController {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) ->
+        UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "stockId", for: indexPath) as! StockTableViewCell
+            if let searchResult = self.searchResult {
+                cell.configure(with: searchResult)
+                cell.assetTypeLabel.text = searchResult.low
+                cell.assetHighLabel.text = searchResult.high
+            }
+            return cell
+        }
+    
+        @IBAction func TradeClicked(_ sender: UIButton) {
         
         self.performSegue(withIdentifier:"trade", sender: self)
          
