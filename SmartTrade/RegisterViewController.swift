@@ -33,7 +33,7 @@ class RegisterViewController: UIViewController {
         
         Auth.auth().createUser(withEmail:email, password: password) { firebaseResult, error in
             if let e = error{
-                print("error")
+                self.showNoSignUp()
             }
             else{
                 let db = Firestore.firestore()
@@ -53,12 +53,26 @@ class RegisterViewController: UIViewController {
                 ])
                 //testing by setting default number
                 
+                self.showSignUp()
                 
-//                self.performSegue(withIdentifier:"goToNext", sender: self)
             }
         }
     
     }
+    
+    func showSignUp(){
+        let alert = UIAlertController(title: "Successful!", message: "Welcome to SmartTrade!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Start!", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func showNoSignUp(){
+        let alert = UIAlertController(title: "Unsuccessful:(", message: "The password needs to be 6 characters or more. If the conditions are met, it may be that this email address has already been registered.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Try agian", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    
     
     /*
     // MARK: - Navigation

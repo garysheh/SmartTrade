@@ -35,7 +35,7 @@ class StockDetailViewController: UIViewController {
         showBuyOptionPopup()
     }
     
-    
+    //option for user to buy
     private func showBuyOptionPopup() {
             let alert = UIAlertController(title: "Buy Shares", message: "Choose your buy option:", preferredStyle: .alert)
             
@@ -54,7 +54,7 @@ class StockDetailViewController: UIViewController {
             present(alert, animated: true, completion: nil)
         }
     
-        
+        //using the price now
         private func showMarketBuyPopup() {
             let alert = UIAlertController(title: "Market Buy", message: "Enter the number of shares to buy:", preferredStyle: .alert)
             
@@ -102,24 +102,24 @@ class StockDetailViewController: UIViewController {
                                         existingHolding["shares"] = shares
                                         holdings[existingHoldingIndex] = existingHolding
                                         
-                                        // 更新持仓信息到 Firestore
+                                        // update the records
                                         db.collection("Holdings").document(email!).updateData([
                                             "holdings": holdings
                                         ])
                                     }else {
-                                        // 添加新的持仓记录
+                                        // adding the new record
                                         holdings.append([
                                             "stockCode": self.stockName.text,
                                             "shares": sharesAdd
                                         ])
                                         
-                                        // 更新持仓信息到 Firestore
+                                        // update in Firestore
                                         db.collection("Holdings").document(email!).updateData([
                                             "holdings": holdings
                                         ])
                                     }
                                 } else {
-                                    // 如果用户尚未持有任何股票,创建一个新的持仓记录
+                                    // create a new holding stock index
                                     db.collection("Holdings").document(email!).setData([
                                         "email": email,
                                         "holdings": [
@@ -127,6 +127,9 @@ class StockDetailViewController: UIViewController {
                                         ]
                                     ])
                                 }
+                        let alert = UIAlertController(title: "Order made!💰", message: "Successfully purchased this stock!✌️", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
                             }
                 }
             }
@@ -137,6 +140,8 @@ class StockDetailViewController: UIViewController {
             present(alert, animated: true, completion: nil)
         }
     
+    
+    //set an expected price to buy
     private func showLimitBuyPopup() {
             let alert = UIAlertController(title: "Limit Buy", message: "Enter the price and number of shares to buy:", preferredStyle: .alert)
             
@@ -170,6 +175,10 @@ class StockDetailViewController: UIViewController {
                                 "Status":"Waiting"
                             ])
                     //ToDo: to process the order.
+                    
+                    let alert = UIAlertController(title: "Order made!💰", message: "Waiting for CCP processing. . .", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
             }
             
@@ -185,6 +194,8 @@ class StockDetailViewController: UIViewController {
     @IBAction func SellButtonTapped(_ sender: Any) {
         showSellOptionPopup()
     }
+    
+    //show the option of selling stock
     private func showSellOptionPopup() {
             let alert = UIAlertController(title: "Sell Shares", message: "Choose your sell option:", preferredStyle: .alert)
             
@@ -203,6 +214,8 @@ class StockDetailViewController: UIViewController {
             present(alert, animated: true, completion: nil)
         }
     
+    
+    //sell the stock using the price now
     private func showMarketSellPopup() {
             let alert = UIAlertController(title: "Market Sell", message: "Enter the number of shares to sell:", preferredStyle: .alert)
             
@@ -257,17 +270,25 @@ class StockDetailViewController: UIViewController {
                                         db.collection("Holdings").document(email!).updateData([
                                             "holdings": holdings
                                         ])
+                                        let alert = UIAlertController(title: "Order made!💰", message: "Successfully sold this stock!✌️", preferredStyle: .alert)
+                                        alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                                        self.present(alert, animated: true, completion: nil)
+
                                     } else {
-                                        // 股票数量不足,无法完成卖出
-                                        print("Insufficient shares to sell.")
+                                        let alert = UIAlertController(title: "It doesn't look good...", message: "It seems you don't hold enough shares.", preferredStyle: .alert)
+                                        alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                                        self.present(alert, animated: true, completion: nil)
                                     }
                                 } else {
-                                    // 用户未持有该股票,无法卖出
-                                    print("You do not own this stock.")
+                                    let alert = UIAlertController(title: "Oh...", message: "You do not own this stock.", preferredStyle: .alert)
+                                    alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                                    self.present(alert, animated: true, completion: nil)
+
                                 }
                             } else {
-                                // 用户尚未持有任何股票
-                                print("No holdings found.")
+                                let alert = UIAlertController(title: "Sorry!🧎", message: "You do not own no holdings.", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                                self.present(alert, animated: true, completion: nil)
                             }
                         }
                     
@@ -281,7 +302,9 @@ class StockDetailViewController: UIViewController {
             
             present(alert, animated: true, completion: nil)
         }
-        
+     
+    
+    //set an expected price to sell
     private func showLimitSellPopup() {
             let alert = UIAlertController(title: "Limit Sell", message: "Enter the price and number of shares to sell:", preferredStyle: .alert)
             
@@ -315,6 +338,44 @@ class StockDetailViewController: UIViewController {
                                 "timestamp": timeStamp,
                                 "Status":"Waiting"
                             ])
+                    
+                    
+                    db.collection("Holdings").document(email!).getDocument { (document, error) in
+                            if let document = document, document.exists {
+                                var holdings = document.data()?["holdings"] as? [[String: Any]] ?? []
+                                
+                                // 检查是否已持有该股票
+                                if let existingHoldingIndex = holdings.firstIndex(where: { $0["stockCode"] as? String == self.stockName.text }) {
+                                    var existingHolding = holdings[existingHoldingIndex]
+                                    var shares = existingHolding["shares"] as? Int ?? 0
+                                    
+                                    // 如果持有股数大于等于要卖出的数量
+                                    if shares >= sharesAdd {
+                                        let alert = UIAlertController(title: "Order made!💰", message: "Waiting for CCP processing. . .", preferredStyle: .alert)
+                                        alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                                        self.present(alert, animated: true, completion: nil)
+                                        
+
+                                    } else {
+                                        let alert = UIAlertController(title: "It doesn't look good...", message: "It seems you don't hold enough shares.", preferredStyle: .alert)
+                                        alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                                        self.present(alert, animated: true, completion: nil)
+                                    }
+                                } else {
+                                    let alert = UIAlertController(title: "Oh...", message: "You do not own this stock.", preferredStyle: .alert)
+                                    alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                                    self.present(alert, animated: true, completion: nil)
+
+                                }
+                            } else {
+                                let alert = UIAlertController(title: "Sorry!🧎", message: "You do not own no holdings.", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                        }
+                    
+                    
+                    
                 }
             }
             
