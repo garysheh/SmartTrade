@@ -16,6 +16,7 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
     private var subscribers = Set<AnyCancellable>()
     private var searchResults: [SearchResult] = []
     @Published private var searchQuery = String()
+    var emailID: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -45,6 +45,13 @@ class RegisterViewController: UIViewController {
                     "email":email,
                     "password":password
                   ])
+                db.collection("Holdings").document(email).setData([
+                    "email":email,
+                    "holdings":[
+                        ["stockCode":"AAPL","shares":50],
+                        ["stockCode":"AMZN","shares":100]]
+                ])
+                //testing by setting default number
                 
                 
 //                self.performSegue(withIdentifier:"goToNext", sender: self)

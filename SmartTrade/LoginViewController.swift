@@ -32,8 +32,15 @@ class LoginViewController: UIViewController {
                 self.performSegue(withIdentifier:"goToNext", sender: self)
             }
         }
-        
-        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let email = emailTextField.text else {return}
+        if segue.identifier == "goToNext"{
+            if let secondVC = segue.destination as? WatchListViewController, let emailID = sender as? String{
+                secondVC.emailID = email
+            }
+        }
     }
     
     /*
