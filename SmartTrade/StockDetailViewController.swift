@@ -164,21 +164,31 @@ class StockDetailViewController: UIViewController {
                     let timeStamp = Int(timeInterval)
                     let email = Auth.auth().currentUser?.email
 
-                    db.collection("OrdersInfo").document(orderUuid).setData([
-                                "userEmail": email,
-                                "orderID": orderUuid,
-                                "stockCode": self.stockName.text,
-                                "type": "buy",
-                                "quantity": sharesAdd,
-                                "price": price,
-                                "timestamp": timeStamp,
-                                "Status":"Waiting"
-                            ])
-                    //ToDo: to process the order.
                     
-                    let alert = UIAlertController(title: "Order made!💰", message: "Waiting for CCP processing. . .", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
+                    if let pricenowText = self.Stockprice.text, let pricenow = Double(pricenowText), pricenow > price {
+                        
+                        db.collection("OrdersInfo").document(orderUuid).setData([
+                                    "userEmail": email,
+                                    "orderID": orderUuid,
+                                    "stockCode": self.stockName.text,
+                                    "type": "buy",
+                                    "quantity": sharesAdd,
+                                    "price": price,
+                                    "timestamp": timeStamp,
+                                    "Status":"Waiting"
+                                ])
+                        //ToDo: to process the order.
+                        
+                        let alert = UIAlertController(title: "Order made!💰", message: "Waiting for CCP processing. . .", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    } else{
+                        let alert = UIAlertController(title: "Oh, you have set a higher price.", message: "Maybe you can buy now or enter a new price", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+
+
                 }
             }
             
@@ -327,20 +337,12 @@ class StockDetailViewController: UIViewController {
                     let timeInterval:TimeInterval = Date().timeIntervalSince1970
                     let timeStamp = Int(timeInterval)
                     let email = Auth.auth().currentUser?.email
+                    
+                    
 
-                    db.collection("OrdersInfo").document(orderUuid).setData([
-                                "userEmail": email,
-                                "orderID": orderUuid,
-                                "stockCode": self.stockName.text,
-                                "type": "sell",
-                                "quantity": sharesAdd,
-                                "price": self.Stockprice.text,
-                                "timestamp": timeStamp,
-                                "Status":"Waiting"
-                            ])
                     
-                    
-                    db.collection("Holdings").document(email!).getDocument { (document, error) in
+                    if let pricenowText = self.Stockprice.text, let pricenow = Double(pricenowText), pricenow < price {
+                        db.collection("Holdings").document(email!).getDocument { (document, error) in
                             if let document = document, document.exists {
                                 var holdings = document.data()?["holdings"] as? [[String: Any]] ?? []
                                 
@@ -351,11 +353,24 @@ class StockDetailViewController: UIViewController {
                                     
                                     // 如果持有股数大于等于要卖出的数量
                                     if shares >= sharesAdd {
+                                        
+                                        db.collection("OrdersInfo").document(orderUuid).setData([
+                                            "userEmail": email,
+                                            "orderID": orderUuid,
+                                            "stockCode": self.stockName.text,
+                                            "type": "sell",
+                                            "quantity": sharesAdd,
+                                            "price": price,
+                                            "timestamp": timeStamp,
+                                            "Status":"Waiting"
+                                        ])
+                                        
                                         let alert = UIAlertController(title: "Order made!💰", message: "Waiting for CCP processing. . .", preferredStyle: .alert)
                                         alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
                                         self.present(alert, animated: true, completion: nil)
                                         
-
+                                        
+                                        
                                     } else {
                                         let alert = UIAlertController(title: "It doesn't look good...", message: "It seems you don't hold enough shares.", preferredStyle: .alert)
                                         alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
@@ -365,7 +380,7 @@ class StockDetailViewController: UIViewController {
                                     let alert = UIAlertController(title: "Oh...", message: "You do not own this stock.", preferredStyle: .alert)
                                     alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
                                     self.present(alert, animated: true, completion: nil)
-
+                                    
                                 }
                             } else {
                                 let alert = UIAlertController(title: "Sorry!🧎", message: "You do not own no holdings.", preferredStyle: .alert)
@@ -373,6 +388,12 @@ class StockDetailViewController: UIViewController {
                                 self.present(alert, animated: true, completion: nil)
                             }
                         }
+                    }
+                    else{
+                        let alert = UIAlertController(title: "Oh, you have set a lower price.", message: "You can sell now or enter a new price.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
                     
                     
                     
