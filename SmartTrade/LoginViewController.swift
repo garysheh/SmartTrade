@@ -21,20 +21,41 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginClicked(_ sender: UIButton) {
-        guard let email = emailTextField.text else {return}
-        guard let password = passwordTextField.text else {return}
+        guard let email = emailTextField.text, !email.isEmpty else {
+                    showAlert(title: "Error", message: "Please enter an email address.")
+                    return
+                }
+
+                guard let password = passwordTextField.text, !password.isEmpty else {
+                    showAlert(title: "Error", message: "Please enter a password.")
+                    return
+                }
+
+                Auth.auth().signIn(withEmail: email, password: password) { [weak self] firebaseResult, error in
+                    if let error = error {
+                        showAlert(title: "Login Failed", message: error.localizedDescription)
+                    } else {
+                        self?.performSegue(withIdentifier: "goToNext", sender: self)
+                    }
+                }
         
-        Auth.auth().signIn(withEmail:email, password: password) { firebaseResult, error in
-            if let e = error{
-                print("error")
+    func showAlert(title: String, message: String) {
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
-            else{
-                self.performSegue(withIdentifier:"goToNext", sender: self)
-            }
-        }
-        
-        
     }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        guard let email = emailTextField.text else {return}
+//        if segue.identifier == "goToNext"{
+//            if let secondVC = segue.destination as? WatchListViewController, let emailID = sender as? String{
+//                secondVC.emailID = email
+//            }
+//        }
+//    }
     
     /*
     // MARK: - Navigation

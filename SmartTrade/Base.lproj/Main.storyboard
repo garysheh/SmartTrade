@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2zi-wl-6TY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2zi-wl-6TY">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -163,7 +163,6 @@
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="loginClicked:" destination="jl9-c1-cKv" eventType="touchUpInside" id="QdL-TU-i5V"/>
-                                    <segue destination="F1f-Bs-PFK" kind="show" identifier="goToNext" id="6cf-uG-Ipw"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -190,6 +189,7 @@
                     <connections>
                         <outlet property="emailTextField" destination="wb6-21-zZf" id="DYP-mv-O9Z"/>
                         <outlet property="passwordTextField" destination="vmG-nK-x3m" id="zH1-To-pZh"/>
+                        <segue destination="F1f-Bs-PFK" kind="show" identifier="goToNext" id="XfU-q6-8P9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c6L-vY-diE" sceneMemberID="firstResponder"/>
@@ -335,6 +335,7 @@
                                     <color key="baseBackgroundColor" red="0.1058823529" green="0.73333333329999995" blue="0.49019607840000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </buttonConfiguration>
                                 <connections>
+                                    <action selector="BuyButtonTapped:" destination="iWJ-Go-7oa" eventType="touchUpInside" id="92g-4I-jge"/>
                                     <action selector="loginClicked:" destination="jl9-c1-cKv" eventType="touchUpInside" id="mZc-A2-Rjt"/>
                                 </connections>
                             </button>
@@ -349,6 +350,7 @@
                                     <color key="baseBackgroundColor" red="0.94117647058823528" green="0.22352941176470587" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </buttonConfiguration>
                                 <connections>
+                                    <action selector="SellButtonTapped:" destination="iWJ-Go-7oa" eventType="touchUpInside" id="fbp-7s-WEh"/>
                                     <action selector="loginClicked:" destination="jl9-c1-cKv" eventType="touchUpInside" id="iBV-Ec-5UF"/>
                                 </connections>
                             </button>
@@ -393,6 +395,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="0Vi-1y-qKr"/>
                     <connections>
+                        <outlet property="BuyButton" destination="Nu0-pW-ADg" id="TC8-EB-jM2"/>
+                        <outlet property="SellButton" destination="sl0-Kl-T6m" id="f5f-K2-neb"/>
                         <outlet property="Stockprice" destination="gxR-fc-kaW" id="J03-Wi-PsJ"/>
                         <outlet property="preTime" destination="Y1q-N6-14U" id="rQb-O2-zAm"/>
                         <outlet property="stockName" destination="0lB-DP-w7r" id="hOI-W7-IjX"/>
