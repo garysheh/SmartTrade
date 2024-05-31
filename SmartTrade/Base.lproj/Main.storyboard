@@ -163,7 +163,6 @@
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="loginClicked:" destination="jl9-c1-cKv" eventType="touchUpInside" id="QdL-TU-i5V"/>
-                                    <segue destination="F1f-Bs-PFK" kind="show" identifier="goToNext" id="6cf-uG-Ipw"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -190,6 +189,7 @@
                     <connections>
                         <outlet property="emailTextField" destination="wb6-21-zZf" id="DYP-mv-O9Z"/>
                         <outlet property="passwordTextField" destination="vmG-nK-x3m" id="zH1-To-pZh"/>
+                        <segue destination="F1f-Bs-PFK" kind="show" identifier="goToNext" id="XfU-q6-8P9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c6L-vY-diE" sceneMemberID="firstResponder"/>
