@@ -848,7 +848,6 @@
                     <tabBarItem key="tabBarItem" title="Accounts" image="creditcard" catalog="system" selectedImage="creditcard.fill" id="z9n-Lb-V5B"/>
                     <connections>
                         <outlet property="costValue" destination="K6G-Pn-EQY" id="Rhe-rm-Z4z"/>
-                        <outlet property="makerValue" destination="20p-Af-9ZX" id="vsb-OR-a4u"/>
                         <outlet property="marketValue" destination="20p-Af-9ZX" id="Tzr-Zb-uuF"/>
                         <outlet property="portRate" destination="pm6-Ba-2Wy" id="GiC-su-UEc"/>
                         <outlet property="shareCounts" destination="SDu-6j-hjK" id="2w1-XS-gvg"/>
