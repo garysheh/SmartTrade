@@ -10,6 +10,7 @@ import Firebase
 import FirebaseCore
 import FirebaseFirestore
 import Foundation
+import CoreData
 
 class RegisterViewController: UIViewController {
     
@@ -21,6 +22,9 @@ class RegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        let context = (UIApplication.shared.delegate
+//                       as! AppDelegate).persistentContainer.viewContext
 
         // Do any additional setup after loading the view.
     }
@@ -31,17 +35,24 @@ class RegisterViewController: UIViewController {
         guard let firstname = FirstNameTextField.text else {return}
         guard let lastname = LastNameTextField.text else {return}
         
+        
+        //Core Data
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
         Auth.auth().createUser(withEmail:email, password: password) { firebaseResult, error in
             if let e = error{
                 self.showNoSignUp()
             }
             else{
                 let db = Firestore.firestore()
-                let uuid = UUID().uuidString
+                let uuid = UUID()
+                let userID: Int32 = 100000000
+                
+                //Firebase
                 db.collection("UserInfo").document(email).setData([
                     "FirstName": firstname,
                     "LastName": lastname,
-                    "UUID": uuid,
+                    "UUID": uuid.uuidString,
                     "email":email,
                     "password":password
                   ])
@@ -52,6 +63,31 @@ class RegisterViewController: UIViewController {
                         ["stockCode":"AMZN","shares":100]]
                 ])
                 //testing by setting default number
+                
+                
+//                db.collection("Recording").document("Recording").whereField("capital", isEqualTo: true)
+                //CoreData
+                
+                let newUser = User(context: context)
+                
+                newUser.balance = 0
+                newUser.userID = userID
+                newUser.verifyID = uuid
+                newUser.email = email
+                newUser.password = password
+                
+                do {
+                    try context.save()
+//                    print("User saved successfully!")
+//                    print(NSPersistentContainer.defaultDirectoryURL())
+                } catch {
+                    print("Error saving user: \(error)")
+                }
+
+                
+                
+               
+                
                 
                 self.showSignUp()
                 
