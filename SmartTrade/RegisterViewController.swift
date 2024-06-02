@@ -48,48 +48,59 @@ class RegisterViewController: UIViewController {
                 let uuid = UUID()
                 let userID: Int32 = 100000000
                 
-                //Firebase
-                db.collection("UserInfo").document(email).setData([
-                    "FirstName": firstname,
-                    "LastName": lastname,
-                    "UUID": uuid.uuidString,
-                    "email":email,
-                    "password":password
-                  ])
-                db.collection("Holdings").document(email).setData([
-                    "email":email,
-                    "holdings":[
-                        ["stockCode":"AAPL","shares":50],
-                        ["stockCode":"AMZN","shares":100]]
-                ])
-                //testing by setting default number
-                
-                
-//                db.collection("Recording").document("Recording").whereField("capital", isEqualTo: true)
-                //CoreData
-                
-                let newUser = User(context: context)
-                
-                newUser.balance = 0
-                newUser.userID = userID
-                newUser.verifyID = uuid
-                newUser.email = email
-                newUser.password = password
-                
-                do {
-                    try context.save()
-//                    print("User saved successfully!")
-//                    print(NSPersistentContainer.defaultDirectoryURL())
-                } catch {
-                    print("Error saving user: \(error)")
+                db.collection("UserIDCounter").document("counter").getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        let data = document.data()
+                        let currentUserID = (document.get("userID") as? Int32) ?? 0
+                        let newUserID = currentUserID + 1
+                        
+                        // 更新 UserIDCounter 文档
+                        db.collection("UserIDCounter").document("counter").setData(["userID": newUserID], merge: true)
+                        
+                        
+                        
+                        
+                        //Firebase
+                        db.collection("UserInfo").document(email).setData([
+                            "FirstName": firstname,
+                            "LastName": lastname,
+                            "UUID": uuid.uuidString,
+                            "email":email,
+                            "password":password
+                        ])
+                        db.collection("Holdings").document(email).setData([
+                            "email":email,
+                            "holdings":[
+                                ["stockCode":"AAPL","shares":50],
+                                ["stockCode":"AMZN","shares":100]]
+                        ])
+                        //testing by setting default number
+                        
+                        
+                        
+                        
+                        //                db.collection("Recording").document("Recording").whereField("capital", isEqualTo: true)
+                        //CoreData
+                        
+                        let newUser = User(context: context)
+                        
+                        newUser.balance = 0
+                        newUser.userID = newUserID
+                        newUser.verifyID = uuid
+                        newUser.email = email
+                        newUser.password = password
+                        
+                        do {
+                            try context.save()
+                            //                    print("User saved successfully!")
+                            //                    print(NSPersistentContainer.defaultDirectoryURL())
+                        } catch {
+                            print("Error saving user: \(error)")
+                        }
+                        
+                        self.showSignUp()
+                    }
                 }
-
-                
-                
-               
-                
-                
-                self.showSignUp()
                 
             }
         }
