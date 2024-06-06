@@ -22,9 +22,6 @@ class RegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        let context = (UIApplication.shared.delegate
-//                       as! AppDelegate).persistentContainer.viewContext
 
         // Do any additional setup after loading the view.
     }
@@ -56,9 +53,7 @@ class RegisterViewController: UIViewController {
                         
                         // 更新 UserIDCounter 文档
                         db.collection("UserIDCounter").document("counter").setData(["userID": newUserID], merge: true)
-                        
-                        
-                        
+
                         
                         //Firebase
                         db.collection("UserInfo").document(email).setData([
@@ -66,7 +61,8 @@ class RegisterViewController: UIViewController {
                             "LastName": lastname,
                             "UUID": uuid.uuidString,
                             "email":email,
-                            "password":password
+                            "password":password,
+                            "userID": newUserID
                         ])
                         db.collection("Holdings").document(email).setData([
                             "email":email,
@@ -77,9 +73,6 @@ class RegisterViewController: UIViewController {
                         //testing by setting default number
                         
                         
-                        
-                        
-                        //                db.collection("Recording").document("Recording").whereField("capital", isEqualTo: true)
                         //CoreData
                         
                         let newUser = User(context: context)
@@ -92,8 +85,7 @@ class RegisterViewController: UIViewController {
                         
                         do {
                             try context.save()
-                            //                    print("User saved successfully!")
-                            //                    print(NSPersistentContainer.defaultDirectoryURL())
+                            print(NSPersistentContainer.defaultDirectoryURL())
                         } catch {
                             print("Error saving user: \(error)")
                         }
