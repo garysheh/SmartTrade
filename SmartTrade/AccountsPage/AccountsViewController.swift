@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import Combine
 import Charts
 import DGCharts
+import Firebase
+import FirebaseCore
+import FirebaseFirestore
+import Foundation
 
 class AccountsViewController: UIViewController {
 
@@ -30,37 +35,9 @@ class AccountsViewController: UIViewController {
     
     @IBOutlet weak var totalReturnRate: UILabel!
     
-
-
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        setupCharts()
-    }
-    
-    
-    private func setupCharts() {
-            // 设置饼状图
-        let pieChartView = PieChartView(frame: ChartsView.bounds)
-        ChartsView.addSubview(pieChartView)
-
-        let holdingData = getHoldingData()
-        var dataEntries: [PieChartDataEntry] = []
-        for (stockName, value) in holdingData {
-            dataEntries.append(PieChartDataEntry(value: value, label: stockName))
-        }
-
-        let dataSet = PieChartDataSet(entries: dataEntries)
-        dataSet.colors = cusColors
-        pieChartView.holeColor = .black
-        dataSet.valueColors = [.white]
-        pieChartView.legend.enabled = false
-        let pieChartData = PieChartData(dataSet: dataSet)
-        pieChartView.data = pieChartData
-        
-        }
+    private var stockData: [String: Double] = [:]
     
     let cusColors: [UIColor] = [
         UIColor(red: 13/255.0, green: 126/255.0, blue: 156/255.0, alpha: 1.0),
@@ -77,11 +54,56 @@ class AccountsViewController: UIViewController {
         UIColor(red: 0/255.0, green: 206/255.0, blue: 209/255.0, alpha: 1.0)
     ]
     
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        setupCharts()
+    }
+    
 
-        private func getHoldingData() -> [String: Double] {
-            // 从数据源获取持仓数据
-            return ["Stock A": 5.0, "Stock B": 18.0, "Stock C": 15.0, "Stock D": 12.0, "Stock E": 10.0,"Stock F": 10.0,"Stock G": 10.0]
+    
+    
+    private func setupCharts() {
+        // set the chart
+        let pieChartView = PieChartView(frame: ChartsView.bounds)
+        ChartsView.addSubview(pieChartView)
+
+        getHoldingData { holdingData in
+            var dataEntries: [PieChartDataEntry] = []
+            for (stockName, value) in holdingData {
+                dataEntries.append(PieChartDataEntry(value: value, label: stockName))
+            }
+
+            let dataSet = PieChartDataSet(entries: dataEntries)
+            dataSet.colors = self.cusColors
+            pieChartView.holeColor = .black
+            dataSet.valueColors = [.white]
+            pieChartView.legend.enabled = false
+            let pieChartData = PieChartData(dataSet: dataSet)
+            pieChartView.data = pieChartData
         }
+    }
+
+    private func getHoldingData(completion: @escaping ([String: Double]) -> Void) {
+        let db = Firestore.firestore()
+        let email = Auth.auth().currentUser?.email
+        var stockHoldings: [String: Double] = [:]
+
+        db.collection("Holdings").document(email!).getDocument { (document, error) in
+            if let document = document, document.exists {
+                var holdings = document.data()?["holdings"] as? [[String: Any]] ?? []
+                for holding in holdings {
+                    if let stockCode = holding["stockCode"] as? String, let shares = holding["shares"] as? Double {
+                        stockHoldings[stockCode] = shares
+                    }
+                }
+                completion(stockHoldings)
+            } else {
+                completion([:])
+            }
+        }
+    }
 
 
     
