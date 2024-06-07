@@ -22,6 +22,9 @@
 		60C1938E2BE07BFA003134FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60C1938D2BE07BFA003134FE /* Assets.xcassets */; };
 		60C193992BE0CED1003134FE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C193982BE0CED1003134FE /* LoginViewController.swift */; };
 		60C1939B2BE0D080003134FE /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1939A2BE0D080003134FE /* RegisterViewController.swift */; };
+		7BF759362C0B33AE000FE466 /* SmartTradeData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7BF759342C0B33AE000FE466 /* SmartTradeData.xcdatamodeld */; };
+		7BF7593B2C11A2F7000FE466 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593A2C11A2F7000FE466 /* DGCharts */; };
+		7BF7593D2C11A2F7000FE466 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593C2C11A2F7000FE466 /* DGChartsDynamic */; };
 		7BFFB7902BE0EAD000F6EE2A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7BFFB78F2BE0EAD000F6EE2A /* GoogleService-Info.plist */; };
 		7BFFB7932BE0ECF300F6EE2A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7BFFB7922BE0ECF300F6EE2A /* FirebaseAnalytics */; };
 		7BFFB7952BE0ECF300F6EE2A /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 7BFFB7942BE0ECF300F6EE2A /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -69,6 +72,7 @@
 		60C193922BE07BFA003134FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60C193982BE0CED1003134FE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		60C1939A2BE0D080003134FE /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		7BF759352C0B33AE000FE466 /* SmartTradeData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartTradeData.xcdatamodel; sourceTree = "<group>"; };
 		7BFFB78F2BE0EAD000F6EE2A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8C20BCF671494A0EAFE1C387 /* Pods_SmartTrade.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartTrade.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8CE5BBDF7B32AFC1F2DD8DB /* Pods-SmartTrade.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartTrade.release.xcconfig"; path = "Target Support Files/Pods-SmartTrade/Pods-SmartTrade.release.xcconfig"; sourceTree = "<group>"; };
@@ -81,6 +85,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7BFFB7A52BE0ECF300F6EE2A /* FirebaseDatabase in Frameworks */,
+				7BF7593B2C11A2F7000FE466 /* DGCharts in Frameworks */,
 				7BFFB7B32BE0ECF300F6EE2A /* FirebaseFunctionsCombine-Community in Frameworks */,
 				7BFFB7AB2BE0ECF300F6EE2A /* FirebaseFirestore in Frameworks */,
 				7BFFB7972BE0ECF300F6EE2A /* FirebaseAnalyticsSwift in Frameworks */,
@@ -107,6 +112,7 @@
 				7BFFB7AD2BE0ECF300F6EE2A /* FirebaseFirestoreCombine-Community in Frameworks */,
 				7BFFB7BD2BE0ECF300F6EE2A /* FirebaseMessaging in Frameworks */,
 				7BFFB7B92BE0ECF300F6EE2A /* FirebaseInstallations in Frameworks */,
+				7BF7593D2C11A2F7000FE466 /* DGChartsDynamic in Frameworks */,
 				47E4F1C303659ADADC7011DC /* Pods_SmartTrade.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -183,6 +189,7 @@
 				60C1938D2BE07BFA003134FE /* Assets.xcassets */,
 				60C193922BE07BFA003134FE /* Info.plist */,
 				7BFFB78F2BE0EAD000F6EE2A /* GoogleService-Info.plist */,
+				7BF759342C0B33AE000FE466 /* SmartTradeData.xcdatamodeld */,
 			);
 			path = SmartTrade;
 			sourceTree = "<group>";
@@ -242,6 +249,8 @@
 				7BFFB7C22BE0ECF300F6EE2A /* FirebaseRemoteConfigSwift */,
 				7BFFB7C42BE0ECF300F6EE2A /* FirebaseStorage */,
 				7BFFB7C62BE0ECF300F6EE2A /* FirebaseStorageCombine-Community */,
+				7BF7593A2C11A2F7000FE466 /* DGCharts */,
+				7BF7593C2C11A2F7000FE466 /* DGChartsDynamic */,
 			);
 			productName = SmartTrade;
 			productReference = 60C193812BE07BF7003134FE /* SmartTrade.app */;
@@ -273,6 +282,7 @@
 			mainGroup = 60C193782BE07BF7003134FE;
 			packageReferences = (
 				7BFFB7912BE0ECF300F6EE2A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				7BF759392C11A2F7000FE466 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 60C193822BE07BF7003134FE /* Products */;
 			projectDirPath = "";
@@ -346,6 +356,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6080A4662C03AFE700DC3D02 /* StockTableViewCell.swift in Sources */,
+				7BF759362C0B33AE000FE466 /* SmartTradeData.xcdatamodeld in Sources */,
 				6080A46B2C04796300DC3D02 /* StockService.swift in Sources */,
 				6080A4812C0B18DC00DC3D02 /* AccountsViewController.swift in Sources */,
 				6080A46D2C049D1500DC3D02 /* SearchResults.swift in Sources */,
@@ -581,6 +592,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		7BF759392C11A2F7000FE466 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 		7BFFB7912BE0ECF300F6EE2A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -592,6 +611,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7BF7593A2C11A2F7000FE466 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7BF759392C11A2F7000FE466 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
+		7BF7593C2C11A2F7000FE466 /* DGChartsDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7BF759392C11A2F7000FE466 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGChartsDynamic;
+		};
 		7BFFB7922BE0ECF300F6EE2A /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7BFFB7912BE0ECF300F6EE2A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -728,6 +757,19 @@
 			productName = "FirebaseStorageCombine-Community";
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		7BF759342C0B33AE000FE466 /* SmartTradeData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7BF759352C0B33AE000FE466 /* SmartTradeData.xcdatamodel */,
+			);
+			currentVersion = 7BF759352C0B33AE000FE466 /* SmartTradeData.xcdatamodel */;
+			path = SmartTradeData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 60C193792BE07BF7003134FE /* Project object */;
 }
