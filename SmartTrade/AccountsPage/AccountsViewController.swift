@@ -55,21 +55,30 @@ class AccountsViewController: UIViewController {
     ]
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        setupCharts()
-    }
-    
+    override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            setupCharts()
+        }
+        
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            // Do any additional setup after loading the view.
+        }
+        
+        private func setupCharts() {
+            // clean the chart before
+            ChartsView.subviews.forEach { $0.removeFromSuperview() }
 
-    
-    
-    private func setupCharts() {
-        // set the chart
-        let pieChartView = PieChartView(frame: ChartsView.bounds)
-        ChartsView.addSubview(pieChartView)
+            // update the chart and draw
+            getHoldingData { holdingData in
+                self.drawPieChart(with: holdingData)
+            }
+        }
 
-        getHoldingData { holdingData in
+        private func drawPieChart(with holdingData: [String: Double]) {
+            let pieChartView = PieChartView(frame: ChartsView.bounds)
+            ChartsView.addSubview(pieChartView)
+
             var dataEntries: [PieChartDataEntry] = []
             for (stockName, value) in holdingData {
                 dataEntries.append(PieChartDataEntry(value: value, label: stockName))
@@ -83,27 +92,26 @@ class AccountsViewController: UIViewController {
             let pieChartData = PieChartData(dataSet: dataSet)
             pieChartView.data = pieChartData
         }
-    }
 
-    private func getHoldingData(completion: @escaping ([String: Double]) -> Void) {
-        let db = Firestore.firestore()
-        let email = Auth.auth().currentUser?.email
-        var stockHoldings: [String: Double] = [:]
+        private func getHoldingData(completion: @escaping ([String: Double]) -> Void) {
+            let db = Firestore.firestore()
+            let email = Auth.auth().currentUser?.email
+            var stockHoldings: [String: Double] = [:]
 
-        db.collection("Holdings").document(email!).getDocument { (document, error) in
-            if let document = document, document.exists {
-                var holdings = document.data()?["holdings"] as? [[String: Any]] ?? []
-                for holding in holdings {
-                    if let stockCode = holding["stockCode"] as? String, let shares = holding["shares"] as? Double {
-                        stockHoldings[stockCode] = shares
+            db.collection("Holdings").document(email!).getDocument { (document, error) in
+                if let document = document, document.exists {
+                    var holdings = document.data()?["holdings"] as? [[String: Any]] ?? []
+                    for holding in holdings {
+                        if let stockCode = holding["stockCode"] as? String, let shares = holding["shares"] as? Double {
+                            stockHoldings[stockCode] = shares
+                        }
                     }
+                    completion(stockHoldings)
+                } else {
+                    completion([:])
                 }
-                completion(stockHoldings)
-            } else {
-                completion([:])
             }
         }
-    }
 
 
     
