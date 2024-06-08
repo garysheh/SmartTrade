@@ -60,58 +60,74 @@ class AccountsViewController: UIViewController {
             setupCharts()
         }
         
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            // Do any additional setup after loading the view.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+        
+    private func setupCharts() {
+        // clean the chart before
+        ChartsView.subviews.forEach { $0.removeFromSuperview() }
+
+        // update the chart and draw
+        getHoldingData { holdingData in
+            self.drawPieChart(with: holdingData)
+            let totalShares = holdingData.values.reduce(0, +)
+            self.shareCounts.text = "\(totalShares)"
+            self.shareCounts.textAlignment = .left
         }
         
-        private func setupCharts() {
-            // clean the chart before
-            ChartsView.subviews.forEach { $0.removeFromSuperview() }
+    }
 
-            // update the chart and draw
-            getHoldingData { holdingData in
-                self.drawPieChart(with: holdingData)
-            }
+    private func drawPieChart(with holdingData: [String: Double]) {
+        
+        //draw the chart
+        let pieChartView = PieChartView(frame: ChartsView.bounds)
+        ChartsView.addSubview(pieChartView)
+
+        var dataEntries: [PieChartDataEntry] = []
+        for (stockName, value) in holdingData {
+            dataEntries.append(PieChartDataEntry(value: value, label: stockName))
         }
 
-        private func drawPieChart(with holdingData: [String: Double]) {
-            let pieChartView = PieChartView(frame: ChartsView.bounds)
-            ChartsView.addSubview(pieChartView)
+        let dataSet = PieChartDataSet(entries: dataEntries)
+        dataSet.colors = self.cusColors
+        pieChartView.holeColor = .black
+        dataSet.valueColors = [.white]
+        pieChartView.legend.enabled = false
+        let pieChartData = PieChartData(dataSet: dataSet)
+        pieChartView.data = pieChartData
+        
+        
+    }
 
-            var dataEntries: [PieChartDataEntry] = []
-            for (stockName, value) in holdingData {
-                dataEntries.append(PieChartDataEntry(value: value, label: stockName))
-            }
+    private func getHoldingData(completion: @escaping ([String: Double]) -> Void) {
+        let db = Firestore.firestore()
+        let email = Auth.auth().currentUser?.email
+        var stockHoldings: [String: Double] = [:] //the position
+        
+        
 
-            let dataSet = PieChartDataSet(entries: dataEntries)
-            dataSet.colors = self.cusColors
-            pieChartView.holeColor = .black
-            dataSet.valueColors = [.white]
-            pieChartView.legend.enabled = false
-            let pieChartData = PieChartData(dataSet: dataSet)
-            pieChartView.data = pieChartData
-        }
-
-        private func getHoldingData(completion: @escaping ([String: Double]) -> Void) {
-            let db = Firestore.firestore()
-            let email = Auth.auth().currentUser?.email
-            var stockHoldings: [String: Double] = [:]
-
-            db.collection("Holdings").document(email!).getDocument { (document, error) in
-                if let document = document, document.exists {
-                    var holdings = document.data()?["holdings"] as? [[String: Any]] ?? []
-                    for holding in holdings {
-                        if let stockCode = holding["stockCode"] as? String, let shares = holding["shares"] as? Double {
-                            stockHoldings[stockCode] = shares
-                        }
+        db.collection("Holdings").document(email!).getDocument { (document, error) in
+            if let document = document, document.exists {
+                var holdings = document.data()?["holdings"] as? [[String: Any]] ?? []
+                for holding in holdings {
+                    if let stockCode = holding["stockCode"] as? String, let shares = holding["shares"] as? Double {
+                        stockHoldings[stockCode] = shares
+                        
                     }
-                    completion(stockHoldings)
-                } else {
-                    completion([:])
                 }
+                completion(stockHoldings)
+            } else {
+                completion([:])
             }
         }
+    }
+    
+    
+    
+    
+    
 
 
     
