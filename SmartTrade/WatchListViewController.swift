@@ -83,5 +83,5 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
         
          
     }
-    
+ 
 }
