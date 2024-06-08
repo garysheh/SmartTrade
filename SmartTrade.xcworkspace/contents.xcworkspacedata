@@ -2,24 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:SmartTrade/Model/Position+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:SmartTrade/Model/Position+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
-      location = "group:SmartTrade/Model/Transaction+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:SmartTrade/Model/Transaction+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
-      location = "group:SmartTrade/Model/User+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:SmartTrade/Model/User+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
       location = "group:SmartTrade.xcodeproj">
    </FileRef>
    <FileRef

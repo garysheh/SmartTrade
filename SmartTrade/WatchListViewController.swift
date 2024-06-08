@@ -68,6 +68,7 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
                         vc.stockData = selectedStock
             self.navigationController?.pushViewController(vc, animated: true)
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) ->

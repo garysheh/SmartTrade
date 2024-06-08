@@ -137,8 +137,10 @@ class AccountsViewController: UIViewController {
         getHoldingData { holdingData in
             //set the share count
             let totalShares = holdingData.values.reduce(0, +)
-            self.shareCounts.text = "\(totalShares)"
-            
+            self.shareCounts.text = String(format: "%.2f", Double(totalShares))
+            // self.shareCounts.text = "\(totalShares)"
+            // align the text to be centered
+            self.shareCounts.textAlignment = .center
         }
     }
     
@@ -186,6 +188,7 @@ class AccountsViewController: UIViewController {
                         
                         // Set the total value text
                         self.marketValue.text = String(format: "%.2f", totalValue)
+                        self.marketValue.textAlignment = .right
                         print("Stock Values: \(stockValues)")
                     }
                     .store(in: &self.subscribers)
@@ -207,6 +210,10 @@ class AccountsViewController: UIViewController {
 
 
     @IBAction func detailButtonTapped(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let stockDetailVC = storyboard.instantiateViewController(withIdentifier: "DetailPosition") as? DetailPositionDataViewController {
+                navigationController?.pushViewController(stockDetailVC, animated: true)
+            }
     }
     
 
