@@ -54,91 +54,110 @@ class StockDetailViewController: UIViewController {
             present(alert, animated: true, completion: nil)
         }
     
-        //using the price now
-        private func showMarketBuyPopup() {
-            let alert = UIAlertController(title: "Market Buy", message: "Enter the number of shares to buy:", preferredStyle: .alert)
-            
-            alert.addTextField { (textField) in
-                textField.keyboardType = .numberPad
-                textField.placeholder = "Number of shares"
-            }
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            let buyAction = UIAlertAction(title: "Buy", style: .default) { (_) in
-                if let sharesText = alert.textFields?.first?.text, let sharesAdd = Int(sharesText) {
-                    let db = Firestore.firestore()
-                    let orderUuid = UUID().uuidString
-                    let timeInterval:TimeInterval = Date().timeIntervalSince1970
-                    let timeStamp = Int(timeInterval)
-                    let email = Auth.auth().currentUser?.email
+    //Function buy using the price now
+    private func showMarketBuyPopup() {
+        let alert = UIAlertController(title: "Market Buy", message: "Enter the number of shares to buy:", preferredStyle: .alert)
+        
+        alert.addTextField { (textField) in
+            textField.keyboardType = .numberPad
+            textField.placeholder = "Number of shares"
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let buyAction = UIAlertAction(title: "Buy", style: .default) { (_) in
+            if let sharesText = alert.textFields?.first?.text, let sharesAdd = Int(sharesText) {
+                let db = Firestore.firestore()
+                let orderUuid = UUID().uuidString
+                let timeInterval:TimeInterval = Date().timeIntervalSince1970
+                let timeStamp = Int(timeInterval)
+                let email = Auth.auth().currentUser?.email
 
-                    db.collection("OrdersInfo").document(orderUuid).setData([
-                                "userEmail": email,
-                                "orderID": orderUuid,
-                                "stockCode": self.stockName.text,
-                                "type": "buy",
-                                "quantity": sharesAdd,
-                                "price": self.Stockprice.text,
-                                "timestamp": timeStamp,
-                                "Status":"Done"
-                            ])
-                    db.collection("Holdings").document(email!).getDocument { (document, error) in
-                                if let document = document, document.exists {
-                                    var holdings = document.data()?["holdings"] as? [[String: Any]] ?? []
-                                    
-                                    // 检查是否已持有该股票
-                                    var existingHolding: [String: Any]?
-                                    for holding in holdings {
-                                        if holding["stockCode"] as? String == self.stockName.text {
-                                            existingHolding = holding
-                                            break
-                                        }
-                                    }
-                                    
-                                    if let existingHoldingIndex = holdings.firstIndex(where: { $0["stockCode"] as? String == self.stockName.text }) {
-                                        var existingHolding = holdings[existingHoldingIndex]
-                                        var shares = existingHolding["shares"] as? Int ?? 0
-                                        shares += sharesAdd
-                                        existingHolding["shares"] = shares
-                                        holdings[existingHoldingIndex] = existingHolding
-                                        
-                                        // update the records
-                                        db.collection("Holdings").document(email!).updateData([
-                                            "holdings": holdings
-                                        ])
-                                    }else {
-                                        // adding the new record
-                                        holdings.append([
-                                            "stockCode": self.stockName.text,
-                                            "shares": sharesAdd
-                                        ])
-                                        
-                                        // update in Firestore
-                                        db.collection("Holdings").document(email!).updateData([
-                                            "holdings": holdings
-                                        ])
-                                    }
-                                } else {
-                                    // create a new holding stock index
-                                    db.collection("Holdings").document(email!).setData([
-                                        "email": email,
-                                        "holdings": [
-                                            ["stockCode": self.stockName.text, "shares": sharesAdd]
-                                        ]
-                                    ])
-                                }
-                        let alert = UIAlertController(title: "Order made!💰", message: "Successfully purchased this stock!✌️", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
+                db.collection("OrdersInfo").document(orderUuid).setData([
+                    "userEmail": email,
+                    "orderID": orderUuid,
+                    "stockCode": self.stockName.text,
+                    "type": "buy",
+                    "quantity": sharesAdd,
+                    "price": self.Stockprice.text,
+                    "timestamp": timeStamp,
+                    "Status":"Done"
+                ])
+
+                db.collection("Holdings").document(email!).getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        var holdings = document.data()?["holdings"] as? [[String: Any]] ?? []
+                        
+                        // 检查是否已持有该股票
+                        var existingHolding: [String: Any]?
+                        for holding in holdings {
+                            if holding["stockCode"] as? String == self.stockName.text {
+                                existingHolding = holding
+                                break
                             }
+                        }
+                        
+                        if let existingHoldingIndex = holdings.firstIndex(where: { $0["stockCode"] as? String == self.stockName.text }) {
+                            var existingHolding = holdings[existingHoldingIndex]
+                            var shares = existingHolding["shares"] as? Int ?? 0
+                            var avgCost = existingHolding["avgCost"] as? Double ?? 0.0
+                            
+                            // 更新平均持仓成本
+                            if let stockPrice = Double(self.Stockprice.text ?? "0.0") {
+                                let newTotalCost = (Double(shares) * avgCost) + (Double(sharesAdd) * stockPrice)
+                                let newTotalShares = shares + sharesAdd
+                                avgCost = newTotalCost / Double(newTotalShares)
+                            } else {
+                                // 處理 Stockprice.text 無法轉換為 Double 的情況
+                                let newTotalCost = (Double(shares) * avgCost) + (Double(sharesAdd) * 0.0)
+                                let newTotalShares = shares + sharesAdd
+                                avgCost = newTotalCost / Double(newTotalShares)
+                            }
+                            
+                            shares += sharesAdd
+                            avgCost = round(avgCost * 100) / 100
+                            
+                            existingHolding["shares"] = shares
+                            existingHolding["avgCost"] = avgCost
+                            holdings[existingHoldingIndex] = existingHolding
+                            
+                            // update the records
+                            db.collection("Holdings").document(email!).updateData([
+                                "holdings": holdings
+                            ])
+                        } else {
+                            // adding the new record
+                            holdings.append([
+                                "stockCode": self.stockName.text,
+                                "shares": sharesAdd,
+                                "avgCost": Double(self.Stockprice.text ?? "0.0") ?? 0.0
+                            ])
+                            
+                            // update in Firestore
+                            db.collection("Holdings").document(email!).updateData([
+                                "holdings": holdings
+                            ])
+                        }
+                    } else {
+                        // create a new holding stock index
+                        db.collection("Holdings").document(email!).setData([
+                            "email": email,
+                            "holdings": [
+                                ["stockCode": self.stockName.text, "shares": sharesAdd, "avgCost": Double(self.Stockprice.text ?? "0.0") ?? 0.0]
+                            ]
+                        ])
+                    }
+                    let alert = UIAlertController(title: "Order made!💰", message: "Successfully purchased this stock!✌️", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
             }
-            
-            alert.addAction(cancelAction)
-            alert.addAction(buyAction)
-            
-            present(alert, animated: true, completion: nil)
         }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(buyAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
     
     
     //set an expected price to buy
@@ -263,10 +282,16 @@ class StockDetailViewController: UIViewController {
                                 if let existingHoldingIndex = holdings.firstIndex(where: { $0["stockCode"] as? String == self.stockName.text }) {
                                     var existingHolding = holdings[existingHoldingIndex]
                                     var shares = existingHolding["shares"] as? Int ?? 0
+                                    var avgCost = existingHolding["avgCost"] as? Double ?? 0.0
                                     
                                     // 如果持有股数大于等于要卖出的数量
                                     if shares >= sharesAdd {
+                                        
+                                        let totalValue = Double(shares) * avgCost
                                         shares -= sharesAdd
+                                        let newAvgCost = (totalValue-(Double(sharesAdd) * (Double(self.Stockprice.text!) ?? 0.0))) / Double(shares)
+                                        
+                                        existingHolding["avgCost"] = round(newAvgCost * 100) / 100
                                         existingHolding["shares"] = shares
                                         
                                         // 如果卖出后股票数量为 0,从持仓列表中删除

@@ -210,10 +210,9 @@ class AccountsViewController: UIViewController {
 
 
     @IBAction func detailButtonTapped(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if let stockDetailVC = storyboard.instantiateViewController(withIdentifier: "DetailPosition") as? DetailPositionDataViewController {
-                navigationController?.pushViewController(stockDetailVC, animated: true)
-            }
+        if let vc = storyboard?.instantiateViewController(identifier: "DetailPositionDataViewController") as? DetailPositionDataViewController {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
 
