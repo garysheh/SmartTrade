@@ -67,8 +67,8 @@ class RegisterViewController: UIViewController {
                         db.collection("Holdings").document(email).setData([
                             "email":email,
                             "holdings":[
-                                ["stockCode":"AAPL","shares":50],
-                                ["stockCode":"AMZN","shares":100]]
+                                ["stockCode":"AAPL","shares":50,"avgCost":50],
+                                ["stockCode":"AMZN","shares":100,"avgCost":50]]
                         ])
                         //testing by setting default number
                         

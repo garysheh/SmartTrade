@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2zi-wl-6TY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2zi-wl-6TY">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -710,7 +711,6 @@
                                 <buttonConfiguration key="configuration" style="plain" title="Detailed position data &gt;"/>
                                 <connections>
                                     <action selector="detailButtonTapped:" destination="4iJ-dZ-gZj" eventType="touchUpInside" id="TRx-KB-BPi"/>
-                                    <segue destination="SK0-2T-qsk" kind="showDetail" identifier="" id="Obw-Lc-0ch"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -783,19 +783,101 @@
             <point key="canvasLocation" x="4441.9847328244277" y="-111.26760563380282"/>
         </scene>
         <!--Detail Position Data View Controller-->
-        <scene sceneID="bta-tC-EEl">
+        <scene sceneID="x0d-hl-yMo">
             <objects>
-                <viewController storyboardIdentifier="DetailPosition" id="SK0-2T-qsk" customClass="DetailPositionDataViewController" customModule="SmartTrade" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="DeF-kw-gs2">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                <viewController storyboardIdentifier="DetailPositionDataViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ua9-KM-ocw" customClass="DetailPositionDataViewController" customModule="SmartTrade" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="b5S-xX-rXA">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="QrJ-w5-CpA"/>
-                        <color key="backgroundColor" red="0.082352941176470587" green="0.078431372549019607" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="feg-60-UCF">
+                                <rect key="frame" x="16" y="87" width="123" height="34.666666666666657"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="29"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="GDM-9s-C4X">
+                                <rect key="frame" x="16" y="140" width="361" height="548"/>
+                                <color key="backgroundColor" red="0.08235294118" green="0.078431372550000003" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="548" id="SzX-c8-zKr"/>
+                                </constraints>
+                                <color key="sectionIndexBackgroundColor" red="0.08235294118" green="0.078431372550000003" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="stockId" rowHeight="78" id="2bb-HD-c9f" customClass="StockTableViewCell" customModule="SmartTrade" customModuleProvider="target">
+                                        <rect key="frame" x="20" y="55.333332061767578" width="321" height="78"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2bb-HD-c9f" id="b5U-k9-BGT">
+                                            <rect key="frame" x="0.0" y="0.0" width="321" height="78"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="26" translatesAutoresizingMaskIntoConstraints="NO" id="z7T-Mb-yCx">
+                                                    <rect key="frame" x="16" y="8" width="289" height="50"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ylZ-cX-um1">
+                                                            <rect key="frame" x="0.0" y="0.0" width="103" height="50"/>
+                                                        </stackView>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="sEP-Rr-mBK">
+                                                            <rect key="frame" x="129" y="0.0" width="160" height="50"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mrf-wv-DFO">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="160" height="50"/>
+                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                                                    <color key="textColor" systemColor="systemRedColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="160" id="wnb-Zc-wWw"/>
+                                                            </constraints>
+                                                        </stackView>
+                                                    </subviews>
+                                                </stackView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CO8-Zx-KHS">
+                                                    <rect key="frame" x="16" y="23" width="103" height="32"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="l6S-9O-GQF"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="103" id="zBY-jP-EhL"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="z7T-Mb-yCx" secondAttribute="trailing" constant="16" id="1vb-ca-1Ye"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CO8-Zx-KHS" secondAttribute="trailing" constant="20" symbolic="YES" id="KxP-qE-Edd"/>
+                                                <constraint firstItem="CO8-Zx-KHS" firstAttribute="leading" secondItem="z7T-Mb-yCx" secondAttribute="leading" id="Pkv-y3-VcQ"/>
+                                                <constraint firstItem="CO8-Zx-KHS" firstAttribute="centerY" secondItem="b5U-k9-BGT" secondAttribute="centerY" id="hhc-JX-ESU"/>
+                                                <constraint firstItem="z7T-Mb-yCx" firstAttribute="leading" secondItem="b5U-k9-BGT" secondAttribute="leading" constant="16" id="lXO-4m-8kO"/>
+                                                <constraint firstItem="CO8-Zx-KHS" firstAttribute="top" secondItem="b5U-k9-BGT" secondAttribute="topMargin" constant="12" id="luf-yd-1rO"/>
+                                                <constraint firstItem="z7T-Mb-yCx" firstAttribute="top" secondItem="b5U-k9-BGT" secondAttribute="topMargin" constant="-3" id="zc7-Cm-zHg"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.17254901959999999" green="0.16862745100000001" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <outlet property="assetNameLabel" destination="Mrf-wv-DFO" id="r2g-gf-2pW"/>
+                                            <outlet property="assetSymbolLabel" destination="CO8-Zx-KHS" id="owt-hY-qgK"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="81l-gc-eB6"/>
+                        <color key="backgroundColor" red="0.104921070765202" green="0.11151405664292048" blue="0.1452217487373737" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="feg-60-UCF" firstAttribute="top" secondItem="81l-gc-eB6" secondAttribute="top" constant="28" id="1V6-cJ-f61"/>
+                            <constraint firstItem="GDM-9s-C4X" firstAttribute="top" secondItem="feg-60-UCF" secondAttribute="bottom" constant="18.333333333333343" id="DFO-Yk-k2S"/>
+                            <constraint firstItem="feg-60-UCF" firstAttribute="leading" secondItem="b5S-xX-rXA" secondAttribute="leadingMargin" id="NSO-6m-Bbo"/>
+                            <constraint firstItem="81l-gc-eB6" firstAttribute="trailing" secondItem="feg-60-UCF" secondAttribute="trailing" constant="254" id="Vey-uX-uYn"/>
+                            <constraint firstItem="GDM-9s-C4X" firstAttribute="trailing" secondItem="b5S-xX-rXA" secondAttribute="trailingMargin" id="rIY-CA-xsF"/>
+                            <constraint firstItem="GDM-9s-C4X" firstAttribute="leading" secondItem="feg-60-UCF" secondAttribute="leading" id="yVL-0H-w2Z"/>
+                        </constraints>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="O4L-xc-w7g" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vLz-K4-A3A" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4442" y="601"/>
+            <point key="canvasLocation" x="4441" y="582"/>
         </scene>
         <!--My-->
         <scene sceneID="cm6-gF-foD">
@@ -830,6 +912,9 @@
         <image name="plus.app" catalog="system" width="128" height="114"/>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tableCellGroupedBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

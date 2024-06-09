@@ -2,7 +2,7 @@
 //  DetailPositionDataViewController.swift
 //  SmartTrade
 //
-//  Created by Gary She on 2024/6/8.
+//  Created by Frank Leung on 9/6/2024.
 //
 
 import UIKit
