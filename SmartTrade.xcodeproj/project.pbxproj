@@ -26,6 +26,7 @@
 		7BF7593B2C11A2F7000FE466 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593A2C11A2F7000FE466 /* DGCharts */; };
 		7BF7593D2C11A2F7000FE466 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593C2C11A2F7000FE466 /* DGChartsDynamic */; };
 		7BF759432C1585BE000FE466 /* DetailPositionDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF759422C1585BE000FE466 /* DetailPositionDataViewController.swift */; };
+		7BF759452C15B4F5000FE466 /* PositionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF759442C15B4F5000FE466 /* PositionTableViewCell.swift */; };
 		7BFFB7902BE0EAD000F6EE2A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7BFFB78F2BE0EAD000F6EE2A /* GoogleService-Info.plist */; };
 		7BFFB7932BE0ECF300F6EE2A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7BFFB7922BE0ECF300F6EE2A /* FirebaseAnalytics */; };
 		7BFFB7952BE0ECF300F6EE2A /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 7BFFB7942BE0ECF300F6EE2A /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -75,6 +76,7 @@
 		60C1939A2BE0D080003134FE /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		7BF759352C0B33AE000FE466 /* SmartTradeData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartTradeData.xcdatamodel; sourceTree = "<group>"; };
 		7BF759422C1585BE000FE466 /* DetailPositionDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPositionDataViewController.swift; sourceTree = "<group>"; };
+		7BF759442C15B4F5000FE466 /* PositionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionTableViewCell.swift; sourceTree = "<group>"; };
 		7BFFB78F2BE0EAD000F6EE2A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8C20BCF671494A0EAFE1C387 /* Pods_SmartTrade.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartTrade.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8CE5BBDF7B32AFC1F2DD8DB /* Pods-SmartTrade.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartTrade.release.xcconfig"; path = "Target Support Files/Pods-SmartTrade/Pods-SmartTrade.release.xcconfig"; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 			children = (
 				6080A4802C0B18DC00DC3D02 /* AccountsViewController.swift */,
 				7BF759422C1585BE000FE466 /* DetailPositionDataViewController.swift */,
+				7BF759442C15B4F5000FE466 /* PositionTableViewCell.swift */,
 			);
 			path = AccountsPage;
 			sourceTree = "<group>";
@@ -368,6 +371,7 @@
 				60C193992BE0CED1003134FE /* LoginViewController.swift in Sources */,
 				60C1939B2BE0D080003134FE /* RegisterViewController.swift in Sources */,
 				60AF41EF2C0188570034282D /* AppDelegate.swift in Sources */,
+				7BF759452C15B4F5000FE466 /* PositionTableViewCell.swift in Sources */,
 				60AF41F42C01C17E0034282D /* WatchListViewController.swift in Sources */,
 				60AF41ED2C01881B0034282D /* SceneDelegate.swift in Sources */,
 			);
