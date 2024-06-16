@@ -27,17 +27,25 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     private func performSearch() {
-        let symbols = ["IBM", "AAPL", "GOOGL", "AMZN", "NDAQ", "MSFT"]
-            let publishers = symbols.map { apiService.fetchSymbolsPublisher(symbol: $0) }
+            let symbols = ["IBM", "AAPL", "GOOGL", "AMZN", "NDAQ", "MSFT"]
+            let publishers = symbols.map { symbol -> AnyPublisher<(SearchResult?, [Double]), Error> in
+                let symbolPublisher = apiService.fetchSymbolsPublisher(symbol: symbol)
+                    .map { data -> SearchResult? in
+                        if let searchResults = try? JSONDecoder().decode(SearchResults.self, from: data) {
+                            return searchResults.globalQuote
+                        }
+                        return nil
+                    }
+                    .eraseToAnyPublisher()
+                
+                let pricesPublisher = apiService.fetchDailyPricesPublisher(symbol: symbol)
+                    .eraseToAnyPublisher()
+                
+                return Publishers.Zip(symbolPublisher, pricesPublisher)
+                    .eraseToAnyPublisher()
+            }
             
             Publishers.MergeMany(publishers)
-                .map { data -> SearchResult? in
-                    if let searchResults = try? JSONDecoder().decode(SearchResults.self, from: data) {
-                        return searchResults.globalQuote
-                    }
-                    return nil
-                }
-                .collect()
                 .receive(on: RunLoop.main)
                 .sink { completion in
                     switch completion {
@@ -46,12 +54,15 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
                     case .finished:
                         break
                     }
-                } receiveValue: { searchResults in
-                    self.searchResults = searchResults.compactMap { $0 }
+                } receiveValue: { (searchResult, dailyPrices) in
+                    if var searchResult = searchResult {
+                        searchResult.dailyPrices = dailyPrices
+                        self.searchResults.append(searchResult)
+                    }
                     self.tableView.reloadData()
                 }
                 .store(in: &subscribers)
-      }
+        }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> 
         Int {

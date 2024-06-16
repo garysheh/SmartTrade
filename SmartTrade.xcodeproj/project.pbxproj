@@ -22,6 +22,7 @@
 		60C1938E2BE07BFA003134FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60C1938D2BE07BFA003134FE /* Assets.xcassets */; };
 		60C193992BE0CED1003134FE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C193982BE0CED1003134FE /* LoginViewController.swift */; };
 		60C1939B2BE0D080003134FE /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1939A2BE0D080003134FE /* RegisterViewController.swift */; };
+		60CBCA752C1CCCF600ABEA4B /* TimeDailySeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CBCA742C1CCCF600ABEA4B /* TimeDailySeries.swift */; };
 		7BF759362C0B33AE000FE466 /* SmartTradeData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7BF759342C0B33AE000FE466 /* SmartTradeData.xcdatamodeld */; };
 		7BF7593B2C11A2F7000FE466 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593A2C11A2F7000FE466 /* DGCharts */; };
 		7BF7593D2C11A2F7000FE466 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593C2C11A2F7000FE466 /* DGChartsDynamic */; };
@@ -74,6 +75,7 @@
 		60C193922BE07BFA003134FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60C193982BE0CED1003134FE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		60C1939A2BE0D080003134FE /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		60CBCA742C1CCCF600ABEA4B /* TimeDailySeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDailySeries.swift; sourceTree = "<group>"; };
 		7BF759352C0B33AE000FE466 /* SmartTradeData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartTradeData.xcdatamodel; sourceTree = "<group>"; };
 		7BF759422C1585BE000FE466 /* DetailPositionDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPositionDataViewController.swift; sourceTree = "<group>"; };
 		7BF759442C15B4F5000FE466 /* PositionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionTableViewCell.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				6080A46C2C049D1500DC3D02 /* SearchResults.swift */,
+				60CBCA742C1CCCF600ABEA4B /* TimeDailySeries.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6080A4662C03AFE700DC3D02 /* StockTableViewCell.swift in Sources */,
+				60CBCA752C1CCCF600ABEA4B /* TimeDailySeries.swift in Sources */,
 				7BF759362C0B33AE000FE466 /* SmartTradeData.xcdatamodeld in Sources */,
 				6080A46B2C04796300DC3D02 /* StockService.swift in Sources */,
 				6080A4812C0B18DC00DC3D02 /* AccountsViewController.swift in Sources */,

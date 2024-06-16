@@ -21,6 +21,8 @@ struct SearchResult: Decodable {
     let low: String
     let price: String
     let day: String
+    let percent: String
+    var dailyPrices: [Double]?
 
 
     enum CodingKeys: String, CodingKey {
@@ -29,5 +31,6 @@ struct SearchResult: Decodable {
         case low = "04. low"
         case price = "05. price"
         case day = "07. latest trading day"
+        case percent = "10. change percent"
     }
 }

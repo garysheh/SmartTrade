@@ -29,4 +29,21 @@ struct APIService {
             .mapError { $0 as Error }
             .eraseToAnyPublisher()
     }
+    
+    func fetchDailyPricesPublisher(symbol: String) -> AnyPublisher<[Double], Error> {
+            let urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=\(symbol)&apikey=\(API_KEY)"
+            guard let url = URL(string: urlString) else {
+                return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+            }
+            
+            return URLSession.shared.dataTaskPublisher(for: url)
+                .map { $0.data }
+                .decode(type: TimeDailySeries.self, decoder: JSONDecoder())
+                .map { response in
+                    let sortedDates = response.timeSeriesDaily.keys.sorted()
+                    return sortedDates.compactMap { Double(response.timeSeriesDaily[$0]?.close ?? "") }
+                }
+                .mapError { $0 as Error }
+                .eraseToAnyPublisher()
+        }
 }
