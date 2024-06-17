@@ -22,6 +22,7 @@ struct SearchResult: Decodable {
     let price: String
     let day: String
     let percent: String
+    let change: String
     var dailyPrices: [Double]?
 
 
@@ -31,6 +32,7 @@ struct SearchResult: Decodable {
         case low = "04. low"
         case price = "05. price"
         case day = "07. latest trading day"
+        case change = "09. change"
         case percent = "10. change percent"
     }
 }

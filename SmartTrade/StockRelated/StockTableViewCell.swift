@@ -76,7 +76,9 @@ class StockTableViewCell: UITableViewCell {
             if let percent = Double(percentString) {
                 let formattedPercent = formatter.string(from: NSNumber(value: percent)) ?? "N/A"
                 assetPercentLabel.text = "\(formattedPercent)%"
-                assetPercentLabel.textColor = percent >= 0 ? UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) : UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
+                assetPercentLabel.textColor = percent >= 0 ? UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) : UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0)
+                // format the price color changes
+                assetNameLabel.textColor = percent >= 0 ? UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) : UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0)
             } else {
                 assetPercentLabel.text = "N/A"
                 assetPercentLabel.textColor = UIColor.white // Default color if percentage is unavailable
@@ -124,7 +126,7 @@ class StockTableViewCell: UITableViewCell {
         if percentageChange >= 0 {
             lineColor = UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) // Green color
         } else {
-            lineColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0) // Red color
+            lineColor = UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0) // Red color
         }
 
         let entries = prices.enumerated().map { index, price in
