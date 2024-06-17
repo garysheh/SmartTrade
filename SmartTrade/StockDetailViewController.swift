@@ -25,7 +25,7 @@ class StockDetailViewController: UIViewController {
 
             // Do any additional setup after loading the view.
             if let stockData = stockData {
-                Stockprice.text = stockData.price
+                Stockprice.text = String(format: "%.2f", Double(stockData.price)!)
                 stockName.text = stockData.symbol
                 preTime.text = "Latest.Trade" + stockData.day
             }

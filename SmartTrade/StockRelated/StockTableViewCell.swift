@@ -18,6 +18,14 @@ class StockTableViewCell: UITableViewCell {
             return view
         }()
     
+    private func setupRoundedLabel(label: UILabel) {
+            label.layer.cornerRadius = 10 // Adjust the radius as needed
+            label.layer.masksToBounds = true
+            label.backgroundColor = UIColor.lightGray // Optional: set a background color
+            label.textColor = UIColor.white // Optional: set text color
+            label.textAlignment = .center // Optional: set text alignment
+        }
+    
     private let lineChartView: LineChartView = {
             let chartView = LineChartView()
             chartView.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +84,12 @@ class StockTableViewCell: UITableViewCell {
             if let percent = Double(percentString) {
                 let formattedPercent = formatter.string(from: NSNumber(value: percent)) ?? "N/A"
                 assetPercentLabel.text = "\(formattedPercent)%"
-                assetPercentLabel.textColor = percent >= 0 ? UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) : UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0)
+                assetPercentLabel.layer.cornerRadius = 15 // Adjust the radius as needed
+                assetPercentLabel.layer.masksToBounds = true
+                assetPercentLabel.textColor = UIColor.white
+                assetPercentLabel.textAlignment = .center
+                assetPercentLabel.backgroundColor = percent >= 0 ? UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) : UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0)
+                // assetPercentLabel.textColor = percent >= 0 ? UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) : UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0)
                 // format the price color changes
                 assetNameLabel.textColor = percent >= 0 ? UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) : UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0)
             } else {
