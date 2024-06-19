@@ -10,6 +10,9 @@ import Firebase
 import FirebaseCore
 import FirebaseFirestore
 import Foundation
+import Charts
+import DGCharts
+import Combine
 
 class StockDetailViewController: UIViewController {
     @IBOutlet weak var BuyButton: UIButton!
@@ -17,19 +20,171 @@ class StockDetailViewController: UIViewController {
     @IBOutlet weak var Stockprice: UILabel!
     @IBOutlet weak var stockName: UILabel!
     @IBOutlet weak var preTime: UILabel!
+    @IBOutlet weak var timeChart: UIView!
+    @IBOutlet weak var oneYear: UILabel!
+    @IBOutlet weak var oneMonth: UILabel!
+    @IBOutlet weak var oneWeek: UILabel!
+    @IBOutlet weak var oneDay: UILabel!
     
     var stockData: SearchResult?
     
     override func viewDidLoad() {
             super.viewDidLoad()
-
             // Do any additional setup after loading the view.
+        setupRoundedLabel(labels: [oneDay,oneWeek,oneMonth,oneYear])
             if let stockData = stockData {
                 Stockprice.text = String(format: "%.2f", Double(stockData.price)!)
                 stockName.text = stockData.symbol
-                preTime.text = "Latest.Trade" + stockData.day
+                preTime.text = "Latest.Trade: " + stockData.day
+                setupChart()
+                fetchDailyPriceData(for: stockData.symbol)
             }
+    }
+    
+    // UI interface configur
+    
+    // Set rounded label
+    private func setupRoundedLabel(labels: [UILabel]) {
+        for label in labels {
+            label.layer.cornerRadius = 10 // Adjust the radius as needed
+            label.layer.masksToBounds = true
         }
+    }
+    
+    // hightlight the timeline label
+    
+    private func updatePriceColorAndHighlightLabel(percentageChange: Double) {
+        let color: UIColor
+            if percentageChange >= 0 {
+                color = UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) // Green color
+                Stockprice.textColor = color
+                oneDay.backgroundColor = color
+                oneDay.textColor = .white
+            } else {
+                color = UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0) // Red color
+                Stockprice.textColor = color
+                oneDay.backgroundColor = color
+                oneDay.textColor = .white
+            }
+    }
+    
+    // PRICE CHART PART
+    
+    private let lineChartView: LineChartView = {
+            let chartView = LineChartView()
+            chartView.translatesAutoresizingMaskIntoConstraints = false
+            return chartView
+        }()
+    
+    private var cancellable: AnyCancellable? = nil
+    private let apiService = APIService()
+    
+    private func setupChart() {
+        timeChart.addSubview(lineChartView)
+
+        NSLayoutConstraint.activate([
+            lineChartView.leadingAnchor.constraint(equalTo: timeChart.leadingAnchor),
+                    lineChartView.trailingAnchor.constraint(equalTo: timeChart.trailingAnchor),
+                    lineChartView.topAnchor.constraint(equalTo: timeChart.topAnchor),
+                    lineChartView.bottomAnchor.constraint(equalTo: timeChart.bottomAnchor)
+        ])
+
+        let leftAxis = lineChartView.leftAxis
+            leftAxis.enabled = false
+            leftAxis.drawLabelsEnabled = false
+            leftAxis.drawGridLinesEnabled = true
+            leftAxis.gridColor = .lightGray
+        
+        let rightAxis = lineChartView.rightAxis
+            rightAxis.enabled = true
+            rightAxis.labelFont = .systemFont(ofSize: 10)
+            rightAxis.labelTextColor = .white
+            rightAxis.drawGridLinesEnabled = false
+            rightAxis.labelCount = 6
+            rightAxis.valueFormatter = DefaultAxisValueFormatter(block: { (value, axis) -> String in
+            return String(format: "%.2f", value)
+        })
+        
+        let xAxis = lineChartView.xAxis
+            xAxis.enabled = false
+            xAxis.drawLabelsEnabled = false
+            xAxis.drawGridLinesEnabled = false
+            xAxis.gridColor = .lightGray
+            lineChartView.legend.enabled = false
+            lineChartView.chartDescription.enabled = false
+            lineChartView.setScaleEnabled(false)
+            lineChartView.drawGridBackgroundEnabled = false
+    }
+    
+    private func fetchDailyPriceData(for symbol: String) {
+            cancellable = apiService.fetchDailyPricesPublisher(symbol: symbol)
+                .sink(receiveCompletion: { completion in
+                    switch completion {
+                    case .failure(let error):
+                        print("Error fetching daily prices: \(error)")
+                    case .finished:
+                        break
+                    }
+                }, receiveValue: { [weak self] prices in
+                    //self?.updateChart(with: prices)
+                    guard let self = self else { return }
+                                let minPrice = prices.min() ?? 0.0
+                                let maxPrice = prices.max() ?? 0.0
+                                self.updateChart(with: prices, minPrice: minPrice, maxPrice: maxPrice)
+                    if let latestPrice = prices.last, prices.count >= 2 {
+                                    let previousPrice = prices[prices.count - 2]
+                                    let percentageChange = ((latestPrice - previousPrice) / previousPrice) * 100
+                        self.updatePriceColorAndHighlightLabel(percentageChange: percentageChange)
+                                }
+                })
+        }
+    
+    private func updateChart(with prices: [Double], minPrice: Double, maxPrice: Double) {
+        guard prices.count >= 2 else {
+            // Not enough data to calculate percentage change
+            return
+        }
+
+        // Calculate percentage change from yesterday
+        let yesterdayPrice = prices[prices.count - 2]
+        let latestPrice = prices.last!
+        let percentageChange = ((latestPrice - yesterdayPrice) / yesterdayPrice) * 100
+
+        // Determine the color based on percentage change
+        let lineColor: UIColor
+        if percentageChange >= 0 {
+            lineColor = UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) // Green color
+        } else {
+            lineColor = UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0) // Red color
+        }
+
+        let entries = prices.enumerated().map { index, price in
+            return ChartDataEntry(x: Double(index), y: price)
+        }
+
+        let dataSet = LineChartDataSet(entries: entries, label: "")
+
+        // Customize the line with specific conditional color
+        dataSet.colors = [lineColor]
+        dataSet.lineWidth = 1.0
+        dataSet.drawValuesEnabled = false
+        dataSet.drawCirclesEnabled = false
+
+        // Add gradient fill
+        let gradientColors = [lineColor.withAlphaComponent(0.5).cgColor, UIColor.clear.cgColor] as CFArray
+        let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: gradientColors, locations: nil)
+        dataSet.fill = LinearGradientFill(gradient: gradient!, angle: 90)
+        dataSet.drawFilledEnabled = true
+
+        let data = LineChartData(dataSet: dataSet)
+        lineChartView.data = data
+        lineChartView.rightAxis.axisMinimum = minPrice
+        lineChartView.rightAxis.axisMaximum = maxPrice
+        lineChartView.notifyDataSetChanged()
+    }
+    
+    // BUY AND SELL FUNCTION PART
+    
     
     @IBAction func BuyButtonTapped(_ sender: Any) {
         showBuyOptionPopup()

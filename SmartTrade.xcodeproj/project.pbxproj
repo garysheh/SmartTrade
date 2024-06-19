@@ -139,6 +139,7 @@
 		6080A4692C0471CF00DC3D02 /* StockRelated */ = {
 			isa = PBXGroup;
 			children = (
+				6080A47D2C07A08D00DC3D02 /* StockDetailViewController.swift */,
 				6080A4652C03AFE700DC3D02 /* StockTableViewCell.swift */,
 				6080A46A2C04796300DC3D02 /* StockService.swift */,
 			);
@@ -194,7 +195,6 @@
 				60AF41EC2C01881B0034282D /* SceneDelegate.swift */,
 				60C1938A2BE07BF7003134FE /* Main.storyboard */,
 				60AF41F32C01C17E0034282D /* WatchListViewController.swift */,
-				6080A47D2C07A08D00DC3D02 /* StockDetailViewController.swift */,
 				60C193982BE0CED1003134FE /* LoginViewController.swift */,
 				60C1939A2BE0D080003134FE /* RegisterViewController.swift */,
 				60CBCA762C208FA500ABEA4B /* MyPageViewController.swift */,
