@@ -7,8 +7,8 @@ class StockTableViewCell: UITableViewCell {
     @IBOutlet weak var assetNameLabel: UILabel!
     @IBOutlet weak var assetSymbolLabel: UILabel!
     @IBOutlet weak var assetPercentLabel: UILabel!
-    @IBOutlet weak var assetHighLabel: UILabel!
-    @IBOutlet weak var assetLatestLabel: UILabel!
+    // @IBOutlet weak var assetHighLabel: UILabel!
+    // @IBOutlet weak var assetLatestLabel: UILabel!
     @IBOutlet weak var priceChart: UIView!
     
     private let separator: UIView = {
@@ -64,33 +64,40 @@ class StockTableViewCell: UITableViewCell {
     }
     
     func configure(with searchResult: SearchResult) {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        assetNameLabel.text = String(format: "%.2f", Double(searchResult.price)!)
-        assetSymbolLabel.text = searchResult.symbol
-        assetPercentLabel.text = searchResult.percent
-        // Remove the percentage sign and safely unwrap and format the percent
-            let percentString = searchResult.percent.replacingOccurrences(of: "%", with: "")
-            if let percent = Double(percentString) {
-                let formattedPercent = formatter.string(from: NSNumber(value: percent)) ?? "N/A"
-                assetPercentLabel.text = "\(formattedPercent)%"
-                assetPercentLabel.layer.cornerRadius = 15 // Adjust the radius if needed
-                assetPercentLabel.layer.masksToBounds = true
-                assetPercentLabel.textColor = UIColor.white
-                assetPercentLabel.textAlignment = .center
-                assetPercentLabel.backgroundColor = percent >= 0 ? UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) : UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0)
-                // format the price color changes
-                assetNameLabel.textColor = percent >= 0 ? UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) : UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0)
-            } else {
-                assetPercentLabel.text = "N/A"
-                assetPercentLabel.textColor = UIColor.white // Default color if percentage is unavailable
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.minimumFractionDigits = 2
+            formatter.maximumFractionDigits = 2
+            
+            DispatchQueue.main.async {
+                self.assetNameLabel.text = String(format: "%.2f", Double(searchResult.price)!)
+                self.assetSymbolLabel.text = searchResult.symbol
+                self.assetPercentLabel.text = searchResult.percent
+
+                // Remove the percentage sign and safely unwrap and format the percent
+                let percentString = searchResult.percent.replacingOccurrences(of: "%", with: "")
+                if let percent = Double(percentString) {
+                    let formattedPercent = formatter.string(from: NSNumber(value: percent)) ?? "N/A"
+                    self.assetPercentLabel.text = "\(formattedPercent)%"
+                    self.assetPercentLabel.layer.cornerRadius = 15 // Adjust the radius if needed
+                    self.assetPercentLabel.layer.masksToBounds = true
+                    self.assetPercentLabel.textColor = UIColor.white
+                    self.assetPercentLabel.textAlignment = .center
+                    self.assetPercentLabel.backgroundColor = percent >= 0 ? UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) : UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0)
+                    // Format the price color changes
+                    self.assetNameLabel.textColor = percent >= 0 ? UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) : UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0)
+                } else {
+                    self.assetPercentLabel.text = "N/A"
+                    self.assetPercentLabel.textColor = UIColor.white 
+                    // Default color if percentage is unavailable
+                }
             }
-        fetchDailyPriceData(for: searchResult.symbol)
-    }
+            
+            fetchDailyPriceData(for: searchResult.symbol)
+        }
     
-        override func setSelected(_ selected: Bool, animated: Bool) { // Override setSelected to handle cell selection
+        // Override setSelected to handle cell selection
+        override func setSelected(_ selected: Bool, animated: Bool) {
             super.setSelected(selected, animated: animated)
             
             if selected {
@@ -113,7 +120,9 @@ class StockTableViewCell: UITableViewCell {
                         break
                     }
                 }, receiveValue: { [weak self] prices in
-                    self?.updateChart(with: prices)
+                    DispatchQueue.main.async {
+                        self?.updateChart(with: prices)
+                    }
                 })
         }
     
@@ -131,9 +140,9 @@ class StockTableViewCell: UITableViewCell {
         // Determine the color based on percentage change
         let lineColor: UIColor
         if percentageChange >= 0 {
-            lineColor = UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) // Green color
+            lineColor = UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) // green color
         } else {
-            lineColor = UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0) // Red color
+            lineColor = UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0) // red color
         }
 
         let entries = prices.enumerated().map { index, price in
@@ -155,7 +164,9 @@ class StockTableViewCell: UITableViewCell {
         dataSet.drawFilledEnabled = true
 
         let data = LineChartData(dataSet: dataSet)
-        lineChartView.data = data
-        lineChartView.notifyDataSetChanged()
+        DispatchQueue.main.async {
+            self.lineChartView.data = data
+            self.lineChartView.notifyDataSetChanged()
+        }
     }
 }

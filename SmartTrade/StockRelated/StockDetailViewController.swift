@@ -54,18 +54,20 @@ class StockDetailViewController: UIViewController {
     // hightlight the timeline label
     
     private func updatePriceColorAndHighlightLabel(percentageChange: Double) {
-        let color: UIColor
+        DispatchQueue.main.async {
+            let color: UIColor
             if percentageChange >= 0 {
                 color = UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) // Green color
-                Stockprice.textColor = color
-                oneDay.backgroundColor = color
-                oneDay.textColor = .white
+                self.Stockprice.textColor = color
+                self.oneDay.backgroundColor = color
+                self.oneDay.textColor = .white
             } else {
                 color = UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0) // Red color
-                Stockprice.textColor = color
-                oneDay.backgroundColor = color
-                oneDay.textColor = .white
+                self.Stockprice.textColor = color
+                self.oneDay.backgroundColor = color
+                self.oneDay.textColor = .white
             }
+        }
     }
     
     // PRICE CHART PART
@@ -117,27 +119,28 @@ class StockDetailViewController: UIViewController {
     }
     
     private func fetchDailyPriceData(for symbol: String) {
-            cancellable = apiService.fetchDailyPricesPublisher(symbol: symbol)
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .failure(let error):
-                        print("Error fetching daily prices: \(error)")
-                    case .finished:
-                        break
-                    }
-                }, receiveValue: { [weak self] prices in
-                    //self?.updateChart(with: prices)
-                    guard let self = self else { return }
-                                let minPrice = prices.min() ?? 0.0
-                                let maxPrice = prices.max() ?? 0.0
-                                self.updateChart(with: prices, minPrice: minPrice, maxPrice: maxPrice)
+        cancellable = apiService.fetchDailyPricesPublisher(symbol: symbol)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Error fetching daily prices: \(error)")
+                case .finished:
+                    break
+                }
+            }, receiveValue: { [weak self] prices in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    let minPrice = prices.min() ?? 0.0
+                    let maxPrice = prices.max() ?? 0.0
+                    self.updateChart(with: prices, minPrice: minPrice, maxPrice: maxPrice)
                     if let latestPrice = prices.last, prices.count >= 2 {
-                                    let previousPrice = prices[prices.count - 2]
-                                    let percentageChange = ((latestPrice - previousPrice) / previousPrice) * 100
+                        let previousPrice = prices[prices.count - 2]
+                        let percentageChange = ((latestPrice - previousPrice) / previousPrice) * 100
                         self.updatePriceColorAndHighlightLabel(percentageChange: percentageChange)
-                                }
-                })
-        }
+                    }
+                }
+            })
+    }
     
     private func updateChart(with prices: [Double], minPrice: Double, maxPrice: Double) {
         guard prices.count >= 2 else {
