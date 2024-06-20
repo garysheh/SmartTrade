@@ -30,6 +30,7 @@ struct APIService {
             .eraseToAnyPublisher()
     }
     
+    // fetch daily price data
     func fetchDailyPricesPublisher(symbol: String) -> AnyPublisher<[Double], Error> {
             let urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=\(symbol)&apikey=\(API_KEY)"
             guard let url = URL(string: urlString) else {
@@ -46,4 +47,65 @@ struct APIService {
                 .mapError { $0 as Error }
                 .eraseToAnyPublisher()
         }
+    
+    // fetch weekly price data
+    func fetchWeeklyPricesPublisher(symbol: String) -> AnyPublisher<[Double], Error> {
+            let urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=\(symbol)&apikey=\(API_KEY)"
+            guard let url = URL(string: urlString) else {
+                return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+            }
+            
+            return URLSession.shared.dataTaskPublisher(for: url)
+                .map { $0.data }
+                .decode(type: TimeWeeklySeries.self, decoder: JSONDecoder())
+                .map { response in
+                    let sortedDates = response.timeSeriesWeekly.keys.sorted()
+                    return sortedDates.compactMap { Double(response.timeSeriesWeekly[$0]?.close ?? "") }
+                }
+                .mapError { $0 as Error }
+                .eraseToAnyPublisher()
+        }
+    
+    // fetch montly price data
+    func fetchMonthlyPricesPublisher(symbol: String) -> AnyPublisher<[Double], Error> {
+            let urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=\(symbol)&apikey=\(API_KEY)"
+            guard let url = URL(string: urlString) else {
+                return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+            }
+            
+            return URLSession.shared.dataTaskPublisher(for: url)
+                .map { $0.data }
+                .decode(type: TimeMonthlySeries.self, decoder: JSONDecoder())
+                .map { response in
+                    let sortedDates = response.timeSeriesMonthly.keys.sorted()
+                    return sortedDates.compactMap { Double(response.timeSeriesMonthly[$0]?.close ?? "") }
+                }
+                .mapError { $0 as Error }
+                .eraseToAnyPublisher()
+        }
+    
+    // fetch stock name
+    func fetchStockFullName(symbol: String) -> AnyPublisher<BestMatch, Error> {
+            let urlString = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=\(symbol)&apikey=\(API_KEY)"
+            guard let url = URL(string: urlString) else {
+                return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+            }
+
+            return URLSession.shared.dataTaskPublisher(for: url)
+                .tryMap { data, response -> Data in
+                    guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                        throw URLError(.badServerResponse)
+                    }
+                    return data
+                }
+                .decode(type: SymbolSearchResponse.self, decoder: JSONDecoder())
+                .tryMap { response in
+                    guard let bestMatch = response.bestMatches.first else {
+                        throw URLError(.cannotFindHost)
+                    }
+                    return bestMatch
+                }
+                .eraseToAnyPublisher()
+        }
+    
 }

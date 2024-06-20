@@ -1,22 +1,22 @@
 //
-//  TimeDailySeries.swift
+//  TimeMonthlySeries.swift
 //  SmartTrade
 //
-//  Created by Gary She on 2024/6/15.
+//  Created by Gary She on 2024/6/20.
 //
 
 import Foundation
 
-struct TimeDailySeries: Codable {
-    let timeSeriesDaily: [String: TimeSeriesDaily]
+struct TimeMonthlySeries: Codable {
+    let timeSeriesMonthly: [String: TimeSeriesMonthly]
     enum CodingKeys: String, CodingKey {
-        case timeSeriesDaily = "Time Series (Daily)"
+        case timeSeriesMonthly = "Monthly Time Series"
     }
 }
 
-struct TimeSeriesDaily: Codable {
+struct TimeSeriesMonthly: Codable {
     let open, high, low, close, volume: String
-        
+    
     enum CodingKeys: String, CodingKey {
         case open = "1. open"
         case high = "2. high"
@@ -25,4 +25,3 @@ struct TimeSeriesDaily: Codable {
         case volume = "5. volume"
     }
 }
-

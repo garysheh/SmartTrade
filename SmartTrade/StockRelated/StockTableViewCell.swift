@@ -10,6 +10,9 @@ class StockTableViewCell: UITableViewCell {
     // @IBOutlet weak var assetHighLabel: UILabel!
     // @IBOutlet weak var assetLatestLabel: UILabel!
     @IBOutlet weak var priceChart: UIView!
+    @IBOutlet weak var assetStockNameLabel: UILabel!
+    
+    
     
     private let separator: UIView = {
             let view = UIView()
@@ -26,6 +29,7 @@ class StockTableViewCell: UITableViewCell {
     
     private var cancellable: AnyCancellable? = nil
     private let apiService = APIService()
+    private var cancellables = Set<AnyCancellable>()
         
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -42,6 +46,19 @@ class StockTableViewCell: UITableViewCell {
             separator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             separator.heightAnchor.constraint(equalToConstant: 1)
         ])
+    }
+    
+    private func fetchAndDisplayStockFullName(for symbol: String) {
+        apiService.fetchStockFullName(symbol: symbol)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                if case let .failure(error) = completion {
+                    print("Failed to fetch stock full name: \(error)")
+                }
+            }, receiveValue: { [weak self] bestMatch in
+                self?.assetStockNameLabel.text = String("/ " + bestMatch.name)
+            })
+            .store(in: &cancellables)
     }
     
     private func setupChart() {
@@ -73,7 +90,7 @@ class StockTableViewCell: UITableViewCell {
                 self.assetNameLabel.text = String(format: "%.2f", Double(searchResult.price)!)
                 self.assetSymbolLabel.text = searchResult.symbol
                 self.assetPercentLabel.text = searchResult.percent
-
+                self.fetchAndDisplayStockFullName(for: searchResult.symbol)
                 // Remove the percentage sign and safely unwrap and format the percent
                 let percentString = searchResult.percent.replacingOccurrences(of: "%", with: "")
                 if let percent = Double(percentString) {

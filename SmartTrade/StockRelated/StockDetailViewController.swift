@@ -25,49 +25,100 @@ class StockDetailViewController: UIViewController {
     @IBOutlet weak var oneMonth: UILabel!
     @IBOutlet weak var oneWeek: UILabel!
     @IBOutlet weak var oneDay: UILabel!
+    @IBOutlet weak var stockFullname: UILabel!
     
     var stockData: SearchResult?
+    private var cancellables = Set<AnyCancellable>()
     
     override func viewDidLoad() {
             super.viewDidLoad()
             // Do any additional setup after loading the view.
         setupRoundedLabel(labels: [oneDay,oneWeek,oneMonth,oneYear])
+        setupTapGestures()
             if let stockData = stockData {
                 Stockprice.text = String(format: "%.2f", Double(stockData.price)!)
                 stockName.text = stockData.symbol
                 preTime.text = "Latest.Trade: " + stockData.day
                 setupChart()
                 fetchDailyPriceData(for: stockData.symbol)
+                fetchAndDisplayStockFullName(for: stockData.symbol)
+                let percentageChange = calculatePercentageChange(for: stockData.symbol) // set the default label is oneDay
+                        updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: oneDay)
             }
     }
     
-    // UI interface configur
+    // UI interface configure
     
-    // Set rounded label
+    private func setupTapGestures() {
+        oneDay.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOneDay)))
+        oneWeek.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOneWeek)))
+        oneMonth.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOneMonth)))
+        
+        oneDay.isUserInteractionEnabled = true
+        oneWeek.isUserInteractionEnabled = true
+        oneMonth.isUserInteractionEnabled = true
+    }
+    
+    @objc private func didTapOneDay() {
+        guard let symbol = stockData?.symbol else { return }
+        fetchDailyPriceData(for: symbol)
+        let percentageChange = calculatePercentageChange(for: symbol)
+            updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: oneDay)
+    }
+
+    @objc private func didTapOneWeek() {
+        guard let symbol = stockData?.symbol else { return }
+        fetchWeeklyPriceData(for: symbol)
+        let percentageChange = calculatePercentageChange(for: symbol)
+            updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: oneWeek)
+    }
+
+    @objc private func didTapOneMonth() {
+        guard let symbol = stockData?.symbol else { return }
+        fetchMonthlyPriceData(for: symbol)
+        let percentageChange = calculatePercentageChange(for: symbol)
+            updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: oneMonth)
+    }
+    
+    // set rounded label
     private func setupRoundedLabel(labels: [UILabel]) {
         for label in labels {
-            label.layer.cornerRadius = 10 // Adjust the radius as needed
+            label.layer.cornerRadius = 10 // adjust the radius if needed
             label.layer.masksToBounds = true
         }
     }
     
+    private func calculatePercentageChange(for symbol: String) -> Double {
+        return 0.0 // placeholder value
+    }
+    
     // hightlight the timeline label
     
-    private func updatePriceColorAndHighlightLabel(percentageChange: Double) {
+    private func updatePriceColorAndHighlightLabel(percentageChange: Double, selectedLabel:UILabel) {
         DispatchQueue.main.async {
-            let color: UIColor
-            if percentageChange >= 0 {
-                color = UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) // Green color
-                self.Stockprice.textColor = color
-                self.oneDay.backgroundColor = color
-                self.oneDay.textColor = .white
-            } else {
-                color = UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0) // Red color
-                self.Stockprice.textColor = color
-                self.oneDay.backgroundColor = color
-                self.oneDay.textColor = .white
+                var color: UIColor
+                let labels = [self.oneDay, self.oneWeek, self.oneMonth, self.oneYear]
+
+                for label in labels {
+                    if label == selectedLabel {
+                        if percentageChange >= 0 {
+                            color = UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) // Green color
+                            self.Stockprice.textColor = color
+                            label!.backgroundColor = color
+                            label!.textColor = .white
+                        } else {
+                            color = UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0) // Red color
+                            self.Stockprice.textColor = color
+                            label!.backgroundColor = color
+                            label!.textColor = .white
+                        }
+                    } else {
+                        // default color
+                        label!.backgroundColor = UIColor(red: 44/255.0, green: 43/255.0, blue: 53/255.0, alpha: 1.0)
+                        label!.textColor = .white
+                    }
+                }
             }
-        }
     }
     
     // PRICE CHART PART
@@ -104,7 +155,7 @@ class StockDetailViewController: UIViewController {
             rightAxis.drawGridLinesEnabled = false
             rightAxis.labelCount = 6
             rightAxis.valueFormatter = DefaultAxisValueFormatter(block: { (value, axis) -> String in
-            return String(format: "%.2f", value)
+            return String(value)
         })
         
         let xAxis = lineChartView.xAxis
@@ -130,35 +181,97 @@ class StockDetailViewController: UIViewController {
             }, receiveValue: { [weak self] prices in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    let minPrice = prices.min() ?? 0.0
-                    let maxPrice = prices.max() ?? 0.0
+                    let minPrice = prices.min() ?? 0.00
+                    let maxPrice = prices.max() ?? 0.00
                     self.updateChart(with: prices, minPrice: minPrice, maxPrice: maxPrice)
                     if let latestPrice = prices.last, prices.count >= 2 {
                         let previousPrice = prices[prices.count - 2]
                         let percentageChange = ((latestPrice - previousPrice) / previousPrice) * 100
-                        self.updatePriceColorAndHighlightLabel(percentageChange: percentageChange)
+                        self.updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: self.oneDay)
                     }
                 }
             })
     }
     
+    private func fetchAndDisplayStockFullName(for symbol: String) {
+        apiService.fetchStockFullName(symbol: symbol)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                if case let .failure(error) = completion {
+                    print("Failed to fetch stock full name: \(error)")
+                }
+            }, receiveValue: { [weak self] bestMatch in
+                self?.stockFullname.text = bestMatch.name
+            })
+            .store(in: &cancellables)
+    }
+    
+    private func fetchWeeklyPriceData(for symbol: String) {
+        cancellable = apiService.fetchWeeklyPricesPublisher(symbol: symbol)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Error fetching weekly prices: \(error)")
+                case .finished:
+                    break
+                }
+            }, receiveValue: { [weak self] prices in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    let minPrice = prices.min() ?? 0.00
+                    let maxPrice = prices.max() ?? 0.00
+                    self.updateChart(with: prices, minPrice: minPrice, maxPrice: maxPrice)
+                    if let latestPrice = prices.last, prices.count >= 2 {
+                        let previousPrice = prices[prices.count - 2]
+                        let percentageChange = ((latestPrice - previousPrice) / previousPrice) * 100
+                        self.updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: self.oneWeek)
+                    }
+                }
+            })
+    }
+    
+    private func fetchMonthlyPriceData(for symbol: String) {
+        cancellable = apiService.fetchMonthlyPricesPublisher(symbol: symbol)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Error fetching monthly prices: \(error)")
+                case .finished:
+                    break
+                }
+            }, receiveValue: { [weak self] prices in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    let minPrice = prices.min() ?? 0.00
+                    let maxPrice = prices.max() ?? 0.00
+                    self.updateChart(with: prices, minPrice: minPrice, maxPrice: maxPrice)
+                    if let latestPrice = prices.last, prices.count >= 2 {
+                        let previousPrice = prices[prices.count - 2]
+                        let percentageChange = ((latestPrice - previousPrice) / previousPrice) * 100
+                        self.updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: self.oneMonth)
+                    }
+                }
+            })
+    }
+    
+    
     private func updateChart(with prices: [Double], minPrice: Double, maxPrice: Double) {
         guard prices.count >= 2 else {
-            // Not enough data to calculate percentage change
+            // not enough data to calculate percentage change
             return
         }
 
-        // Calculate percentage change from yesterday
+        // calculate percentage change from yesterday
         let yesterdayPrice = prices[prices.count - 2]
         let latestPrice = prices.last!
         let percentageChange = ((latestPrice - yesterdayPrice) / yesterdayPrice) * 100
 
-        // Determine the color based on percentage change
+        // determine the color based on percentage change
         let lineColor: UIColor
         if percentageChange >= 0 {
-            lineColor = UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) // Green color
+            lineColor = UIColor(red: 27/255, green: 187/255, blue: 125/255, alpha: 1.0) // green color
         } else {
-            lineColor = UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0) // Red color
+            lineColor = UIColor(red: 240/255, green: 57/255, blue: 85/255, alpha: 1.0) // red color
         }
 
         let entries = prices.enumerated().map { index, price in
@@ -167,13 +280,13 @@ class StockDetailViewController: UIViewController {
 
         let dataSet = LineChartDataSet(entries: entries, label: "")
 
-        // Customize the line with specific conditional color
+        // customize the line with specific conditional color
         dataSet.colors = [lineColor]
         dataSet.lineWidth = 1.0
         dataSet.drawValuesEnabled = false
         dataSet.drawCirclesEnabled = false
 
-        // Add gradient fill
+        // add gradient fill
         let gradientColors = [lineColor.withAlphaComponent(0.5).cgColor, UIColor.clear.cgColor] as CFArray
         let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: gradientColors, locations: nil)
         dataSet.fill = LinearGradientFill(gradient: gradient!, angle: 90)
