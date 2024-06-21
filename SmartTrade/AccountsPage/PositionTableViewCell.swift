@@ -11,5 +11,7 @@ class PositionTableViewCell: UITableViewCell {
 
     @IBOutlet weak var codeLabel: UILabel!
     
+    @IBOutlet weak var shareLabel: UILabel!
+    
     @IBOutlet weak var profitLabel: UILabel!
 }

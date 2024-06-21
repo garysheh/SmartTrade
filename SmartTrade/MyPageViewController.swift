@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseFirestore
 
 class MyPageViewController: UIViewController {
     @IBOutlet weak var marketData: UILabel!
@@ -14,6 +16,8 @@ class MyPageViewController: UIViewController {
     
     @IBOutlet weak var alerts: UILabel!
     
+    @IBOutlet weak var idLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var coupons: UILabel!
     
     @IBOutlet weak var history: UILabel!
@@ -24,6 +28,40 @@ class MyPageViewController: UIViewController {
         super.viewDidLoad()
         setupRoundedLabel(labels: [marketData,myRewards,alerts,coupons,history,saved])
         // Do any additional setup after loading the view.
+        setupInfo()
+    }
+    
+    private func setupInfo() {
+        let db = Firestore.firestore()
+        guard let email = Auth.auth().currentUser?.email else {
+            print("Error: email is nil")
+            return
+        }
+        
+        print("Email:", email)
+        
+        db.collection("UserInfo").document(email).getDocument { (document, error) in
+            if let error = error {
+                print("Error getting document: \(error)")
+                return
+            }
+            
+            if let document = document, document.exists {
+                print("yes")
+                let data = document.data()
+                let UserID = (document.get("userID") as? Int32) ?? 0
+                let name = document.get("FirstName") as? String
+                
+                DispatchQueue.main.async {
+                    print("Name:", name ?? "N/A")
+                    print("UserID:", UserID)
+                    self.nameLabel.text = name ?? "N/A"
+                    self.idLabel.text = "\(UserID)"
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
     }
     
     private func setupRoundedLabel(labels: [UILabel]) {
