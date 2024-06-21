@@ -47,8 +47,28 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "positionID", for: indexPath) as? PositionTableViewCell {
             let position = positions[indexPath.row]
+            let boldFont = UIFont.boldSystemFont(ofSize: cell.profitLabel?.font.pointSize ?? 16)
+            
             cell.codeLabel?.text = position.code
             cell.profitLabel?.text = "Profit: \(position.profit)"
+            cell.shareLabel?.text = "Position: \(position.quantity)"
+            
+            //set the bold font
+            cell.profitLabel?.font = boldFont
+            cell.codeLabel?.font = boldFont
+            cell.shareLabel?.font = boldFont
+            
+            //set the color of profit
+            if position.profit > 0 {
+                cell.profitLabel?.textColor = .red
+            } else {
+                cell.profitLabel?.textColor = .green
+            }
+            
+            cell.contentView.layer.masksToBounds = false
+            //The line between two cells
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            
             return cell
         } else {
             // 如果转换失败,返回一个默认的 UITableViewCell
@@ -123,6 +143,7 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
                                 self.positions.append(position)
                             }
                         }
+                        self.positions.sort { $0.code < $1.code }
                         print(self.positions)
                         self.tableView.reloadData()
                         
