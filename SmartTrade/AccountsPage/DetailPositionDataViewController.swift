@@ -51,7 +51,7 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
             
             cell.codeLabel?.text = position.code
             cell.profitLabel?.text = "Profit: \(position.profit)"
-            cell.shareLabel?.text = "Position: \(position.quantity)"
+            cell.shareLabel?.text = "Shares: \(position.quantity)"
             
             //set the bold font
             cell.profitLabel?.font = boldFont
