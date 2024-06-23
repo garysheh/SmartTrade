@@ -13,6 +13,12 @@ class OrderInputViewController: UIViewController {
     @IBOutlet weak var youPayField: UILabel!
     @IBOutlet weak var paymentField: UILabel!
     @IBOutlet weak var priceOrderType: UILabel!
+    @IBOutlet weak var sharesLabel: UILabel!
+    @IBOutlet weak var sharesIcon: UIImageView!
+    @IBOutlet weak var amountLabel: UILabel!
+    @IBOutlet weak var totalLabel: UILabel!
+    
+    // UI INTERFACE LOGIC
     
         private var currentViewController1: UIViewController?
         private var currentViewController2: UIViewController?
@@ -38,6 +44,24 @@ class OrderInputViewController: UIViewController {
             updateOrderTypeLabel(to: "Limit Order")
         }
     
+        @objc private func sharesTapped() {
+            toggleAmountAndShares()
+        }
+        
+        private func toggleAmountAndShares() {
+            if amountLabel.text == "  Shares" {
+                amountLabel.text = "  Amount"
+                sharesLabel.text = "Shares"
+            } else {
+                amountLabel.text = "  Shares"
+                sharesLabel.text = "Amount"
+            }
+        }
+    
+        private func updateUnitLabel(to orderType: String) {
+            amountLabel.text = orderType
+        }
+    
         private func updateOrderTypeLabel(to orderType: String) {
             priceOrderType.text = orderType
         }
@@ -60,6 +84,14 @@ class OrderInputViewController: UIViewController {
             let limitOrderTapGesture = UITapGestureRecognizer(target: self, action: #selector(limitOrderTapped))
             limitLabel.isUserInteractionEnabled = true
             limitLabel.addGestureRecognizer(limitOrderTapGesture)
+            
+            let sharesLabelTapGesture = UITapGestureRecognizer(target: self, action: #selector(sharesTapped))
+                    sharesLabel.isUserInteractionEnabled = true
+                    sharesLabel.addGestureRecognizer(sharesLabelTapGesture)
+                    
+                    let sharesIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(sharesTapped))
+                    sharesIcon.isUserInteractionEnabled = true
+                    sharesIcon.addGestureRecognizer(sharesIconTapGesture)
         }
     
         private func setupRoundedLabel(labels: [UILabel]) {
@@ -68,5 +100,8 @@ class OrderInputViewController: UIViewController {
                 label.layer.masksToBounds = true
             }
         }
+    
+    
+    // BUY AND SELL PART
 
 }

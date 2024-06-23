@@ -495,20 +495,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Limit Order" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nR5-6X-ejP">
-                                <rect key="frame" x="190" y="99" width="130" height="34"/>
+                                <rect key="frame" x="211" y="99" width="130" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="CDx-59-CC6"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="ZIu-dC-xkx"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Market Order" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfa-2f-fQq">
-                                <rect key="frame" x="52" y="99" width="130" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="9tk-bw-CkV"/>
-                                    <constraint firstAttribute="height" constant="34" id="VlN-8f-Sbv"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -613,6 +603,23 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Market Order" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfa-2f-fQq">
+                                <rect key="frame" x="62" y="99" width="130" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="9tk-bw-CkV"/>
+                                    <constraint firstAttribute="height" constant="34" id="VlN-8f-Sbv"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="$TOTAL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBH-gq-cpN">
+                                <rect key="frame" x="264" y="555" width="82" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="OTi-fj-BI4"/>
                         <color key="backgroundColor" red="0.082352941176470587" green="0.078431372549019607" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -638,7 +645,7 @@
                             <constraint firstItem="FIg-d8-Wsw" firstAttribute="top" secondItem="F9d-zB-DfG" secondAttribute="top" constant="341" id="ZTq-3H-xlj"/>
                             <constraint firstItem="Kpr-zr-Bvo" firstAttribute="leading" secondItem="VOF-2C-3nQ" secondAttribute="leading" id="cLT-KG-V4b"/>
                             <constraint firstItem="X6O-5S-zcq" firstAttribute="leading" secondItem="VOF-2C-3nQ" secondAttribute="leading" id="cPC-G8-Rvc"/>
-                            <constraint firstItem="nR5-6X-ejP" firstAttribute="leading" secondItem="nfa-2f-fQq" secondAttribute="trailing" constant="8" id="cxq-gb-ICU"/>
+                            <constraint firstItem="nR5-6X-ejP" firstAttribute="leading" secondItem="nfa-2f-fQq" secondAttribute="trailing" constant="19" id="cxq-gb-ICU"/>
                             <constraint firstItem="Kpr-zr-Bvo" firstAttribute="top" secondItem="dDI-zy-OYZ" secondAttribute="bottom" constant="26" id="ejc-nn-0qM"/>
                             <constraint firstItem="P45-4D-z61" firstAttribute="leading" secondItem="OTi-fj-BI4" secondAttribute="leading" constant="35" id="gV6-sL-Uaw"/>
                             <constraint firstItem="OTi-fj-BI4" firstAttribute="trailing" secondItem="FIg-d8-Wsw" secondAttribute="trailing" constant="221" id="gdD-YN-QYy"/>
@@ -657,15 +664,19 @@
                             <constraint firstItem="VOF-2C-3nQ" firstAttribute="top" secondItem="X6O-5S-zcq" secondAttribute="bottom" constant="20" id="uWI-W0-5Qe"/>
                             <constraint firstItem="nfa-2f-fQq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="OTi-fj-BI4" secondAttribute="leading" id="wBI-Dy-EzW"/>
                             <constraint firstItem="KMv-Tg-aqV" firstAttribute="bottom" secondItem="3bQ-CT-nLR" secondAttribute="bottom" id="wkf-dJ-3Xw"/>
-                            <constraint firstItem="OTi-fj-BI4" firstAttribute="trailing" secondItem="nR5-6X-ejP" secondAttribute="trailing" constant="73" id="yXo-2i-kld"/>
+                            <constraint firstItem="OTi-fj-BI4" firstAttribute="trailing" secondItem="nR5-6X-ejP" secondAttribute="trailing" constant="52" id="yXo-2i-kld"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="1Q6-3l-Gs2"/>
                     <connections>
+                        <outlet property="amountLabel" destination="ssh-3A-F3H" id="d4A-JF-vBs"/>
                         <outlet property="limitLabel" destination="nR5-6X-ejP" id="8WL-gq-aJF"/>
                         <outlet property="marketLabel" destination="nfa-2f-fQq" id="ZT7-Ep-3Go"/>
                         <outlet property="paymentField" destination="dDI-zy-OYZ" id="edM-Tf-btL"/>
                         <outlet property="priceOrderType" destination="8oE-4V-K52" id="FhE-e5-lkL"/>
+                        <outlet property="sharesIcon" destination="KMv-Tg-aqV" id="DO7-yv-fDn"/>
+                        <outlet property="sharesLabel" destination="3bQ-CT-nLR" id="vHs-t2-HLB"/>
+                        <outlet property="totalLabel" destination="QBH-gq-cpN" id="KMh-VU-od0"/>
                         <outlet property="youPayField" destination="g20-Gh-YUm" id="CL6-aP-pxZ"/>
                     </connections>
                 </viewController>
