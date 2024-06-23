@@ -13,7 +13,11 @@ import Foundation
 
 class DetailPositionDataViewController: UIViewController,UITableViewDataSource, UITableViewDelegate {
     
+    @IBOutlet weak var balanceLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var numberLabel: UILabel!
+    
     
     
     struct Position {
@@ -36,6 +40,12 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
         
         
         calculateProfits()
+        setupCardInfo()
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.frame = tableView.bounds
+        tableView.backgroundView = blurView
         // Do any additional setup after loading the view.
     }
     
@@ -51,7 +61,7 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
             
             cell.codeLabel?.text = position.code
             cell.profitLabel?.text = "Profit: \(position.profit)"
-            cell.shareLabel?.text = "Position: \(position.quantity)"
+            cell.shareLabel?.text = "Shares: \(position.quantity)"
             
             //set the bold font
             cell.profitLabel?.font = boldFont
@@ -102,6 +112,55 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
             } else {
                 completion([:])
             }
+        }
+    }
+    
+    
+    private func setupCardInfo() {
+        let db = Firestore.firestore()
+        guard let email = Auth.auth().currentUser?.email else {
+            print("Error: email is nil")
+            return
+        }
+        
+        db.collection("UserInfo").document(email).getDocument { (document, error) in
+            if let error = error {
+                print("Error getting document: \(error)")
+                return
+            }
+            
+            if let document = document, document.exists {
+                print("yes")
+                let UserID = (document.get("userID") as? Int32) ?? 0
+                let name = document.get("FirstName") as? String
+                
+                DispatchQueue.main.async {
+                    self.nameLabel.text = name ?? "N/A"
+                    self.numberLabel.text = "\(UserID)"
+                }
+            } else {
+                print("Error")
+            }
+            
+        db.collection("Holdings").document(email).getDocument { (document, error) in
+                if let error = error {
+                    print("Error getting document: \(error)")
+                    return
+                }
+                if let document = document, document.exists {
+                    print("yes")
+                    let balance = (document.get("balance") as? Double) ?? 0
+                    
+                    DispatchQueue.main.async {
+                        self.balanceLabel.text = "$\(balance)"
+                    }
+                } else {
+                    print("Error2")
+                }
+                
+            }
+            
+            
         }
     }
     
