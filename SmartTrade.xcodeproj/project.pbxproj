@@ -27,6 +27,7 @@
 		60C1939B2BE0D080003134FE /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1939A2BE0D080003134FE /* RegisterViewController.swift */; };
 		60CBCA752C1CCCF600ABEA4B /* TimeDailySeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CBCA742C1CCCF600ABEA4B /* TimeDailySeries.swift */; };
 		60CBCA772C208FA500ABEA4B /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CBCA762C208FA500ABEA4B /* MyPageViewController.swift */; };
+		7B225B932C2AA74D000C9D65 /* TradeHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B225B922C2AA74D000C9D65 /* TradeHistoryViewController.swift */; };
 		7BF759362C0B33AE000FE466 /* SmartTradeData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7BF759342C0B33AE000FE466 /* SmartTradeData.xcdatamodeld */; };
 		7BF7593B2C11A2F7000FE466 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593A2C11A2F7000FE466 /* DGCharts */; };
 		7BF7593D2C11A2F7000FE466 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593C2C11A2F7000FE466 /* DGChartsDynamic */; };
@@ -84,6 +85,7 @@
 		60C1939A2BE0D080003134FE /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		60CBCA742C1CCCF600ABEA4B /* TimeDailySeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDailySeries.swift; sourceTree = "<group>"; };
 		60CBCA762C208FA500ABEA4B /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		7B225B922C2AA74D000C9D65 /* TradeHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeHistoryViewController.swift; sourceTree = "<group>"; };
 		7BF759352C0B33AE000FE466 /* SmartTradeData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartTradeData.xcdatamodel; sourceTree = "<group>"; };
 		7BF759422C1585BE000FE466 /* DetailPositionDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPositionDataViewController.swift; sourceTree = "<group>"; };
 		7BF759442C15B4F5000FE466 /* PositionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionTableViewCell.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				6080A4802C0B18DC00DC3D02 /* AccountsViewController.swift */,
 				7BF759422C1585BE000FE466 /* DetailPositionDataViewController.swift */,
 				7BF759442C15B4F5000FE466 /* PositionTableViewCell.swift */,
+				7B225B922C2AA74D000C9D65 /* TradeHistoryViewController.swift */,
 			);
 			path = AccountsPage;
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 			files = (
 				6080A4662C03AFE700DC3D02 /* StockTableViewCell.swift in Sources */,
 				60CBCA752C1CCCF600ABEA4B /* TimeDailySeries.swift in Sources */,
+				7B225B932C2AA74D000C9D65 /* TradeHistoryViewController.swift in Sources */,
 				7BF759362C0B33AE000FE466 /* SmartTradeData.xcdatamodeld in Sources */,
 				6080A46B2C04796300DC3D02 /* StockService.swift in Sources */,
 				6080A4812C0B18DC00DC3D02 /* AccountsViewController.swift in Sources */,

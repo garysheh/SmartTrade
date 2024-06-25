@@ -343,16 +343,45 @@ class StockDetailViewController: UIViewController {
                 let timeStamp = Int(timeInterval)
                 let email = Auth.auth().currentUser?.email
 
-                db.collection("OrdersInfo").document(orderUuid).setData([
-                    "userEmail": email,
-                    "orderID": orderUuid,
-                    "stockCode": self.stockName.text,
-                    "type": "buy",
-                    "quantity": sharesAdd,
-                    "price": self.Stockprice.text,
-                    "timestamp": timeStamp,
-                    "Status":"Done"
-                ])
+                
+                db.collection("OrdersInfo").document(email!).getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        var order = document.data()?["order"] as? [[String: Any]] ?? []
+                        order.append([
+                            "orderID": orderUuid,
+                            "stockCode": self.stockName.text,
+                            "type": "buy",
+                            "quantity": sharesAdd,
+                            "price": self.Stockprice.text,
+                            "timestamp": timeStamp,
+                            "Status":"Done"
+                        ])
+                        db.collection("OrdersInfo").document(email!).setData([
+                                    "order": order
+                                ], merge: true) { (error) in
+                                    if let error = error {
+                                        print("Error writing document: \(error)")
+                                    } else {
+                                        print("Document successfully written!")
+                                    }
+                                }
+                    }else{
+                        let newDocument = db.collection("OrdersInfo").document(email!)
+                            newDocument.setData([
+                                "email": email,
+                                "order": [[
+                                    "orderID": orderUuid,
+                                    "stockCode": self.stockName.text,
+                                    "type": "buy",
+                                    "quantity": sharesAdd,
+                                    "price": self.Stockprice.text,
+                                    "timestamp": timeStamp,
+                                    "Status": "Done"
+                                ]]
+                            ])
+                    }
+                }
+
 
                 db.collection("Holdings").document(email!).getDocument { (document, error) in
                     if let document = document, document.exists {
@@ -457,8 +486,11 @@ class StockDetailViewController: UIViewController {
                     
                     if let pricenowText = self.Stockprice.text, let pricenow = Double(pricenowText), pricenow > price {
                         
-                        db.collection("OrdersInfo").document(orderUuid).setData([
-                                    "userEmail": email,
+                        
+                        db.collection("OrdersInfo").document(email!).getDocument { (document, error) in
+                            if let document = document, document.exists {
+                                var order = document.data()?["order"] as? [[String: Any]] ?? []
+                                order.append([
                                     "orderID": orderUuid,
                                     "stockCode": self.stockName.text,
                                     "type": "buy",
@@ -467,6 +499,31 @@ class StockDetailViewController: UIViewController {
                                     "timestamp": timeStamp,
                                     "Status":"Waiting"
                                 ])
+                                db.collection("OrdersInfo").document(email!).setData([
+                                            "order": order
+                                        ], merge: true) { (error) in
+                                            if let error = error {
+                                                print("Error writing document: \(error)")
+                                            } else {
+                                                print("Document successfully written!")
+                                            }
+                                        }
+                            }else{
+                                let newDocument = db.collection("OrdersInfo").document(email!)
+                                    newDocument.setData([
+                                        "email": email,
+                                        "order": [[
+                                            "orderID": orderUuid,
+                                            "stockCode": self.stockName.text,
+                                            "type": "buy",
+                                            "quantity": sharesAdd,
+                                            "price": price,
+                                            "timestamp": timeStamp,
+                                            "Status":"Waiting"
+                                        ]]
+                                    ])
+                            }
+                        }
                         //ToDo: to process the order.
                         
                         let alert = UIAlertController(title: "Order made!💰", message: "Waiting for CCP processing. . .", preferredStyle: .alert)
@@ -533,8 +590,12 @@ class StockDetailViewController: UIViewController {
                     let timeStamp = Int(timeInterval)
                     let email = Auth.auth().currentUser?.email
 
-                    db.collection("OrdersInfo").document(orderUuid).setData([
-                                "userEmail": email,
+
+                    
+                    db.collection("OrdersInfo").document(email!).getDocument { (document, error) in
+                        if let document = document, document.exists {
+                            var order = document.data()?["order"] as? [[String: Any]] ?? []
+                            order.append([
                                 "orderID": orderUuid,
                                 "stockCode": self.stockName.text,
                                 "type": "sell",
@@ -543,7 +604,32 @@ class StockDetailViewController: UIViewController {
                                 "timestamp": timeStamp,
                                 "Status":"Done"
                             ])
-                    
+                            db.collection("OrdersInfo").document(email!).setData([
+                                        "order": order
+                                    ], merge: true) { (error) in
+                                        if let error = error {
+                                            print("Error writing document: \(error)")
+                                        } else {
+                                            print("Document successfully written!")
+                                        }
+                                    }
+                        }else{
+                            let newDocument = db.collection("OrdersInfo").document(email!)
+                                newDocument.setData([
+                                    "email": email,
+                                    "order": [[
+                                        "orderID": orderUuid,
+                                        "stockCode": self.stockName.text,
+                                        "type": "sell",
+                                        "quantity": sharesAdd,
+                                        "price": self.Stockprice.text,
+                                        "timestamp": timeStamp,
+                                        "Status":"Done"
+                                    ]]
+                                ])
+                        }
+                    }
+
                     
                     db.collection("Holdings").document(email!).getDocument { (document, error) in
                             if let document = document, document.exists {
@@ -650,16 +736,44 @@ class StockDetailViewController: UIViewController {
                                     // 如果持有股数大于等于要卖出的数量
                                     if shares >= sharesAdd {
                                         
-                                        db.collection("OrdersInfo").document(orderUuid).setData([
-                                            "userEmail": email,
-                                            "orderID": orderUuid,
-                                            "stockCode": self.stockName.text,
-                                            "type": "sell",
-                                            "quantity": sharesAdd,
-                                            "price": price,
-                                            "timestamp": timeStamp,
-                                            "Status":"Waiting"
-                                        ])
+                                        
+                                        db.collection("OrdersInfo").document(email!).getDocument { (document, error) in
+                                            if let document = document, document.exists {
+                                                var order = document.data()?["order"] as? [[String: Any]] ?? []
+                                                order.append([
+                                                    "orderID": orderUuid,
+                                                    "stockCode": self.stockName.text,
+                                                    "type": "sell",
+                                                    "quantity": sharesAdd,
+                                                    "price": price,
+                                                    "timestamp": timeStamp,
+                                                    "Status":"Waiting"
+                                                ])
+                                                db.collection("OrdersInfo").document(email!).setData([
+                                                            "order": order
+                                                        ], merge: true) { (error) in
+                                                            if let error = error {
+                                                                print("Error writing document: \(error)")
+                                                            } else {
+                                                                print("Document successfully written!")
+                                                            }
+                                                        }
+                                            }else{
+                                                let newDocument = db.collection("OrdersInfo").document(email!)
+                                                    newDocument.setData([
+                                                        "email": email,
+                                                        "order": [[
+                                                            "orderID": orderUuid,
+                                                            "stockCode": self.stockName.text,
+                                                            "type": "sell",
+                                                            "quantity": sharesAdd,
+                                                            "price": price,
+                                                            "timestamp": timeStamp,
+                                                            "Status":"Waiting"
+                                                        ]]
+                                                    ])
+                                            }
+                                        }
                                         
                                         let alert = UIAlertController(title: "Order made!💰", message: "Waiting for CCP processing. . .", preferredStyle: .alert)
                                         alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))

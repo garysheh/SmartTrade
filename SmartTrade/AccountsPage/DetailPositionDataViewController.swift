@@ -88,9 +88,11 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //            let stock = holdings[indexPath.row]
-        //            // 跳转到股票详情页面
-        //            showStockDetails(for: stock)
+        if let vc = storyboard?.instantiateViewController(identifier: "TradeHistoryViewController") as?
+            TradeHistoryViewController{
+            let selectedStock = searchResults[indexPath.row].symbol
+            vc.stockData = selectedStock
+            self.navigationController?.pushViewController(vc, animated: true)}
     }
     
     private func getHoldingData(completion: @escaping ([String: (Double,Double)]) -> Void) {
