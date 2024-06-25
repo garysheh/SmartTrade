@@ -341,6 +341,7 @@ class StockDetailViewController: UIViewController {
                 let orderUuid = UUID().uuidString
                 let timeInterval:TimeInterval = Date().timeIntervalSince1970
                 let timeStamp = Int(timeInterval)
+                let currentDate = Date()
                 let email = Auth.auth().currentUser?.email
 
                 
@@ -349,6 +350,7 @@ class StockDetailViewController: UIViewController {
                         var order = document.data()?["order"] as? [[String: Any]] ?? []
                         order.append([
                             "orderID": orderUuid,
+                            "date": currentDate,
                             "stockCode": self.stockName.text,
                             "type": "buy",
                             "quantity": sharesAdd,
@@ -371,6 +373,7 @@ class StockDetailViewController: UIViewController {
                                 "email": email,
                                 "order": [[
                                     "orderID": orderUuid,
+                                    "date": currentDate,
                                     "stockCode": self.stockName.text,
                                     "type": "buy",
                                     "quantity": sharesAdd,
@@ -481,6 +484,7 @@ class StockDetailViewController: UIViewController {
                     let orderUuid = UUID().uuidString
                     let timeInterval:TimeInterval = Date().timeIntervalSince1970
                     let timeStamp = Int(timeInterval)
+                    let currentDate = Date()
                     let email = Auth.auth().currentUser?.email
 
                     
@@ -492,6 +496,7 @@ class StockDetailViewController: UIViewController {
                                 var order = document.data()?["order"] as? [[String: Any]] ?? []
                                 order.append([
                                     "orderID": orderUuid,
+                                    "date": currentDate,
                                     "stockCode": self.stockName.text,
                                     "type": "buy",
                                     "quantity": sharesAdd,
@@ -514,6 +519,7 @@ class StockDetailViewController: UIViewController {
                                         "email": email,
                                         "order": [[
                                             "orderID": orderUuid,
+                                            "date": currentDate,
                                             "stockCode": self.stockName.text,
                                             "type": "buy",
                                             "quantity": sharesAdd,
@@ -588,6 +594,7 @@ class StockDetailViewController: UIViewController {
                     let orderUuid = UUID().uuidString
                     let timeInterval:TimeInterval = Date().timeIntervalSince1970
                     let timeStamp = Int(timeInterval)
+                    let currentDate = Date()
                     let email = Auth.auth().currentUser?.email
 
 
@@ -597,6 +604,7 @@ class StockDetailViewController: UIViewController {
                             var order = document.data()?["order"] as? [[String: Any]] ?? []
                             order.append([
                                 "orderID": orderUuid,
+                                "date": currentDate,
                                 "stockCode": self.stockName.text,
                                 "type": "sell",
                                 "quantity": sharesAdd,
@@ -619,6 +627,7 @@ class StockDetailViewController: UIViewController {
                                     "email": email,
                                     "order": [[
                                         "orderID": orderUuid,
+                                        "date": currentDate,
                                         "stockCode": self.stockName.text,
                                         "type": "sell",
                                         "quantity": sharesAdd,
@@ -718,6 +727,7 @@ class StockDetailViewController: UIViewController {
                     let orderUuid = UUID().uuidString
                     let timeInterval:TimeInterval = Date().timeIntervalSince1970
                     let timeStamp = Int(timeInterval)
+                    let currentDate = Date()
                     let email = Auth.auth().currentUser?.email
                     
                     
@@ -742,6 +752,7 @@ class StockDetailViewController: UIViewController {
                                                 var order = document.data()?["order"] as? [[String: Any]] ?? []
                                                 order.append([
                                                     "orderID": orderUuid,
+                                                    "date": currentDate,
                                                     "stockCode": self.stockName.text,
                                                     "type": "sell",
                                                     "quantity": sharesAdd,
@@ -764,6 +775,7 @@ class StockDetailViewController: UIViewController {
                                                         "email": email,
                                                         "order": [[
                                                             "orderID": orderUuid,
+                                                            "date": currentDate,
                                                             "stockCode": self.stockName.text,
                                                             "type": "sell",
                                                             "quantity": sharesAdd,
