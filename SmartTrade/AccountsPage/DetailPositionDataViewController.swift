@@ -152,9 +152,10 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
                 if let document = document, document.exists {
                     print("yes")
                     let balance = (document.get("balance") as? Double) ?? 0
+                    var banlanceStr = String(format:"%.2f",balance)
                     
                     DispatchQueue.main.async {
-                        self.balanceLabel.text = "$\(balance)"
+                        self.balanceLabel.text = "$\(banlanceStr)"
                     }
                 } else {
                     print("Error2")
