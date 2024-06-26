@@ -299,13 +299,16 @@ class StockDetailViewController: UIViewController {
         lineChartView.notifyDataSetChanged()
     }
     
+    
     // BUY AND SELL FUNCTION PART
     
-    
     @IBAction func BuyButtonTapped(_ sender: Any) {
-        showBuyOptionPopup()
+        if let vc = storyboard?.instantiateViewController(identifier: "OrderInputViewController") as? OrderInputViewController {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
-    
+    // Commented for testing and refactor to new controller
+    /*
     //option for user to buy
     private func showBuyOptionPopup() {
             let alert = UIAlertController(title: "Buy Shares", message: "Choose your buy option:", preferredStyle: .alert)
@@ -848,6 +851,7 @@ class StockDetailViewController: UIViewController {
             
             present(alert, animated: true, completion: nil)
         }
+     */
     
     
 
