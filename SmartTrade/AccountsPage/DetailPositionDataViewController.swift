@@ -91,7 +91,7 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
         if let vc = storyboard?.instantiateViewController(identifier: "TradeHistoryViewController") as?
             TradeHistoryViewController{
             let selectedStock = searchResults[indexPath.row].symbol
-            vc.stockData = selectedStock
+            vc.stockSymbol = selectedStock
             self.navigationController?.pushViewController(vc, animated: true)}
     }
     
