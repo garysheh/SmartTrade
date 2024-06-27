@@ -21,11 +21,14 @@ class StockDetailViewController: UIViewController {
     @IBOutlet weak var stockName: UILabel!
     @IBOutlet weak var preTime: UILabel!
     @IBOutlet weak var timeChart: UIView!
-    @IBOutlet weak var oneYear: UILabel!
+    @IBOutlet weak var thirtyMintues: UILabel!
     @IBOutlet weak var oneMonth: UILabel!
     @IBOutlet weak var oneWeek: UILabel!
     @IBOutlet weak var oneDay: UILabel!
     @IBOutlet weak var stockFullname: UILabel!
+    @IBOutlet weak var oneHour: UILabel!
+    
+    
     
     var stockData: SearchResult?
     private var cancellables = Set<AnyCancellable>()
@@ -33,7 +36,7 @@ class StockDetailViewController: UIViewController {
     override func viewDidLoad() {
             super.viewDidLoad()
             // Do any additional setup after loading the view.
-        setupRoundedLabel(labels: [oneDay,oneWeek,oneMonth,oneYear])
+        setupRoundedLabel(labels: [oneDay,oneWeek,oneMonth,thirtyMintues,oneHour])
         setupTapGestures()
             if let stockData = stockData {
                 Stockprice.text = String(format: "%.2f", Double(stockData.price)!)
@@ -53,10 +56,14 @@ class StockDetailViewController: UIViewController {
         oneDay.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOneDay)))
         oneWeek.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOneWeek)))
         oneMonth.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOneMonth)))
+        oneHour.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOneHour)))
+        thirtyMintues.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapThirtyMintues)))
         
         oneDay.isUserInteractionEnabled = true
         oneWeek.isUserInteractionEnabled = true
         oneMonth.isUserInteractionEnabled = true
+        oneHour.isUserInteractionEnabled = true
+        thirtyMintues.isUserInteractionEnabled = true
     }
     
     @objc private func didTapOneDay() {
@@ -80,6 +87,20 @@ class StockDetailViewController: UIViewController {
             updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: oneMonth)
     }
     
+    @objc private func didTapOneHour() {
+        guard let symbol = stockData?.symbol else { return }
+        fetchHourlyPriceData(for: symbol)
+        let percentageChange = calculatePercentageChange(for: symbol)
+            updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: oneHour)
+    }
+    
+    @objc private func didTapThirtyMintues() {
+        guard let symbol = stockData?.symbol else { return }
+        fetchThirtyMintuesPriceData(for: symbol)
+        let percentageChange = calculatePercentageChange(for: symbol)
+            updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: thirtyMintues)
+    }
+    
     // set rounded label
     private func setupRoundedLabel(labels: [UILabel]) {
         for label in labels {
@@ -97,7 +118,7 @@ class StockDetailViewController: UIViewController {
     private func updatePriceColorAndHighlightLabel(percentageChange: Double, selectedLabel:UILabel) {
         DispatchQueue.main.async {
                 var color: UIColor
-                let labels = [self.oneDay, self.oneWeek, self.oneMonth, self.oneYear]
+            let labels = [self.oneDay, self.oneWeek, self.oneMonth, self.thirtyMintues, self.oneHour]
 
                 for label in labels {
                     if label == selectedLabel {
@@ -167,6 +188,59 @@ class StockDetailViewController: UIViewController {
             lineChartView.chartDescription.enabled = false
             lineChartView.setScaleEnabled(false)
             lineChartView.drawGridBackgroundEnabled = false
+        
+        let marker = PriceMarkerView(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
+            marker.chartView = lineChartView
+            lineChartView.marker = marker
+            
+    }
+    
+    private func fetchHourlyPriceData(for symbol: String) {
+        cancellable = apiService.fetchHourlyPricesPublisher(symbol: symbol)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Error fetching hourly prices: \(error)")
+                case .finished:
+                    break
+                }
+            }, receiveValue: { [weak self] prices in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    let minPrice = prices.min() ?? 0.00
+                    let maxPrice = prices.max() ?? 0.00
+                    self.updateChart(with: prices, minPrice: minPrice, maxPrice: maxPrice)
+                    if let latestPrice = prices.last, prices.count >= 2 {
+                        let previousPrice = prices[prices.count - 2]
+                        let percentageChange = ((latestPrice - previousPrice) / previousPrice) * 100
+                        self.updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: self.oneHour)
+                    }
+                }
+            })
+    }
+    
+    private func fetchThirtyMintuesPriceData(for symbol: String) {
+        cancellable = apiService.fetchThirtyMinutePricesPublisher(symbol: symbol)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Error fetching hourly prices: \(error)")
+                case .finished:
+                    break
+                }
+            }, receiveValue: { [weak self] prices in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    let minPrice = prices.min() ?? 0.00
+                    let maxPrice = prices.max() ?? 0.00
+                    self.updateChart(with: prices, minPrice: minPrice, maxPrice: maxPrice)
+                    if let latestPrice = prices.last, prices.count >= 2 {
+                        let previousPrice = prices[prices.count - 2]
+                        let percentageChange = ((latestPrice - previousPrice) / previousPrice) * 100
+                        self.updatePriceColorAndHighlightLabel(percentageChange: percentageChange, selectedLabel: self.thirtyMintues)
+                    }
+                }
+            })
     }
     
     private func fetchDailyPriceData(for symbol: String) {
@@ -229,6 +303,8 @@ class StockDetailViewController: UIViewController {
                 }
             })
     }
+    
+    
     
     private func fetchMonthlyPriceData(for symbol: String) {
         cancellable = apiService.fetchMonthlyPricesPublisher(symbol: symbol)

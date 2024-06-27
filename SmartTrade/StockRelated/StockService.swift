@@ -108,4 +108,37 @@ struct APIService {
                 .eraseToAnyPublisher()
         }
     
+    func fetchHourlyPricesPublisher(symbol: String) -> AnyPublisher<[Double], Error> {
+            let urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=\(symbol)&interval=60min&apikey=\(API_KEY)"
+            guard let url = URL(string: urlString) else {
+                return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+            }
+            
+            return URLSession.shared.dataTaskPublisher(for: url)
+                .map { $0.data }
+                .decode(type: TimeHourlySeries.self, decoder: JSONDecoder())
+                .map { response in
+                    let sortedDates = response.timeSeriesHourly.keys.sorted()
+                    return sortedDates.compactMap { Double(response.timeSeriesHourly[$0]?.close ?? "") }
+                }
+                .mapError { $0 as Error }
+                .eraseToAnyPublisher()
+        }
+    
+    func fetchThirtyMinutePricesPublisher(symbol: String) -> AnyPublisher<[Double], Error> {
+            let urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=\(symbol)&interval=30min&apikey=\(API_KEY)"
+            guard let url = URL(string: urlString) else {
+                return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+            }
+
+            return URLSession.shared.dataTaskPublisher(for: url)
+                .map { $0.data }
+                .decode(type: TimeThirtyMinuteSeries.self, decoder: JSONDecoder())
+                .map { response in
+                    let sortedDates = response.timeSeriesThirtyMinute.keys.sorted()
+                    return sortedDates.compactMap { Double(response.timeSeriesThirtyMinute[$0]?.close ?? "") }
+                }
+                .mapError { $0 as Error }
+                .eraseToAnyPublisher()
+        }
 }
