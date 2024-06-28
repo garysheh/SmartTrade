@@ -1,23 +1,26 @@
 //
-//  OrderInputViewController.swift
+//  OrderOutputViewController.swift
 //  SmartTrade
 //
-//  Created by Gary She on 2024/6/22.
+//  Created by Gary She on 2024/6/27.
 //
 
 import UIKit
 
-class OrderInputViewController: UIViewController {
-    @IBOutlet weak var limitLabel: UILabel!
-    @IBOutlet weak var marketLabel: UILabel!
-    @IBOutlet weak var youPayField: UILabel!
-    @IBOutlet weak var paymentField: UILabel!
-    @IBOutlet weak var priceOrderType: UILabel!
-    @IBOutlet weak var sharesLabel: UILabel!
-    @IBOutlet weak var sharesIcon: UIImageView!
-    @IBOutlet weak var amountLabel: UILabel!
-    @IBOutlet weak var totalLabel: UILabel!
-    @IBOutlet weak var priceLabel: UILabel!
+class OrderOutputViewController: UIViewController {
+    
+    @IBOutlet weak var OutputLimitOrder: UILabel!
+    @IBOutlet weak var OutputMarketOrder: UILabel!
+    @IBOutlet weak var balanceField: UILabel!
+    @IBOutlet weak var availableShareField: UILabel!
+    @IBOutlet weak var outputAmountLabel: UILabel!
+    @IBOutlet weak var outputSharesLabel: UILabel!
+    @IBOutlet weak var outputSharesIcon: UIImageView!
+    @IBOutlet weak var outputOrderTypeLabel: UILabel!
+    @IBOutlet weak var outputTotalLabel: UILabel!
+    @IBOutlet weak var outputSharesForBottomLabel: UILabel!
+    @IBOutlet weak var outputpriceLabel: UILabel!
+    
     
     // UI INTERFACE LOGIC
     
@@ -29,7 +32,7 @@ class OrderInputViewController: UIViewController {
         
         override func viewDidLoad() {
             super.viewDidLoad()
-            setupRoundedLabel(labels: [youPayField,paymentField])
+            setupRoundedLabel(labels: [balanceField,availableShareField])
             highlightMarketOrder()
             setupGestureRecognizers()
             
@@ -50,49 +53,49 @@ class OrderInputViewController: UIViewController {
         }
         
         private func toggleAmountAndShares() {
-            if amountLabel.text == "  Shares" {
-                amountLabel.text = "  Amount"
-                sharesLabel.text = "Shares"
+            if outputAmountLabel.text == "  Shares" {
+                outputAmountLabel.text = "  Amount"
+                outputSharesLabel.text = "Shares"
             } else {
-                amountLabel.text = "  Shares"
-                sharesLabel.text = "Amount"
+                outputSharesLabel.text = "  Shares"
+                outputSharesLabel.text = "Amount"
             }
         }
     
         private func updateUnitLabel(to orderType: String) {
-            amountLabel.text = orderType
+            outputAmountLabel.text = orderType
         }
     
         private func updateOrderTypeLabel(to orderType: String) {
-            priceOrderType.text = orderType
+            outputOrderTypeLabel.text = orderType
         }
         
         private func highlightMarketOrder() {
-            marketLabel.textColor = .white
-            limitLabel.textColor = UIColor(red: 142/255.0, green: 142/255.0, blue: 147/255.0, alpha: 1.0) // Default color
+            OutputMarketOrder.textColor = .white
+            OutputLimitOrder.textColor = UIColor(red: 142/255.0, green: 142/255.0, blue: 147/255.0, alpha: 1.0) // Default color
         }
         
         private func highlightLimitOrder() {
-            limitLabel.textColor = .white
-            marketLabel.textColor = UIColor(red: 142/255.0, green: 142/255.0, blue: 147/255.0, alpha: 1.0) // Default color
+            OutputLimitOrder.textColor = .white
+            OutputMarketOrder.textColor = UIColor(red: 142/255.0, green: 142/255.0, blue: 147/255.0, alpha: 1.0) // Default color
         }
         
         private func setupGestureRecognizers() {
             let marketOrderTapGesture = UITapGestureRecognizer(target: self, action: #selector(marketOrderTapped))
-            marketLabel.isUserInteractionEnabled = true
-            marketLabel.addGestureRecognizer(marketOrderTapGesture)
+            OutputMarketOrder.isUserInteractionEnabled = true
+            OutputMarketOrder.addGestureRecognizer(marketOrderTapGesture)
             
             let limitOrderTapGesture = UITapGestureRecognizer(target: self, action: #selector(limitOrderTapped))
-            limitLabel.isUserInteractionEnabled = true
-            limitLabel.addGestureRecognizer(limitOrderTapGesture)
+            OutputLimitOrder.isUserInteractionEnabled = true
+            OutputLimitOrder.addGestureRecognizer(limitOrderTapGesture)
             
             let sharesLabelTapGesture = UITapGestureRecognizer(target: self, action: #selector(sharesTapped))
-                    sharesLabel.isUserInteractionEnabled = true
-                    sharesLabel.addGestureRecognizer(sharesLabelTapGesture)
+            outputSharesLabel.isUserInteractionEnabled = true
+            outputSharesLabel.addGestureRecognizer(sharesLabelTapGesture)
                     
                     let sharesIconTapGesture = UITapGestureRecognizer(target: self, action: #selector(sharesTapped))
-                    sharesIcon.isUserInteractionEnabled = true
-                    sharesIcon.addGestureRecognizer(sharesIconTapGesture)
+            outputSharesIcon.isUserInteractionEnabled = true
+            outputSharesIcon.addGestureRecognizer(sharesIconTapGesture)
         }
     
         private func setupRoundedLabel(labels: [UILabel]) {
@@ -102,9 +105,8 @@ class OrderInputViewController: UIViewController {
             }
         }
     
-    // Tap the Place BUY button
     
-    @IBAction func placeBuyTapped(_ sender: Any) {
+    @IBAction func placeSellTapped(_ sender: Any) {
         if let vc = storyboard?.instantiateViewController(identifier: "PlaceSuccessfullyViewController") as? PlaceSuccessfullyViewController {
             self.navigationController?.pushViewController(vc, animated: true)
         }
