@@ -383,6 +383,13 @@ class StockDetailViewController: UIViewController {
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
+    
+    @IBAction func SellButtonTapped(_ sender: Any) {
+        if let vc = storyboard?.instantiateViewController(identifier: "OrderOutputViewController") as? OrderOutputViewController {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
     // Commented for testing and refactor to new controller
     /*
     //option for user to buy

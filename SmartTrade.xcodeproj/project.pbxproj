@@ -25,6 +25,7 @@
 		609E47B92C2CFD190016372B /* DateValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609E47B82C2CFD190016372B /* DateValueFormatter.swift */; };
 		609E47BB2C2D34C00016372B /* FlashingCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609E47BA2C2D34C00016372B /* FlashingCircleView.swift */; };
 		609E47BD2C2D64BC0016372B /* TimeThirtyMinuteSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609E47BC2C2D64BC0016372B /* TimeThirtyMinuteSeries.swift */; };
+		609E47C12C2DB6380016372B /* OrderOutputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609E47C02C2DB6380016372B /* OrderOutputViewController.swift */; };
 		60AF41ED2C01881B0034282D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF41EC2C01881B0034282D /* SceneDelegate.swift */; };
 		60AF41EF2C0188570034282D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF41EE2C0188570034282D /* AppDelegate.swift */; };
 		60AF41F22C018A050034282D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60AF41F02C018A050034282D /* LaunchScreen.storyboard */; };
@@ -35,6 +36,9 @@
 		60C1939B2BE0D080003134FE /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1939A2BE0D080003134FE /* RegisterViewController.swift */; };
 		60CBCA752C1CCCF600ABEA4B /* TimeDailySeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CBCA742C1CCCF600ABEA4B /* TimeDailySeries.swift */; };
 		60CBCA772C208FA500ABEA4B /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CBCA762C208FA500ABEA4B /* MyPageViewController.swift */; };
+		60F616022C2E581D00E4B702 /* PlaceSuccessfullyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F616012C2E581D00E4B702 /* PlaceSuccessfullyViewController.swift */; };
+		60F616042C2E583900E4B702 /* PlaceFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F616032C2E583900E4B702 /* PlaceFailedViewController.swift */; };
+		60F616062C2E5E7C00E4B702 /* MainPageTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F616052C2E5E7C00E4B702 /* MainPageTabBarViewController.swift */; };
 		7BF759362C0B33AE000FE466 /* SmartTradeData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7BF759342C0B33AE000FE466 /* SmartTradeData.xcdatamodeld */; };
 		7BF7593B2C11A2F7000FE466 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593A2C11A2F7000FE466 /* DGCharts */; };
 		7BF7593D2C11A2F7000FE466 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593C2C11A2F7000FE466 /* DGChartsDynamic */; };
@@ -88,6 +92,7 @@
 		609E47B82C2CFD190016372B /* DateValueFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValueFormatter.swift; sourceTree = "<group>"; };
 		609E47BA2C2D34C00016372B /* FlashingCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashingCircleView.swift; sourceTree = "<group>"; };
 		609E47BC2C2D64BC0016372B /* TimeThirtyMinuteSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeThirtyMinuteSeries.swift; sourceTree = "<group>"; };
+		609E47C02C2DB6380016372B /* OrderOutputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderOutputViewController.swift; sourceTree = "<group>"; };
 		60AF41EC2C01881B0034282D /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		60AF41EE2C0188570034282D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		60AF41F12C018A050034282D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -100,6 +105,9 @@
 		60C1939A2BE0D080003134FE /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		60CBCA742C1CCCF600ABEA4B /* TimeDailySeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDailySeries.swift; sourceTree = "<group>"; };
 		60CBCA762C208FA500ABEA4B /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		60F616012C2E581D00E4B702 /* PlaceSuccessfullyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSuccessfullyViewController.swift; sourceTree = "<group>"; };
+		60F616032C2E583900E4B702 /* PlaceFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceFailedViewController.swift; sourceTree = "<group>"; };
+		60F616052C2E5E7C00E4B702 /* MainPageTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageTabBarViewController.swift; sourceTree = "<group>"; };
 		7BF759352C0B33AE000FE466 /* SmartTradeData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartTradeData.xcdatamodel; sourceTree = "<group>"; };
 		7BF759422C1585BE000FE466 /* DetailPositionDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPositionDataViewController.swift; sourceTree = "<group>"; };
 		7BF759442C15B4F5000FE466 /* PositionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionTableViewCell.swift; sourceTree = "<group>"; };
@@ -174,6 +182,9 @@
 			isa = PBXGroup;
 			children = (
 				607C88A42C270FB200AAC66B /* OrderInputViewController.swift */,
+				609E47C02C2DB6380016372B /* OrderOutputViewController.swift */,
+				60F616012C2E581D00E4B702 /* PlaceSuccessfullyViewController.swift */,
+				60F616032C2E583900E4B702 /* PlaceFailedViewController.swift */,
 			);
 			path = TradeFlowRelated;
 			sourceTree = "<group>";
@@ -251,6 +262,7 @@
 				60C193922BE07BFA003134FE /* Info.plist */,
 				7BFFB78F2BE0EAD000F6EE2A /* GoogleService-Info.plist */,
 				7BF759342C0B33AE000FE466 /* SmartTradeData.xcdatamodeld */,
+				60F616052C2E5E7C00E4B702 /* MainPageTabBarViewController.swift */,
 			);
 			path = SmartTrade;
 			sourceTree = "<group>";
@@ -426,6 +438,7 @@
 				609E47B72C2C7E2E0016372B /* PriceMarkerView.swift in Sources */,
 				6080A4812C0B18DC00DC3D02 /* AccountsViewController.swift in Sources */,
 				609E47BD2C2D64BC0016372B /* TimeThirtyMinuteSeries.swift in Sources */,
+				609E47C12C2DB6380016372B /* OrderOutputViewController.swift in Sources */,
 				6080A46D2C049D1500DC3D02 /* SearchResults.swift in Sources */,
 				609E47B52C2C554B0016372B /* TimeHourlySeries.swift in Sources */,
 				6080A47E2C07A08D00DC3D02 /* StockDetailViewController.swift in Sources */,
@@ -434,8 +447,11 @@
 				607C88A12C246CB800AAC66B /* TimeMonthlySeries.swift in Sources */,
 				60C1939B2BE0D080003134FE /* RegisterViewController.swift in Sources */,
 				60CBCA772C208FA500ABEA4B /* MyPageViewController.swift in Sources */,
+				60F616042C2E583900E4B702 /* PlaceFailedViewController.swift in Sources */,
 				601D193F2C2B2E0100A11E16 /* StrategyViewController.swift in Sources */,
 				609E47B32C2C454B0016372B /* RecommendedTableViewCell.swift in Sources */,
+				60F616062C2E5E7C00E4B702 /* MainPageTabBarViewController.swift in Sources */,
+				60F616022C2E581D00E4B702 /* PlaceSuccessfullyViewController.swift in Sources */,
 				607C88A32C2488DE00AAC66B /* stockProfile.swift in Sources */,
 				60AF41EF2C0188570034282D /* AppDelegate.swift in Sources */,
 				607C889F2C246C5D00AAC66B /* TimeWeeklySeries.swift in Sources */,
