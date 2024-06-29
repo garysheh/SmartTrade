@@ -88,9 +88,11 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //            let stock = holdings[indexPath.row]
-        //            // 跳转到股票详情页面
-        //            showStockDetails(for: stock)
+        if let vc = storyboard?.instantiateViewController(identifier: "TradeHistoryViewController") as?
+            TradeHistoryViewController{
+            let selectedStock = searchResults[indexPath.row].symbol
+            vc.stockSymbol = selectedStock
+            self.navigationController?.pushViewController(vc, animated: true)}
     }
     
     private func getHoldingData(completion: @escaping ([String: (Double,Double)]) -> Void) {
@@ -150,9 +152,10 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
                 if let document = document, document.exists {
                     print("yes")
                     let balance = (document.get("balance") as? Double) ?? 0
+                    var banlanceStr = String(format:"%.2f",balance)
                     
                     DispatchQueue.main.async {
-                        self.balanceLabel.text = "$\(balance)"
+                        self.balanceLabel.text = "$\(banlanceStr)"
                     }
                 } else {
                     print("Error2")

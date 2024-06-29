@@ -260,9 +260,11 @@ class AccountsViewController: UIViewController {
                             }
                         }
                         print(ProfitSum)
-                        returnRate = round(((myreturn + ProfitSum)/cost * 100))
-                        self.totalReturnValue.text = "\(ProfitSum)"
-                        self.totalReturnRate.text = "\(returnRate)%"
+                        returnRate = (myreturn + ProfitSum)/cost * 100
+                        var returnRateStr = String(format:"%.2f",returnRate)
+                        var ProfitSumStr = String(format:"%.2f",ProfitSum)
+                        self.totalReturnValue.text = "\(ProfitSumStr)"
+                        self.totalReturnRate.text = "\(returnRateStr)%"
                     
                     }
                     .store(in: &self.subscribers)

@@ -424,90 +424,150 @@ class StockDetailViewController: UIViewController {
         let buyAction = UIAlertAction(title: "Buy", style: .default) { (_) in
             if let sharesText = alert.textFields?.first?.text, let sharesAdd = Int(sharesText) {
                 let db = Firestore.firestore()
-                let orderUuid = UUID().uuidString
-                let timeInterval:TimeInterval = Date().timeIntervalSince1970
-                let timeStamp = Int(timeInterval)
                 let email = Auth.auth().currentUser?.email
-
-                db.collection("OrdersInfo").document(orderUuid).setData([
-                    "userEmail": email,
-                    "orderID": orderUuid,
-                    "stockCode": self.stockName.text,
-                    "type": "buy",
-                    "quantity": sharesAdd,
-                    "price": self.Stockprice.text,
-                    "timestamp": timeStamp,
-                    "Status":"Done"
-                ])
-
+                var balance: Double = 0.0
+                
                 db.collection("Holdings").document(email!).getDocument { (document, error) in
                     if let document = document, document.exists {
-                        var holdings = document.data()?["holdings"] as? [[String: Any]] ?? []
-                        
-                        // 检查是否已持有该股票
-                        var existingHolding: [String: Any]?
-                        for holding in holdings {
-                            if holding["stockCode"] as? String == self.stockName.text {
-                                existingHolding = holding
-                                break
+                        let data = document.data()
+                        if let accountBalance = data?["balance"] as? Double {
+                            balance = accountBalance
+                            let stockPrice = Double(self.Stockprice.text ?? "0.0") ?? 0.0
+                            let purchaseAmount = stockPrice * Double(sharesAdd)
+                            print("buy:\(purchaseAmount)")
+                            
+                            if balance >= purchaseAmount{
+                                
+                                let orderUuid = UUID().uuidString
+                                let timeInterval:TimeInterval = Date().timeIntervalSince1970
+                                let timeStamp = Int(timeInterval)
+                                let currentDate = Date()
+                                
+                                let newBalance = balance - purchaseAmount
+                                db.collection("Holdings").document(email!).updateData(["balance": newBalance])
+
+                                
+                                
+                                
+                                db.collection("OrdersInfo").document(email!).getDocument { (document, error) in
+                                    if let document = document, document.exists {
+                                        var order = document.data()?["order"] as? [[String: Any]] ?? []
+                                        order.append([
+                                            "orderID": orderUuid,
+                                            "date": currentDate,
+                                            "stockCode": self.stockName.text,
+                                            "type": "buy",
+                                            "quantity": sharesAdd,
+                                            "price": self.Stockprice.text,
+                                            "timestamp": timeStamp,
+                                            "Status":"Done"
+                                        ])
+                                        db.collection("OrdersInfo").document(email!).updateData(["order": order])
+                                    }else{
+                                        let newDocument = db.collection("OrdersInfo").document(email!)
+                                        newDocument.setData([
+                                            "email": email,
+                                            "order": [[
+                                                "orderID": orderUuid,
+                                                "date": currentDate,
+                                                "stockCode": self.stockName.text,
+                                                "type": "buy",
+                                                "quantity": sharesAdd,
+                                                "price": self.Stockprice.text,
+                                                "timestamp": timeStamp,
+                                                "Status": "Done"
+                                            ]]
+                                        ])
+                                    }
+                                }
+                                
+                                
+                                db.collection("Holdings").document(email!).getDocument { (document, error) in
+                                    if let document = document, document.exists {
+                                        var holdings = document.data()?["holdings"] as? [[String: Any]] ?? []
+                                        
+                                        // 检查是否已持有该股票
+                                        var existingHolding: [String: Any]?
+                                        for holding in holdings {
+                                            if holding["stockCode"] as? String == self.stockName.text {
+                                                existingHolding = holding
+                                                break
+                                            }
+                                        }
+                                        
+                                        if let existingHoldingIndex = holdings.firstIndex(where: { $0["stockCode"] as? String == self.stockName.text }) {
+                                            var existingHolding = holdings[existingHoldingIndex]
+                                            var shares = existingHolding["shares"] as? Int ?? 0
+                                            var avgCost = existingHolding["avgCost"] as? Double ?? 0.0
+                                            
+                                            // 更新平均持仓成本
+                                            if let stockPrice = Double(self.Stockprice.text ?? "0.0") {
+                                                let newTotalCost = (Double(shares) * avgCost) + (Double(sharesAdd) * stockPrice)
+                                                let newTotalShares = shares + sharesAdd
+                                                avgCost = newTotalCost / Double(newTotalShares)
+                                            } else {
+                                                // 處理 Stockprice.text 無法轉換為 Double 的情況
+                                                let newTotalCost = (Double(shares) * avgCost) + (Double(sharesAdd) * 0.0)
+                                                let newTotalShares = shares + sharesAdd
+                                                avgCost = newTotalCost / Double(newTotalShares)
+                                            }
+                                            
+                                            shares += sharesAdd
+                                            avgCost = round(avgCost * 100) / 100
+                                            
+                                            existingHolding["shares"] = shares
+                                            existingHolding["avgCost"] = avgCost
+                                            holdings[existingHoldingIndex] = existingHolding
+                                            
+                                            // update the records
+                                            db.collection("Holdings").document(email!).updateData([
+                                                "holdings": holdings
+                                            ])
+                                        } else {
+                                            // adding the new record
+                                            holdings.append([
+                                                "stockCode": self.stockName.text,
+                                                "shares": sharesAdd,
+                                                "avgCost": Double(self.Stockprice.text ?? "0.0") ?? 0.0
+                                            ])
+                                            
+                                            // update in Firestore
+                                            db.collection("Holdings").document(email!).updateData([
+                                                "holdings": holdings
+                                            ])
+                                        }
+                                    } else {
+                                        // create a new holding stock index
+                                        db.collection("Holdings").document(email!).setData([
+                                            "email": email,
+                                            "holdings": [
+                                                ["stockCode": self.stockName.text, "shares": sharesAdd, "avgCost": Double(self.Stockprice.text ?? "0.0") ?? 0.0]
+                                            ]
+                                        ])
+                                    }
+                                    let alert = UIAlertController(title: "Order made!💰", message: "Successfully purchased this stock!✌️", preferredStyle: .alert)
+                                    alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                                    self.present(alert, animated: true, completion: nil)
+                                }
+                            }else{
+                                let alert = UIAlertController(title: "Oops..", message: "You don't have enough balance!", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
+                                self.present(alert, animated: true, completion: nil)
                             }
-                        }
-                        
-                        if let existingHoldingIndex = holdings.firstIndex(where: { $0["stockCode"] as? String == self.stockName.text }) {
-                            var existingHolding = holdings[existingHoldingIndex]
-                            var shares = existingHolding["shares"] as? Int ?? 0
-                            var avgCost = existingHolding["avgCost"] as? Double ?? 0.0
                             
-                            // 更新平均持仓成本
-                            if let stockPrice = Double(self.Stockprice.text ?? "0.0") {
-                                let newTotalCost = (Double(shares) * avgCost) + (Double(sharesAdd) * stockPrice)
-                                let newTotalShares = shares + sharesAdd
-                                avgCost = newTotalCost / Double(newTotalShares)
-                            } else {
-                                // 處理 Stockprice.text 無法轉換為 Double 的情況
-                                let newTotalCost = (Double(shares) * avgCost) + (Double(sharesAdd) * 0.0)
-                                let newTotalShares = shares + sharesAdd
-                                avgCost = newTotalCost / Double(newTotalShares)
-                            }
                             
-                            shares += sharesAdd
-                            avgCost = round(avgCost * 100) / 100
-                            
-                            existingHolding["shares"] = shares
-                            existingHolding["avgCost"] = avgCost
-                            holdings[existingHoldingIndex] = existingHolding
-                            
-                            // update the records
-                            db.collection("Holdings").document(email!).updateData([
-                                "holdings": holdings
-                            ])
                         } else {
-                            // adding the new record
-                            holdings.append([
-                                "stockCode": self.stockName.text,
-                                "shares": sharesAdd,
-                                "avgCost": Double(self.Stockprice.text ?? "0.0") ?? 0.0
-                            ])
-                            
-                            // update in Firestore
-                            db.collection("Holdings").document(email!).updateData([
-                                "holdings": holdings
-                            ])
+                            print("Balance property not found")
                         }
                     } else {
-                        // create a new holding stock index
-                        db.collection("Holdings").document(email!).setData([
-                            "email": email,
-                            "holdings": [
-                                ["stockCode": self.stockName.text, "shares": sharesAdd, "avgCost": Double(self.Stockprice.text ?? "0.0") ?? 0.0]
-                            ]
-                        ])
+                        print("Document does not exist")
                     }
-                    let alert = UIAlertController(title: "Order made!💰", message: "Successfully purchased this stock!✌️", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
                 }
-            }
+
+                
+                
+                
+                            }
         }
         
         alert.addAction(cancelAction)
@@ -538,14 +598,19 @@ class StockDetailViewController: UIViewController {
                     let orderUuid = UUID().uuidString
                     let timeInterval:TimeInterval = Date().timeIntervalSince1970
                     let timeStamp = Int(timeInterval)
+                    let currentDate = Date()
                     let email = Auth.auth().currentUser?.email
 
                     
                     if let pricenowText = self.Stockprice.text, let pricenow = Double(pricenowText), pricenow > price {
                         
-                        db.collection("OrdersInfo").document(orderUuid).setData([
-                                    "userEmail": email,
+                        
+                        db.collection("OrdersInfo").document(email!).getDocument { (document, error) in
+                            if let document = document, document.exists {
+                                var order = document.data()?["order"] as? [[String: Any]] ?? []
+                                order.append([
                                     "orderID": orderUuid,
+                                    "date": currentDate,
                                     "stockCode": self.stockName.text,
                                     "type": "buy",
                                     "quantity": sharesAdd,
@@ -553,6 +618,24 @@ class StockDetailViewController: UIViewController {
                                     "timestamp": timeStamp,
                                     "Status":"Waiting"
                                 ])
+                                db.collection("OrdersInfo").document(email!).updateData(["order": order])
+                            }else{
+                                let newDocument = db.collection("OrdersInfo").document(email!)
+                                    newDocument.setData([
+                                        "email": email,
+                                        "order": [[
+                                            "orderID": orderUuid,
+                                            "date": currentDate,
+                                            "stockCode": self.stockName.text,
+                                            "type": "buy",
+                                            "quantity": sharesAdd,
+                                            "price": price,
+                                            "timestamp": timeStamp,
+                                            "Status":"Waiting"
+                                        ]]
+                                    ])
+                            }
+                        }
                         //ToDo: to process the order.
                         
                         let alert = UIAlertController(title: "Order made!💰", message: "Waiting for CCP processing. . .", preferredStyle: .alert)
@@ -617,11 +700,19 @@ class StockDetailViewController: UIViewController {
                     let orderUuid = UUID().uuidString
                     let timeInterval:TimeInterval = Date().timeIntervalSince1970
                     let timeStamp = Int(timeInterval)
+                    let currentDate = Date()
                     let email = Auth.auth().currentUser?.email
+                    var balanceAdd: Double = 0.0
+                    var balance: Double = 0.0
 
-                    db.collection("OrdersInfo").document(orderUuid).setData([
-                                "userEmail": email,
+
+                    
+                    db.collection("OrdersInfo").document(email!).getDocument { (document, error) in
+                        if let document = document, document.exists {
+                            var order = document.data()?["order"] as? [[String: Any]] ?? []
+                            order.append([
                                 "orderID": orderUuid,
+                                "date": currentDate,
                                 "stockCode": self.stockName.text,
                                 "type": "sell",
                                 "quantity": sharesAdd,
@@ -629,7 +720,25 @@ class StockDetailViewController: UIViewController {
                                 "timestamp": timeStamp,
                                 "Status":"Done"
                             ])
-                    
+                            db.collection("OrdersInfo").document(email!).updateData(["order": order])
+                        }else{
+                            let newDocument = db.collection("OrdersInfo").document(email!)
+                                newDocument.setData([
+                                    "email": email,
+                                    "order": [[
+                                        "orderID": orderUuid,
+                                        "date": currentDate,
+                                        "stockCode": self.stockName.text,
+                                        "type": "sell",
+                                        "quantity": sharesAdd,
+                                        "price": self.Stockprice.text,
+                                        "timestamp": timeStamp,
+                                        "Status":"Done"
+                                    ]]
+                                ])
+                        }
+                    }
+
                     
                     db.collection("Holdings").document(email!).getDocument { (document, error) in
                             if let document = document, document.exists {
@@ -647,9 +756,24 @@ class StockDetailViewController: UIViewController {
                                         let totalValue = Double(shares) * avgCost
                                         shares -= sharesAdd
                                         let newAvgCost = (totalValue-(Double(sharesAdd) * (Double(self.Stockprice.text!) ?? 0.0))) / Double(shares)
+                                        balanceAdd = Double(sharesAdd) * (Double(self.Stockprice.text!) ?? 0.0)
+                                        
+                                        db.collection("Holdings").document(email!).getDocument { (document, error) in
+                                            if let document = document, document.exists {
+                                                let data = document.data()
+                                                if let accountBalance = data?["balance"] as? Double {
+                                                    balance = accountBalance}}
+                                            
+                                            
+                                            let newBalance = balance + balanceAdd
+                                            db.collection("Holdings").document(email!).updateData(["balance": newBalance])
+                                            
+                                        }
+                                        
                                         
                                         existingHolding["avgCost"] = round(newAvgCost * 100) / 100
                                         existingHolding["shares"] = shares
+                                        
                                         
                                         // 如果卖出后股票数量为 0,从持仓列表中删除
                                         if shares == 0 {
@@ -718,6 +842,7 @@ class StockDetailViewController: UIViewController {
                     let orderUuid = UUID().uuidString
                     let timeInterval:TimeInterval = Date().timeIntervalSince1970
                     let timeStamp = Int(timeInterval)
+                    let currentDate = Date()
                     let email = Auth.auth().currentUser?.email
                     
                     
@@ -736,16 +861,38 @@ class StockDetailViewController: UIViewController {
                                     // 如果持有股数大于等于要卖出的数量
                                     if shares >= sharesAdd {
                                         
-                                        db.collection("OrdersInfo").document(orderUuid).setData([
-                                            "userEmail": email,
-                                            "orderID": orderUuid,
-                                            "stockCode": self.stockName.text,
-                                            "type": "sell",
-                                            "quantity": sharesAdd,
-                                            "price": price,
-                                            "timestamp": timeStamp,
-                                            "Status":"Waiting"
-                                        ])
+                                        
+                                        db.collection("OrdersInfo").document(email!).getDocument { (document, error) in
+                                            if let document = document, document.exists {
+                                                var order = document.data()?["order"] as? [[String: Any]] ?? []
+                                                order.append([
+                                                    "orderID": orderUuid,
+                                                    "date": currentDate,
+                                                    "stockCode": self.stockName.text,
+                                                    "type": "sell",
+                                                    "quantity": sharesAdd,
+                                                    "price": price,
+                                                    "timestamp": timeStamp,
+                                                    "Status":"Waiting"
+                                                ])
+                                                db.collection("OrdersInfo").document(email!).updateData(["order": order])
+                                            }else{
+                                                let newDocument = db.collection("OrdersInfo").document(email!)
+                                                    newDocument.setData([
+                                                        "email": email,
+                                                        "order": [[
+                                                            "orderID": orderUuid,
+                                                            "date": currentDate,
+                                                            "stockCode": self.stockName.text,
+                                                            "type": "sell",
+                                                            "quantity": sharesAdd,
+                                                            "price": price,
+                                                            "timestamp": timeStamp,
+                                                            "Status":"Waiting"
+                                                        ]]
+                                                    ])
+                                            }
+                                        }
                                         
                                         let alert = UIAlertController(title: "Order made!💰", message: "Waiting for CCP processing. . .", preferredStyle: .alert)
                                         alert.addAction(UIAlertAction(title: "OK👌", style: .default, handler: nil))
