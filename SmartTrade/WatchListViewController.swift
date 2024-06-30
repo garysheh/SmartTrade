@@ -20,6 +20,7 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tabBarController?.selectedIndex = 0
@@ -95,5 +96,6 @@ class WatchListViewController: UIViewController, UITableViewDataSource, UITableV
         
          
     }
+    
  
 }

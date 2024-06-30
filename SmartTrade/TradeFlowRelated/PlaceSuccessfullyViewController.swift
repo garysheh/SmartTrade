@@ -23,7 +23,7 @@ class PlaceSuccessfullyViewController: UIViewController {
         @objc private func handleTapGesture() {
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if let mainViewController = storyboard.instantiateViewController(withIdentifier: "WatchListViewController") as? WatchListViewController {
+            if let mainViewController = storyboard.instantiateViewController(withIdentifier: "TradeHistoryViewController") as? TradeHistoryViewController {
                 navigationController?.pushViewController(mainViewController, animated: true)
             }
         }

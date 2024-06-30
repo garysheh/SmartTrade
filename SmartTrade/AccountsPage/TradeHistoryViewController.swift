@@ -14,7 +14,7 @@ import DGCharts
 
 class TradeHistoryViewController: UIViewController {
     
-    
+    var tabBarIndex: Int?
     var stockSymbol: String?
     var stockData: [TradeOrder] = []
     private var barChartView: BarChartView!
@@ -35,15 +35,11 @@ class TradeHistoryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupSegmentedControl()
-        
-        
         }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        
+        setupCustomBackButton()
     }
     
     //setting the segmented controller
@@ -107,14 +103,35 @@ class TradeHistoryViewController: UIViewController {
 
     
 
-    /*
-    // MARK: - Navigation
+    // Navigation part
+    
+    
+    private func setupCustomBackButton() {
+            let backButton = UIButton(type: .system)
+            let backButtonImage = UIImage(systemName: "house")
+            backButton.setImage(backButtonImage, for: .normal)
+            backButton.tintColor = .white
+            backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+            let backBarButtonItem = UIBarButtonItem(customView: backButton)
+            navigationItem.leftBarButtonItem = backBarButtonItem
+            print("Custom back button set up")
+        }
+    
+    @objc private func backButtonTapped() {
+            print("Back button tapped")
+            loadTabBarController(atIndex: 0)
+        }
+        
+        private func loadTabBarController(atIndex index: Int) {
+            self.tabBarIndex = index
+            self.performSegue(withIdentifier: "showTabBar", sender: self)
+        }
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if segue.identifier == "showTabBar" {
+                if let tabBarController = segue.destination as? UITabBarController {
+                    tabBarController.selectedIndex = self.tabBarIndex ?? 0
+                }
+            }
+        }
 }

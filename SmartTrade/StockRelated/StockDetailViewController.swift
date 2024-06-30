@@ -176,7 +176,7 @@ class StockDetailViewController: UIViewController {
             rightAxis.drawGridLinesEnabled = false
             rightAxis.labelCount = 6
             rightAxis.valueFormatter = DefaultAxisValueFormatter(block: { (value, axis) -> String in
-            return String(value)
+                return String(format: "%.1f",value)
         })
         
         let xAxis = lineChartView.xAxis
