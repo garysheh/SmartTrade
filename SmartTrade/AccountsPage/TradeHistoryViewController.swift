@@ -8,17 +8,21 @@
 
 import UIKit
 import Firebase
+import DGCharts
 import FirebaseCore
 import FirebaseFirestore
-import DGCharts
 
 class TradeHistoryViewController: UIViewController {
     
     var tabBarIndex: Int?
     var stockSymbol: String?
     var stockData: [TradeOrder] = []
-    private var barChartView: BarChartView!
-
+    
+    
+    @IBOutlet weak var ChartView: UIView!
+    private var currentBarChartView: BarChartView?
+    
+    
     
     
     struct TradeOrder: Codable {
@@ -39,7 +43,9 @@ class TradeHistoryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCustomBackButton()
+//        setupCustomBackButton()
+        setBarChartBuy()
+      
     }
     
     //setting the segmented controller
@@ -68,10 +74,15 @@ class TradeHistoryViewController: UIViewController {
             // 处理选中选项变化的逻辑
             switch sender.selectedSegmentIndex {
             case 0:
+                if let currentBarChartView = currentBarChartView {
+                        currentBarChartView.removeFromSuperview()
+                    }
                 setBarChartBuy()
             case 1:
+                if let currentBarChartView = currentBarChartView {
+                        currentBarChartView.removeFromSuperview()
+                    }
                 setBarChartSell()
-                print("1")
             default:
                 break
             }
@@ -79,14 +90,92 @@ class TradeHistoryViewController: UIViewController {
     
     
     //----------------------------------- sell ----------------------------------
-    private func setBarChartSell(){
+    private func setBarChartBuy() {
+        let barChartView = BarChartView(frame: ChartView.bounds)
+//        ChartView.addSubview(barChartView)
+        let categories = ["2020", "2021", "2022", "2023", "2024"]
+        let data = [45.0, 62.0, 78.0, 90.0, 100.0]
         
+        let dataSet = BarChartDataSet(entries: data.enumerated().map { BarChartDataEntry(x: Double($0.offset), y: $0.element) }, label: "Buy")
+        dataSet.colors = [UIColor.systemBlue]
+
+        // 設置 BarChartData
+        let chartData = BarChartData(dataSet: dataSet)
+        chartData.barWidth = 0.5 // 調整柱子寬度
+
+        // 設置 BarChartView 的屬性
+        barChartView.data = chartData
+        barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: categories)
+//            barChartView.xAxis.granularity = 1 // 設置 x 軸標籤間隔
+//        barChartView.xAxis.labelPosition = .bottom // 設置 x 軸標籤位置
+        barChartView.leftAxis.axisMinimum = 0 // 設置 y 軸最小值
+        barChartView.leftAxis.axisMaximum = 120 // 設置 y 軸最大值
+        barChartView.leftAxis.labelCount = 6 // 設置 y 軸標籤數量
+        
+        //style
+        barChartView.leftAxis.labelTextColor = UIColor.white
+
+        //animation of the bar
+        barChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0, easingOption: .linear)
+
+        //the current price line add
+        let targetLine = ChartLimitLine(limit: 70, label: "Current Price")
+        targetLine.lineColor = UIColor.green
+        targetLine.lineWidth = 1.5
+        targetLine.valueTextColor = UIColor.green
+        targetLine.valueFont = .systemFont(ofSize: 10)
+        barChartView.leftAxis.addLimitLine(targetLine)
+        
+        
+        //reset the chart
+        currentBarChartView = barChartView
+        ChartView.addSubview(barChartView)
+
     }
-    
-    
-    //----------------------------------- buy ----------------------------------
-    private func setBarChartBuy(){
+
+    private func setBarChartSell() {
+        let barChartView = BarChartView(frame: ChartView.bounds)
+//        ChartView.addSubview(barChartView)
+        let categories = ["2020", "2021", "2022", "2023", "2024"]
+        let data = [49.0, 92.0, 38.0, 95.0, 133.0]
         
+        let dataSet = BarChartDataSet(entries: data.enumerated().map { BarChartDataEntry(x: Double($0.offset), y: $0.element) }, label: "Sell")
+        dataSet.colors = [UIColor.systemRed]
+        dataSet.drawValuesEnabled = true
+
+        // 設置 BarChartData
+        let chartData = BarChartData(dataSet: dataSet)
+        chartData.barWidth = 0.5 // 調整柱子寬度
+
+        // 設置 BarChartView 的屬性
+        barChartView.data = chartData
+        barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: categories)
+        barChartView.xAxis.granularity = 1 // 設置 x 軸標籤間隔
+        barChartView.xAxis.labelPosition = .bottom // 設置 x 軸標籤位置
+        barChartView.leftAxis.axisMinimum = 0 // 設置 y 軸最小值
+        barChartView.leftAxis.axisMaximum = 120 // 設置 y 軸最大值
+        barChartView.leftAxis.labelCount = 6 // 設置 y 軸標籤數量
+        
+        //style
+        barChartView.leftAxis.labelTextColor = UIColor.white
+        
+            
+        //animation of the bar
+        barChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0, easingOption: .linear)
+        
+        //the current price line add
+        let targetLine = ChartLimitLine(limit: 70, label: "Current Price")
+        targetLine.lineColor = UIColor.green
+        targetLine.lineWidth = 1.5
+        targetLine.valueTextColor = UIColor.green
+        targetLine.valueFont = .systemFont(ofSize: 10)
+        barChartView.leftAxis.addLimitLine(targetLine)
+
+        
+        
+        currentBarChartView = barChartView
+        ChartView.addSubview(barChartView)
+
     }
     
     
@@ -106,32 +195,32 @@ class TradeHistoryViewController: UIViewController {
     // Navigation part
     
     
-    private func setupCustomBackButton() {
-            let backButton = UIButton(type: .system)
-            let backButtonImage = UIImage(systemName: "house")
-            backButton.setImage(backButtonImage, for: .normal)
-            backButton.tintColor = .white
-            backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-            let backBarButtonItem = UIBarButtonItem(customView: backButton)
-            navigationItem.leftBarButtonItem = backBarButtonItem
-            print("Custom back button set up")
-        }
-    
-    @objc private func backButtonTapped() {
-            print("Back button tapped")
-            loadTabBarController(atIndex: 0)
-        }
-        
-        private func loadTabBarController(atIndex index: Int) {
-            self.tabBarIndex = index
-            self.performSegue(withIdentifier: "showTabBar", sender: self)
-        }
-
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "showTabBar" {
-                if let tabBarController = segue.destination as? UITabBarController {
-                    tabBarController.selectedIndex = self.tabBarIndex ?? 0
-                }
-            }
-        }
+//    private func setupCustomBackButton() {
+//            let backButton = UIButton(type: .system)
+//            let backButtonImage = UIImage(systemName: "house")
+//            backButton.setImage(backButtonImage, for: .normal)
+//            backButton.tintColor = .white
+//            backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+//            let backBarButtonItem = UIBarButtonItem(customView: backButton)
+//            navigationItem.leftBarButtonItem = backBarButtonItem
+//            print("Custom back button set up")
+//        }
+//    
+//    @objc private func backButtonTapped() {
+//            print("Back button tapped")
+//            loadTabBarController(atIndex: 0)
+//        }
+//        
+//        private func loadTabBarController(atIndex index: Int) {
+//            self.tabBarIndex = index
+//            self.performSegue(withIdentifier: "showTabBar", sender: self)
+//        }
+//
+//        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//            if segue.identifier == "showTabBar" {
+//                if let tabBarController = segue.destination as? UITabBarController {
+//                    tabBarController.selectedIndex = self.tabBarIndex ?? 0
+//                }
+//            }
+//        }
 }
