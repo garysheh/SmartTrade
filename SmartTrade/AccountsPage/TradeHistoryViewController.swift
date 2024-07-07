@@ -8,17 +8,25 @@
 
 import UIKit
 import Firebase
+import DGCharts
 import FirebaseCore
 import FirebaseFirestore
-import DGCharts
 
 class TradeHistoryViewController: UIViewController {
     
     var tabBarIndex: Int?
     var stockSymbol: String?
+    var stockPrice: String?
     var stockData: [TradeOrder] = []
-    private var barChartView: BarChartView!
-
+    
+    
+    @IBOutlet weak var ShowLineSwitch: UISwitch!
+    @IBOutlet weak var ChartView: UIView!
+    private var currentBarChartView: BarChartView?
+    var targetLine : ChartLimitLine?
+    var currentPrice: Double?
+    
+    
     
     
     struct TradeOrder: Codable {
@@ -39,7 +47,17 @@ class TradeHistoryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCustomBackButton()
+        setupLine()
+        setBarChartBuy()
+    }
+    
+    private func setupLine(){
+        if let price = Double(self.stockPrice ?? "") {
+            currentPrice = price
+            print(currentPrice)
+        } else {
+            print("cannot get the price")
+        }
     }
     
     //setting the segmented controller
@@ -68,10 +86,15 @@ class TradeHistoryViewController: UIViewController {
             // 处理选中选项变化的逻辑
             switch sender.selectedSegmentIndex {
             case 0:
+                if let currentBarChartView = currentBarChartView {
+                        currentBarChartView.removeFromSuperview()
+                    }
                 setBarChartBuy()
             case 1:
+                if let currentBarChartView = currentBarChartView {
+                        currentBarChartView.removeFromSuperview()
+                    }
                 setBarChartSell()
-                print("1")
             default:
                 break
             }
@@ -79,59 +102,217 @@ class TradeHistoryViewController: UIViewController {
     
     
     //----------------------------------- sell ----------------------------------
-    private func setBarChartSell(){
-        
+    private func setBarChartBuy() {
+        getBuy5Data { buyData in
+            let barChartView = BarChartView(frame: self.ChartView.bounds)
+//            let categories = buyData.sorted { $0.key < $1.key }.map { "\($0.key + 1)" }
+            let shares = buyData.map {"\($0.value.0) shares"}
+            let data = buyData.sorted { $0.key < $1.key }.reversed().map { $0.value.1 }
+            
+            let dataSet = BarChartDataSet(entries: data.enumerated().map { BarChartDataEntry(x: Double($0.offset), y: $0.element) }, label: " ")
+            dataSet.colors = [UIColor.systemBlue]
+            dataSet.valueColors = [.white]
+            dataSet.valueFont = .systemFont(ofSize: 12)
+            
+            let chartData = BarChartData(dataSet: dataSet)
+            chartData.barWidth = 0.5
+            
+            barChartView.data = chartData
+            barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: shares)
+            barChartView.xAxis.granularity = 1
+            barChartView.xAxis.labelPosition = .bottom
+            barChartView.leftAxis.axisMinimum = 0
+            barChartView.leftAxis.axisMaximum = (buyData.values.map { $0.1 }.max() ?? 350) + 50
+            barChartView.leftAxis.labelCount = 6
+            
+            barChartView.xAxis.labelTextColor = UIColor.white
+            barChartView.leftAxis.labelTextColor = UIColor.white
+            
+            barChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0, easingOption: .linear)
+            
+            if self.ShowLineSwitch.isOn {
+                let targetLine = ChartLimitLine(limit: self.currentPrice ?? 0, label: "Current Price:\(self.currentPrice ?? 0)")
+                targetLine.lineColor = UIColor.green
+                targetLine.lineWidth = 1.5
+                targetLine.valueTextColor = UIColor.green
+                targetLine.valueFont = .systemFont(ofSize: 10)
+                barChartView.leftAxis.addLimitLine(targetLine)
+            }
+
+            self.currentBarChartView = barChartView
+            self.ChartView.addSubview(barChartView)
+            
+        }
+    }
+
+    private func setBarChartSell() {
+        getSell5Data { sellData in
+            let barChartView = BarChartView(frame: self.ChartView.bounds)
+//            let categories = sellData.sorted { $0.key < $1.key }.map { "\($0.key + 1)" }
+            let shares = sellData.map {"\($0.value.0) shares"}
+            let data = sellData.sorted { $0.key < $1.key }.reversed().map { $0.value.1 }
+            
+            let dataSet = BarChartDataSet(entries: data.enumerated().map { BarChartDataEntry(x: Double($0.offset), y: $0.element) }, label: " ")
+            dataSet.colors = [UIColor.systemRed]
+            dataSet.valueColors = [.white]
+            dataSet.valueFont = .systemFont(ofSize: 12)
+            
+            let chartData = BarChartData(dataSet: dataSet)
+            chartData.barWidth = 0.5
+            
+            barChartView.data = chartData
+            barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: shares)
+            barChartView.xAxis.granularity = 1
+            barChartView.xAxis.labelPosition = .bottom
+            barChartView.leftAxis.axisMinimum = 0
+            barChartView.leftAxis.axisMaximum = (sellData.values.map { $0.1 }.max() ?? 350) + 50
+            barChartView.leftAxis.labelCount = 6
+            
+            barChartView.xAxis.labelTextColor = UIColor.white
+            barChartView.leftAxis.labelTextColor = UIColor.white
+            
+            barChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0, easingOption: .linear)
+            
+            if self.ShowLineSwitch.isOn {
+                let targetLine = ChartLimitLine(limit: self.currentPrice ?? 0, label: "Current Price:\(self.currentPrice ?? 0)")
+                targetLine.lineColor = UIColor.green
+                targetLine.lineWidth = 1.5
+                targetLine.valueTextColor = UIColor.green
+                targetLine.valueFont = .systemFont(ofSize: 10)
+                barChartView.leftAxis.addLimitLine(targetLine)
+            }
+            
+            self.currentBarChartView = barChartView
+            self.ChartView.addSubview(barChartView)
+            
+            
+        }
     }
     
-    
-    //----------------------------------- buy ----------------------------------
-    private func setBarChartBuy(){
-        
+    @IBAction func ShowLineOption(_ sender: UISwitch) {
+        if sender.isOn {
+            targetLine?.enabled = true
+            print("Switch is on")
+        } else {
+            targetLine?.enabled = false
+            print("Switch is off")
+        }
     }
     
-    
-    
-    private func setDefault(){
-        print(stockSymbol)
+    //get the lastest 5 buy data to draw the chart
+    private func getBuy5Data(completion: @escaping ([Int: (Double,Double,Timestamp)]) -> Void) {
         let db = Firestore.firestore()
-        let email = Auth.auth().currentUser?.email
-        
-        
-        
+        guard let email = Auth.auth().currentUser?.email else {
+            print("Error: Current user's email is nil")
+            completion([:])
+            return
+        }
+        var BuyRecord: [Int: (Double, Double,Timestamp)] = [:]
+        db.collection("OrdersInfo").document(email).getDocument { (document, error) in
+            if let error = error {
+                print("Error getting document: \(error)")
+                completion([:])
+                return
+            }
+            if let document = document, document.exists {
+                var orders = document.data()?["order"] as? [[String: Any]] ?? []
+                var countNum = 0
+                for order in orders.reversed(){
+                    if let stockCode = order["stockCode"] as? String, let shares = order["quantity"] as? Double ,let price = order["price"] as? Double, let status = order["Status"] as? String, let type = order["type"]as? String, let date = order["date"] as? Timestamp, countNum < 5{
+                        if status == "Done" && stockCode == self.stockSymbol && type == "buy"{
+//                            print("found.")
+                            BuyRecord[countNum] = (shares, price, date)
+                            countNum += 1
+                        }
+                    }
+                }
+                completion(BuyRecord)
+            } else {
+                print("No document found for user: \(email)")
+                completion([:])
+            }
+        }
     }
+
+    //get the lastest 5 sell data to draw the chart
+    private func getSell5Data(completion: @escaping ([Int: (Double,Double,Timestamp)]) -> Void) {
+        let db = Firestore.firestore()
+        guard let email = Auth.auth().currentUser?.email else {
+            print("Error: Current user's email is nil")
+            completion([:])
+            return
+        }
+        var SellRecord: [Int: (Double, Double,Timestamp)] = [:]
+        db.collection("OrdersInfo").document(email).getDocument { (document, error) in
+            if let error = error {
+                print("Error getting document: \(error)")
+                completion([:])
+                return
+            }
+            if let document = document, document.exists {
+                var orders = document.data()?["order"] as? [[String: Any]] ?? []
+                var countNum = 0
+                for order in orders.reversed(){
+                    if let stockCode = order["stockCode"] as? String, let shares = order["quantity"] as? Double ,let price = order["price"] as? Double, let status = order["Status"] as? String, let type = order["type"]as? String, let date = order["date"] as? Timestamp, countNum < 5{
+                        if status == "Done" && stockCode == self.stockSymbol && type == "sell"{
+//                            print("found.")
+                            SellRecord[countNum] = (shares, price, date)
+                            countNum += 1
+                        }
+                    }
+                }
+                completion(SellRecord)
+            } else {
+                print("No document found for user: \(email)")
+                completion([:])
+            }
+        }
+    }
+
+    
+    
+//    private func getSellData(completion: @escaping ([String: (Double,Double)]) -> Void) {
+//        
+//        let db = Firestore.firestore()
+//        let email = Auth.auth().currentUser?.email
+//        var stockHoldings: [String: (Double,Double)] = [:] //the position
+//        
+//
+//    }
+    
     
 
     
-
+//--------------------------------------------------NAvigation design part------------------------------------------------------------------
     // Navigation part
     
     
-    private func setupCustomBackButton() {
-            let backButton = UIButton(type: .system)
-            let backButtonImage = UIImage(systemName: "house")
-            backButton.setImage(backButtonImage, for: .normal)
-            backButton.tintColor = .white
-            backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-            let backBarButtonItem = UIBarButtonItem(customView: backButton)
-            navigationItem.leftBarButtonItem = backBarButtonItem
-            print("Custom back button set up")
-        }
-    
-    @objc private func backButtonTapped() {
-            print("Back button tapped")
-            loadTabBarController(atIndex: 0)
-        }
-        
-        private func loadTabBarController(atIndex index: Int) {
-            self.tabBarIndex = index
-            self.performSegue(withIdentifier: "showTabBar", sender: self)
-        }
-
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "showTabBar" {
-                if let tabBarController = segue.destination as? UITabBarController {
-                    tabBarController.selectedIndex = self.tabBarIndex ?? 0
-                }
-            }
-        }
+//    private func setupCustomBackButton() {
+//            let backButton = UIButton(type: .system)
+//            let backButtonImage = UIImage(systemName: "house")
+//            backButton.setImage(backButtonImage, for: .normal)
+//            backButton.tintColor = .white
+//            backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+//            let backBarButtonItem = UIBarButtonItem(customView: backButton)
+//            navigationItem.leftBarButtonItem = backBarButtonItem
+//            print("Custom back button set up")
+//        }
+//    
+//    @objc private func backButtonTapped() {
+//            print("Back button tapped")
+//            loadTabBarController(atIndex: 0)
+//        }
+//        
+//        private func loadTabBarController(atIndex index: Int) {
+//            self.tabBarIndex = index
+//            self.performSegue(withIdentifier: "showTabBar", sender: self)
+//        }
+//
+//        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//            if segue.identifier == "showTabBar" {
+//                if let tabBarController = segue.destination as? UITabBarController {
+//                    tabBarController.selectedIndex = self.tabBarIndex ?? 0
+//                }
+//            }
+//        }
 }

@@ -88,11 +88,12 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let vc = storyboard?.instantiateViewController(identifier: "TradeHistoryViewController") as?
-            TradeHistoryViewController{
-            let selectedStock = searchResults[indexPath.row].symbol
-            vc.stockSymbol = selectedStock
-            self.navigationController?.pushViewController(vc, animated: true)}
+        if let vc = storyboard?.instantiateViewController(identifier: "TradeHistoryViewController") as? TradeHistoryViewController {
+            let selectedPosition = positions[indexPath.row]
+            vc.stockSymbol = selectedPosition.code
+            vc.stockPrice =  (self.searchResults.first(where: { $0.symbol == selectedPosition.code })?.price ?? "0")
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     private func getHoldingData(completion: @escaping ([String: (Double,Double)]) -> Void) {
@@ -171,14 +172,9 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
         getHoldingData { holdingData in
             let apiService = APIService()
             let publishers = holdingData.keys.map { apiService.fetchSymbolsPublisher(symbol: $0) }
-            //            var stockValues: [String: Double] = [:]
             self.stockKeys = Array(holdingData.keys)
-            
+
             DispatchQueue.main.async {
-                
-                print(self.stockKeys)
-                let publishers = self.stockKeys.map { apiService.fetchSymbolsPublisher(symbol: $0) }
-                
                 Publishers.MergeMany(publishers)
                     .map { data -> SearchResult? in
                         if let searchResults = try? JSONDecoder().decode(SearchResults.self, from: data) {
@@ -197,7 +193,8 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
                         }
                     } receiveValue: { searchResults in
                         self.searchResults = searchResults.compactMap { $0 }
-                        
+
+                        self.positions.removeAll()
                         for (symbol, (shares,avgCost)) in holdingData {
                             if let searchResult = self.searchResults.first(where: { $0.symbol == symbol }) {
                                 let currentPrice = Double(searchResult.price ?? "0") ?? 0
@@ -206,11 +203,9 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
                             }
                         }
                         self.positions.sort { $0.code < $1.code }
-                        print(self.positions)
                         self.tableView.reloadData()
-                        
                     }
-                .store(in: &self.subscribers)
+                    .store(in: &self.subscribers)
             }
         }
     }

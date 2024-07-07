@@ -379,19 +379,21 @@ class StockDetailViewController: UIViewController {
     // BUY AND SELL FUNCTION PART
     
     @IBAction func BuyButtonTapped(_ sender: Any) {
-        if let vc = storyboard?.instantiateViewController(identifier: "OrderInputViewController") as? OrderInputViewController {
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+//        if let vc = storyboard?.instantiateViewController(identifier: "OrderInputViewController") as? OrderInputViewController {
+//            self.navigationController?.pushViewController(vc, animated: true)
+//        }
+        showBuyOptionPopup()
     }
     
     @IBAction func SellButtonTapped(_ sender: Any) {
-        if let vc = storyboard?.instantiateViewController(identifier: "OrderOutputViewController") as? OrderOutputViewController {
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+//        if let vc = storyboard?.instantiateViewController(identifier: "OrderOutputViewController") as? OrderOutputViewController {
+//            self.navigationController?.pushViewController(vc, animated: true)
+//        }
+        showSellOptionPopup()
     }
     
     // Commented for testing and refactor to new controller
-    /*
+
     //option for user to buy
     private func showBuyOptionPopup() {
             let alert = UIAlertController(title: "Buy Shares", message: "Choose your buy option:", preferredStyle: .alert)
@@ -458,7 +460,7 @@ class StockDetailViewController: UIViewController {
                                             "stockCode": self.stockName.text,
                                             "type": "buy",
                                             "quantity": sharesAdd,
-                                            "price": self.Stockprice.text,
+                                            "price": stockPrice,
                                             "timestamp": timeStamp,
                                             "Status":"Done"
                                         ])
@@ -473,7 +475,7 @@ class StockDetailViewController: UIViewController {
                                                 "stockCode": self.stockName.text,
                                                 "type": "buy",
                                                 "quantity": sharesAdd,
-                                                "price": self.Stockprice.text,
+                                                "price": stockPrice,
                                                 "timestamp": timeStamp,
                                                 "Status": "Done"
                                             ]]
@@ -660,9 +662,9 @@ class StockDetailViewController: UIViewController {
     
     
     
-    @IBAction func SellButtonTapped(_ sender: Any) {
-        showSellOptionPopup()
-    }
+//    @IBAction func SellButtonTapped(_ sender: Any) {
+//        showSellOptionPopup()
+//    }
     
     //show the option of selling stock
     private func showSellOptionPopup() {
@@ -704,6 +706,7 @@ class StockDetailViewController: UIViewController {
                     let email = Auth.auth().currentUser?.email
                     var balanceAdd: Double = 0.0
                     var balance: Double = 0.0
+                    let stockPrice = Double(self.Stockprice.text ?? "0.0") ?? 0.0
 
 
                     
@@ -716,7 +719,7 @@ class StockDetailViewController: UIViewController {
                                 "stockCode": self.stockName.text,
                                 "type": "sell",
                                 "quantity": sharesAdd,
-                                "price": self.Stockprice.text,
+                                "price": stockPrice,
                                 "timestamp": timeStamp,
                                 "Status":"Done"
                             ])
@@ -731,7 +734,7 @@ class StockDetailViewController: UIViewController {
                                         "stockCode": self.stockName.text,
                                         "type": "sell",
                                         "quantity": sharesAdd,
-                                        "price": self.Stockprice.text,
+                                        "price": stockPrice,
                                         "timestamp": timeStamp,
                                         "Status":"Done"
                                     ]]
@@ -934,7 +937,7 @@ class StockDetailViewController: UIViewController {
             
             present(alert, animated: true, completion: nil)
         }
-     */
+
     
     
 
