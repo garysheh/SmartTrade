@@ -10,23 +10,22 @@ import Firebase
 import FirebaseFirestore
 
 class MyPageViewController: UIViewController {
-    @IBOutlet weak var marketData: UILabel!
+    @IBOutlet weak var marketData: UIButton!
     
-    @IBOutlet weak var myRewards: UILabel!
+    @IBOutlet weak var myRewards: UIButton!
     
-    @IBOutlet weak var alerts: UILabel!
+    @IBOutlet weak var alerts: UIButton!
     
     @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var coupons: UILabel!
+    @IBOutlet weak var coupons: UIButton!
     
-    @IBOutlet weak var history: UILabel!
+    @IBOutlet weak var history: UIButton!
     
-    @IBOutlet weak var saved: UILabel!
+    @IBOutlet weak var saved: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupRoundedLabel(labels: [marketData,myRewards,alerts,coupons,history,saved])
         // Do any additional setup after loading the view.
         setupInfo()
     }
