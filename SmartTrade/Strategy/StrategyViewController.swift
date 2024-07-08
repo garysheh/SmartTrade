@@ -11,6 +11,17 @@ import Combine
 class StrategyViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    
+    @IBOutlet weak var segmentOutlet: UISegmentedControl!
+    
+    
+    @IBOutlet weak var newsSegmentView: UIView!
+    
+    @IBOutlet weak var lstm: UIView!
+    
+    
+    
+    
         
     private let apiService = APIService()
     private var subscribers = Set<AnyCancellable>()
@@ -20,12 +31,29 @@ class StrategyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.bringSubviewToFront(tableView)
         self.tableView.delegate = self
         self.tableView.dataSource = self
         tableView.layer.cornerRadius = 15
         tableView.layer.masksToBounds = true
         self.tabBarController?.selectedIndex = 0
         performSearch()
+    }
+    
+    
+    @IBAction func segmentAction(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            self.view.bringSubviewToFront(tableView)
+        case 1:
+            self.view.bringSubviewToFront(newsSegmentView)
+        case 2:
+            self.view.bringSubviewToFront(lstm)
+            
+        default:
+            break
+        }
+        
     }
     
     private func performSearch() {
