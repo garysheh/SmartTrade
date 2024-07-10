@@ -40,6 +40,7 @@
 		60F616042C2E583900E4B702 /* PlaceFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F616032C2E583900E4B702 /* PlaceFailedViewController.swift */; };
 		60F616062C2E5E7C00E4B702 /* MainPageTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F616052C2E5E7C00E4B702 /* MainPageTabBarViewController.swift */; };
 		7B0CFA922C3D2BE80034028E /* HistoryOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0CFA912C3D2BE80034028E /* HistoryOrderViewController.swift */; };
+		7B0CFA962C3D4F590034028E /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0CFA952C3D4F590034028E /* OrderTableViewCell.swift */; };
 		7B225B932C2AA74D000C9D65 /* TradeHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B225B922C2AA74D000C9D65 /* TradeHistoryViewController.swift */; };
 		7BF759362C0B33AE000FE466 /* SmartTradeData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7BF759342C0B33AE000FE466 /* SmartTradeData.xcdatamodeld */; };
 		7BF7593B2C11A2F7000FE466 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593A2C11A2F7000FE466 /* DGCharts */; };
@@ -111,6 +112,7 @@
 		60F616032C2E583900E4B702 /* PlaceFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceFailedViewController.swift; sourceTree = "<group>"; };
 		60F616052C2E5E7C00E4B702 /* MainPageTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageTabBarViewController.swift; sourceTree = "<group>"; };
 		7B0CFA912C3D2BE80034028E /* HistoryOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryOrderViewController.swift; sourceTree = "<group>"; };
+		7B0CFA952C3D4F590034028E /* OrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
 		7B225B922C2AA74D000C9D65 /* TradeHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeHistoryViewController.swift; sourceTree = "<group>"; };
 		7BF759352C0B33AE000FE466 /* SmartTradeData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartTradeData.xcdatamodel; sourceTree = "<group>"; };
 		7BF759422C1585BE000FE466 /* DetailPositionDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPositionDataViewController.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 			isa = PBXGroup;
 			children = (
 				7B0CFA912C3D2BE80034028E /* HistoryOrderViewController.swift */,
+				7B0CFA952C3D4F590034028E /* OrderTableViewCell.swift */,
 			);
 			path = MyPageRelated;
 			sourceTree = "<group>";
@@ -469,6 +472,7 @@
 				60F616062C2E5E7C00E4B702 /* MainPageTabBarViewController.swift in Sources */,
 				60F616022C2E581D00E4B702 /* PlaceSuccessfullyViewController.swift in Sources */,
 				607C88A32C2488DE00AAC66B /* stockProfile.swift in Sources */,
+				7B0CFA962C3D4F590034028E /* OrderTableViewCell.swift in Sources */,
 				60AF41EF2C0188570034282D /* AppDelegate.swift in Sources */,
 				607C889F2C246C5D00AAC66B /* TimeWeeklySeries.swift in Sources */,
 				7BF759452C15B4F5000FE466 /* PositionTableViewCell.swift in Sources */,
