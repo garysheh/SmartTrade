@@ -54,7 +54,7 @@ class TradeHistoryViewController: UIViewController {
     private func setupLine(){
         if let price = Double(self.stockPrice ?? "") {
             currentPrice = price
-            print(currentPrice)
+//            print(currentPrice)
         } else {
             print("cannot get the price")
         }
@@ -271,14 +271,6 @@ class TradeHistoryViewController: UIViewController {
 
     
     
-//    private func getSellData(completion: @escaping ([String: (Double,Double)]) -> Void) {
-//        
-//        let db = Firestore.firestore()
-//        let email = Auth.auth().currentUser?.email
-//        var stockHoldings: [String: (Double,Double)] = [:] //the position
-//        
-//
-//    }
     
     
 
