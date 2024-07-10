@@ -36,10 +36,12 @@
 		60C1939B2BE0D080003134FE /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1939A2BE0D080003134FE /* RegisterViewController.swift */; };
 		60CBCA752C1CCCF600ABEA4B /* TimeDailySeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CBCA742C1CCCF600ABEA4B /* TimeDailySeries.swift */; };
 		60CBCA772C208FA500ABEA4B /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CBCA762C208FA500ABEA4B /* MyPageViewController.swift */; };
-		7B225B932C2AA74D000C9D65 /* TradeHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B225B922C2AA74D000C9D65 /* TradeHistoryViewController.swift */; };
 		60F616022C2E581D00E4B702 /* PlaceSuccessfullyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F616012C2E581D00E4B702 /* PlaceSuccessfullyViewController.swift */; };
 		60F616042C2E583900E4B702 /* PlaceFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F616032C2E583900E4B702 /* PlaceFailedViewController.swift */; };
 		60F616062C2E5E7C00E4B702 /* MainPageTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F616052C2E5E7C00E4B702 /* MainPageTabBarViewController.swift */; };
+		60F6160C2C3DB58800E4B702 /* spread.csv in Resources */ = {isa = PBXBuildFile; fileRef = 60F6160B2C3DB58700E4B702 /* spread.csv */; };
+		60F6160E2C3DB95B00E4B702 /* SpreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F6160D2C3DB95B00E4B702 /* SpreadViewController.swift */; };
+		7B225B932C2AA74D000C9D65 /* TradeHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B225B922C2AA74D000C9D65 /* TradeHistoryViewController.swift */; };
 		7BF759362C0B33AE000FE466 /* SmartTradeData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7BF759342C0B33AE000FE466 /* SmartTradeData.xcdatamodeld */; };
 		7BF7593B2C11A2F7000FE466 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593A2C11A2F7000FE466 /* DGCharts */; };
 		7BF7593D2C11A2F7000FE466 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 7BF7593C2C11A2F7000FE466 /* DGChartsDynamic */; };
@@ -106,10 +108,12 @@
 		60C1939A2BE0D080003134FE /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		60CBCA742C1CCCF600ABEA4B /* TimeDailySeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDailySeries.swift; sourceTree = "<group>"; };
 		60CBCA762C208FA500ABEA4B /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
-		7B225B922C2AA74D000C9D65 /* TradeHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeHistoryViewController.swift; sourceTree = "<group>"; };
 		60F616012C2E581D00E4B702 /* PlaceSuccessfullyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSuccessfullyViewController.swift; sourceTree = "<group>"; };
 		60F616032C2E583900E4B702 /* PlaceFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceFailedViewController.swift; sourceTree = "<group>"; };
 		60F616052C2E5E7C00E4B702 /* MainPageTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageTabBarViewController.swift; sourceTree = "<group>"; };
+		60F6160B2C3DB58700E4B702 /* spread.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spread.csv; sourceTree = "<group>"; };
+		60F6160D2C3DB95B00E4B702 /* SpreadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadViewController.swift; sourceTree = "<group>"; };
+		7B225B922C2AA74D000C9D65 /* TradeHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeHistoryViewController.swift; sourceTree = "<group>"; };
 		7BF759352C0B33AE000FE466 /* SmartTradeData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartTradeData.xcdatamodel; sourceTree = "<group>"; };
 		7BF759422C1585BE000FE466 /* DetailPositionDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPositionDataViewController.swift; sourceTree = "<group>"; };
 		7BF759442C15B4F5000FE466 /* PositionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionTableViewCell.swift; sourceTree = "<group>"; };
@@ -176,6 +180,7 @@
 				609E47B62C2C7E2E0016372B /* PriceMarkerView.swift */,
 				609E47B82C2CFD190016372B /* DateValueFormatter.swift */,
 				609E47BA2C2D34C00016372B /* FlashingCircleView.swift */,
+				60F6160D2C3DB95B00E4B702 /* SpreadViewController.swift */,
 			);
 			path = Strategy;
 			sourceTree = "<group>";
@@ -248,6 +253,7 @@
 		60C193832BE07BF7003134FE /* SmartTrade */ = {
 			isa = PBXGroup;
 			children = (
+				60F6160A2C3DB54C00E4B702 /* TradingAlgorithm */,
 				601D193D2C2B2DDE00A11E16 /* Strategy */,
 				607C88A62C270FBE00AAC66B /* TradeFlowRelated */,
 				6080A47F2C0B18AD00DC3D02 /* AccountsPage */,
@@ -268,6 +274,14 @@
 				60F616052C2E5E7C00E4B702 /* MainPageTabBarViewController.swift */,
 			);
 			path = SmartTrade;
+			sourceTree = "<group>";
+		};
+		60F6160A2C3DB54C00E4B702 /* TradingAlgorithm */ = {
+			isa = PBXGroup;
+			children = (
+				60F6160B2C3DB58700E4B702 /* spread.csv */,
+			);
+			path = TradingAlgorithm;
 			sourceTree = "<group>";
 		};
 		C373AD3648825BA66C43B723 /* Pods */ = {
@@ -379,6 +393,7 @@
 				60AF41F22C018A050034282D /* LaunchScreen.storyboard in Resources */,
 				60C1938E2BE07BFA003134FE /* Assets.xcassets in Resources */,
 				60C1938C2BE07BF7003134FE /* Main.storyboard in Resources */,
+				60F6160C2C3DB58800E4B702 /* spread.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +465,7 @@
 				60C193992BE0CED1003134FE /* LoginViewController.swift in Sources */,
 				607C88A12C246CB800AAC66B /* TimeMonthlySeries.swift in Sources */,
 				60C1939B2BE0D080003134FE /* RegisterViewController.swift in Sources */,
+				60F6160E2C3DB95B00E4B702 /* SpreadViewController.swift in Sources */,
 				60CBCA772C208FA500ABEA4B /* MyPageViewController.swift in Sources */,
 				60F616042C2E583900E4B702 /* PlaceFailedViewController.swift in Sources */,
 				601D193F2C2B2E0100A11E16 /* StrategyViewController.swift in Sources */,

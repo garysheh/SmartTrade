@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import Charts
 
 class StrategyViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -17,10 +18,8 @@ class StrategyViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @IBOutlet weak var newsSegmentView: UIView!
     
-    @IBOutlet weak var lstm: UIView!
     
-    
-    
+    @IBOutlet weak var spreadSegmentView: UIView!
     
         
     private let apiService = APIService()
@@ -48,8 +47,7 @@ class StrategyViewController: UIViewController, UITableViewDataSource, UITableVi
         case 1:
             self.view.bringSubviewToFront(newsSegmentView)
         case 2:
-            self.view.bringSubviewToFront(lstm)
-            
+            self.view.bringSubviewToFront(spreadSegmentView)
         default:
             break
         }
