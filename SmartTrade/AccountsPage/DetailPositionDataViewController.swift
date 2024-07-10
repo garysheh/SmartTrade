@@ -208,11 +208,6 @@ class DetailPositionDataViewController: UIViewController,UITableViewDataSource, 
                     .store(in: &self.subscribers)
             }
         }
-        
-        
-        
-        
-        
     }
     
     

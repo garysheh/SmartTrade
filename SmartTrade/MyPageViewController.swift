@@ -69,18 +69,6 @@ class MyPageViewController: UIViewController {
             label.layer.masksToBounds = true
         }
     }
-    
-    
-    
-    //Click the button then jump to corresponding page.
-    @IBAction func HistoryButtonTapped(_ sender: Any) {
-        if let vc = storyboard?.instantiateViewController(identifier: "HistoryOrderViewController") as? HistoryOrderViewController {
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-    
-    
-    
     /*
     // MARK: - Navigation
 
