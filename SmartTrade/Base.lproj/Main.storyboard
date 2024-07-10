@@ -1254,14 +1254,22 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d76-hs-slu">
+<<<<<<< HEAD
                                 <rect key="frame" x="22" y="262" width="355" height="503"/>
+=======
+                                <rect key="frame" x="22" y="238" width="355" height="503"/>
+>>>>>>> parent of 08b60c3 (Spread chart implementation on Strategy page)
                                 <color key="backgroundColor" red="0.082352941176470587" green="0.078431372549019607" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <segue destination="Dol-JK-1Kx" kind="embed" id="vjS-6D-l8S"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" id="UHP-ls-wMM">
+<<<<<<< HEAD
                                 <rect key="frame" x="22" y="228" width="355" height="503"/>
+=======
+                                <rect key="frame" x="22" y="238" width="355" height="503"/>
+>>>>>>> parent of 08b60c3 (Spread chart implementation on Strategy page)
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="y2Y-SE-3tg" kind="embed" id="tPI-HY-UOs"/>
@@ -2108,13 +2116,46 @@
             <point key="canvasLocation" x="3755" y="458"/>
         </scene>
         <!--View Controller-->
+        <scene sceneID="tif-xn-3cU">
+            <objects>
+                <viewController id="Dol-JK-1Kx" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="SQO-DV-t6u">
+                        <rect key="frame" x="0.0" y="0.0" width="355" height="503"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="News modal" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sg0-gS-G7v">
+                                <rect key="frame" x="131" y="59" width="93.666666666666686" height="55"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="55" id="EY0-bH-p7L"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.082352941176470587" green="0.078431372549019607" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="sg0-gS-G7v" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SQO-DV-t6u" secondAttribute="leadingMargin" id="CXz-mS-d5w"/>
+                            <constraint firstItem="sg0-gS-G7v" firstAttribute="top" secondItem="SQO-DV-t6u" secondAttribute="topMargin" id="GD2-5l-8gA"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="sg0-gS-G7v" secondAttribute="trailing" constant="114.33333333333334" id="aSd-lL-QaM"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d8v-b2-lwa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3755" y="458"/>
+        </scene>
+        <!--View Controller-->
         <scene sceneID="7Gs-Ve-1xv">
             <objects>
                 <viewController id="Lhp-fX-bCr" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6OR-1F-zC9">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+<<<<<<< HEAD
                         <viewLayoutGuide key="safeArea" id="kMO-7J-Rgn"/>
+=======
+>>>>>>> parent of 08b60c3 (Spread chart implementation on Strategy page)
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
@@ -2141,7 +2182,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+<<<<<<< HEAD
                         <viewLayoutGuide key="safeArea" id="imw-sX-hco"/>
+=======
+>>>>>>> parent of 08b60c3 (Spread chart implementation on Strategy page)
                         <color key="backgroundColor" red="0.082352941176470587" green="0.078431372549019607" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="hkJ-Hv-r9Q" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oKl-Kd-tyh" secondAttribute="leading" constant="20" symbolic="YES" id="KPJ-E9-YtV"/>
@@ -2173,7 +2217,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+<<<<<<< HEAD
                         <viewLayoutGuide key="safeArea" id="QtM-QE-lAY"/>
+=======
+>>>>>>> parent of 08b60c3 (Spread chart implementation on Strategy page)
                         <color key="backgroundColor" red="0.082352941176470587" green="0.078431372549019607" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="13R-Yu-Loj" firstAttribute="centerX" secondItem="0P3-g5-imG" secondAttribute="centerX" id="MBc-G7-RKQ"/>
@@ -2221,9 +2268,12 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
+<<<<<<< HEAD
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
+=======
+>>>>>>> parent of 08b60c3 (Spread chart implementation on Strategy page)
         <systemColor name="tableCellGroupedBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

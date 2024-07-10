@@ -9,7 +9,7 @@ target 'SmartTrade' do
   
   pod 'MBProgressHUD'
   pod 'Loaf'
-  pod 'Charts'
+  
 
 end
 
